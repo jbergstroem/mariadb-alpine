@@ -17,7 +17,7 @@ Being based on musl gives the additional benefit of size concerns. Each megabyte
 
 ### Another MariaDB container though?
 
-1.  The one's I found was out of date. Either based on the 5.x series or just not kept up to date
+1.  The ones I found were out of date. Either based on the 5.x series or just not kept up to date
 2.  It was obviously too large
 3.  Not trapping CTRL+C. Not being able to quickly signal out is annoying.
 
