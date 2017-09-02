@@ -14,12 +14,9 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   echo "flush privileges;" >> /tmp/init
 fi
 
-/usr/bin/mysqld_safe --nowatch --init-file=/tmp/init
+# clean previous session; since CTRL C will exit this script we can't do it
+# while shutting down :/
 hash=$(ls -t /var/lib/mysql/*.err | head -n1 | cut -d "." -f 1)
-tail -n +2 -f ${hash}.err
+rm ${hash}.*
 
-# @TODO: trap the exit and clean up/properly shut down mysql
-
-# kill -INT $(cat ${hash}.pid)
-# echo "hello! ${hash}"
-# rm ${hash}.*
+/usr/bin/mysqld --user=mysql --debug-gdb --init-file=/tmp/init

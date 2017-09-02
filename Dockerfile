@@ -24,7 +24,4 @@ COPY run.sh /run.sh
 
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
-#CMD ["/usr/bin/mysqld_safe", "--console"]
 EXPOSE 3306
-
-STOPSIGNAL SIGQUIT
