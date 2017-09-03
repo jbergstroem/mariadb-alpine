@@ -14,9 +14,4 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   echo "flush privileges;" >> /tmp/init
 fi
 
-# clean previous session; since CTRL C will exit this script we can't do it
-# while shutting down :/
-hash=$(ls -t /var/lib/mysql/*.err | head -n1 | cut -d "." -f 1)
-rm ${hash}.*
-
 /usr/bin/mysqld --user=mysql --debug-gdb --init-file=/tmp/init
