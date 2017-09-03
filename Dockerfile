@@ -1,9 +1,15 @@
 FROM alpine:3.6
 MAINTAINER Johan Bergström <bugs@bergstroem.nu>
 
-ENV LC_ALL C.UTF-8
-
-LABEL org.label-schema.license=Apache-2.0 org.label-schema.vcs-url=https://github.com/jbergstroem/mariadb-alpine
+# Build-time metadata as defined at http://label-schema.org
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="mariadb-alpine" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.vcs-url="https://github.com/jbergstroem/mariadb-alpine" \
+      org.label-schema.schema-version="1.0" \
+      org.label-schema.license="Apache-2.0"
 
 RUN  apk update \
   && apk add mariadb \
