@@ -3,6 +3,8 @@ MAINTAINER Johan Bergström <bugs@bergstroem.nu>
 
 ENV LC_ALL C.UTF-8
 
+LABEL org.label-schema.license=Apache-2.0 org.label-schema.vcs-url=https://github.com/jbergstroem/mariadb-alpine
+
 RUN  apk update \
   && apk add mariadb \
   && rm -rf /var/lib/apk/* /var/cache/apk/* /usr/data/test/db.opt \

@@ -69,3 +69,6 @@ You can override default behavior by passing environment variables:
 -   MYSQL_PASSWORD (defaults to unset): setting this will change the password
     of either the user you provide or default (`root`).
 
+## License
+
+[APL-2](./LICENSE).
