@@ -99,6 +99,10 @@ You can override default behavior by passing environment variables:
     of the user you provide.
 -   MYSQL_ROOT_PASSWORD (defaults to unset): setting this will set a
     root password.
+-   SKIP_INNODB (defaults to unset): this can be used to skip using InnoDB
+    which will shave off both time and size. Note: If you do this at
+    initialization, you will have to subsequently pass it. This is a good thing.
+
 
 ## License
 
