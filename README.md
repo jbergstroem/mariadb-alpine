@@ -2,11 +2,9 @@
 
 [![](https://images.microbadger.com/badges/version/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine) [![](https://images.microbadger.com/badges/image/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine) 
 
-Here's another MariaDB container based on [Alpine Linux][1]. It's opinionated and trades tools and functionality for disk size/startup speed. See it as a small, quick-to-get-going development edition.
+Here's another MariaDB container based on [Alpine Linux][1]. It's opinionated: trade tools and functionality for startup speed/disk size. See it as a small, quick-to-get-going development edition.
 
 I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.1.26` should you prefer.
-
-In addition to this, the versioning will also try to stay close to $current Alpine Linux version, meaning should `3.7` be released; this versioning will additionally be updated.
 
 [1]: https://alpinelinux.org
 
@@ -96,26 +94,25 @@ Here's what's gone (so far):
 
 Replaced both init and seeding scripts with as little boilerplate as possible.
 
-### Laxed ACL
+### Permissive ACL
 
-`root` Just Works without having to take hosts into consideration. You can set a root password on initialization should you need the extra security. You can
-always increase it further with custom sql past creation.
+`root` Just Works™️ without having to take connecting hostname into consideration. You can set a root password on initialization should you prefer the extra security. You can always improve your state further with custom sql past creation.
 
 ### Your feature here
 
-Need something else gone? Added? File a PR.
+Need something else gone? Added (less likely)? File a PR.
 
 
 ## Usage
 
-Typical usage would look something like this:
+Typical usage:
 ```console
 $ docker run -it --rm --name=db \
          -v $(PWD)/mariadb/:/var/lib/mysql \
          jbergstroem/mariadb-alpine
 ```
 
-If you like the even faster flavor of skipping InnoDB, this is for you:
+If you prefer skipping InnoDB (read: faster), this is for you:
 ```console
 $ docker run -it --rm --name=db \
          -v $(PWD)/mariadb/:/var/lib/mysql \
@@ -133,7 +130,7 @@ $ docker run -it --rm --name=db \
          jbergstroem/mariadb-alpine
 ```
 
-The `root` user is intentionally left passwordless. Should you need the extra security layer, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
+The `root` user is intentionally left passwordless. If you insist on one, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
 ```console
 $ docker run -it --rm --name=db \
          -v $(PWD)/mariadb/:/var/lib/mysql \
@@ -151,7 +148,7 @@ are unset unless provided.
 -   **MYSQL_PASSWORD**: changes password of the provided user (not root)
 -   **MYSQL_ROOT_PASSWORD**: sets a root password
 -   **SKIP_INNODB**: skip using InnoDB which shaves off both time and
-                     disk allocation size. If you mount a persistent volume, 
+                     disk allocation size. If you mount a persistent volume 
                      this setting will be remembered.
 
 
