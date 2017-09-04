@@ -24,7 +24,7 @@ RUN  apk update \
   && sed -i -e '/^log-bin/d' \
             -e '/^binlog_format/d' \
             -e 's/#innodb_log_file_size/innodb_log_file_size/' \
-            -e 's/#innodb_buffer_pool_size.*/innodb_buffer_pool_size = 10M\ninnodb_empty_free_list_algorithm = legacy\nlower_case_table_names = 2/' \
+            -e 's/#innodb_buffer_pool_size.*/innodb_buffer_pool_size = 10M\ninnodb_empty_free_list_algorithm = legacy\nlower_case_table_names = 1/' \
             -e '/\[mysqld\]/a skip_name_resolve' \
             /etc/mysql/my.cnf \
   && for p in aria* myisam* mysqld_* mysqltest_embedded innochecksum  \
@@ -38,4 +38,3 @@ COPY run.sh /run.sh
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
 EXPOSE 3306
-
