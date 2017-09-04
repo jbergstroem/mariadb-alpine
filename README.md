@@ -1,6 +1,6 @@
 # A (small) MariaDB container
 
-[![](https://images.microbadger.com/badges/version/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine "Get your own image badge on microbadger.com") 
+[![](https://images.microbadger.com/badges/version/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine) [![](https://images.microbadger.com/badges/image/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine) 
 
 Here's another MariaDB container based on [Alpine Linux][1]. It's opinionated and trades tools and functionality for disk size/startup speed. See it as a small, quick-to-get-going development edition.
 
@@ -23,6 +23,17 @@ Being based on musl gives the additional benefit of size concerns. Each kilobyte
 2.  They were obviously too large
 3.  Didn't trap CTRL+C -- not being able to quickly signal out is annoying.
 4.  Startup needs to be lighting fast
+
+Here's a quick comparison:
+
+| Name                       | Version | Compressed size |
+| -------------------------- | ------- | --------------- |
+| mysql                      | 5.7.19  | 144mb           |
+| mariadb                    | 10.1.26 | 135mb           |
+| bitnami/mariadb            | 10.1.26 | 131mb           |
+| yobasystems/alpine-mariadb | 10.1.22 | 59mb            |
+| webhippie/mariadb          | 10.1.26 | 72mb            |
+| jbergstroem/mariadb-alpine | 10.1.26 | **12mb**        |
 
 
 ## Changed behavior
@@ -104,7 +115,15 @@ $ docker run -it --rm --name=db \
          jbergstroem/mariadb-alpine
 ```
 
-Or, creating your own database with a user/password assigned to it:
+If you like the even faster flavor of skipping InnoDB, this is for you:
+```console
+$ docker run -it --rm --name=db \
+         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -e SKIP_INNODB=yes \
+         jbergstroem/mariadb-alpine
+```
+
+Creating your own database with a user/password assigned to it:
 ```console
 $ docker run -it --rm --name=db \
          -v $(PWD)/mariadb/:/var/lib/mysql \
@@ -114,7 +133,13 @@ $ docker run -it --rm --name=db \
          jbergstroem/mariadb-alpine
 ```
 
-The `root` user is intentionally left passwordless. Should you need the extra security layer, pass `MYSQL_ROOT_PASSWORD` at initialization stage.
+The `root` user is intentionally left passwordless. Should you need the extra security layer, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
+```console
+$ docker run -it --rm --name=db \
+         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -e MYSQL_ROOT_PASSWORD=secretsauce \
+         jbergstroem/mariadb-alpine
+```
 
 ### Customization
 
