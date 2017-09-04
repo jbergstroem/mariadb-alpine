@@ -35,22 +35,51 @@ Replication from your docker image? Seriously.
 
 Pretty sure you don't need 50mb (x2) pre-allocated files.
 
+### Optional InnoDB
+
+I rarely use InnoDB in testing/development. Provide the option to skip it.
+
 ### Removed tooling
 
 Here's what's gone (so far):
--   mysql_* !mysql_install_db 
--   aria*
--   myisam*
+-   aria_chk
+-   aria_dump_log
+-   aria_ftdump
+-   aria_pack
+-   aria_read_log
+-   myisamchk
+-   myisamlog
+-   myisampack
+-   mysqld_multi
+-   mysqld_safe
+-   mysqld_safe_helper
+-   mysqltest_embedded
 -   innochecksum
--   mariabackup
--   mbstream
 -   mysqlslap
 -   mysqltest
--   mysql_test_embedded
--   my_print_defaults
--   resolve_stack_dump
--   resolveip
 -   replace
+-   resolveip
+-   perror
+-   wsrep_sst_common
+-   wsrep_sst_mariabackup
+-   wsrep_sst_mysqldump
+-   wsrep_sst_rsync
+-   wsrep_sst_xtrabackup
+-   wsrep_sst_xtrabackup-v2
+-   mytop
+-   resolve_stack_dump
+-   mariabackup
+-   mbstream
+-   mysqlbinlog
+-   mysql_client_test_embedded
+-   mysql_convert_table_format
+-   mysql_embedded
+-   mysql_plugin
+-   mysql_secure_installation
+-   mysql_setpermission
+-   mysql_tzinfo_to_sql
+-   mysql_upgrade
+-   mysql_zap
 
 ### Faster initialization
 
@@ -89,19 +118,16 @@ The `root` user is intentionally left passwordless. Should you need the extra se
 
 ### Customization
 
-You can override default behavior by passing environment variables:
+You can override default behavior by passing environment variables. All flags
+are unset unless provided.
 
--   MYSQL_DATABASE (defaults to unset): setting this executes a
-    `create database if not exists` query
--   MYSQL_USER (defaults to `root`): setting this will create a user and assign
-    ownership over the database you _may_ provide
--   MYSQL_PASSWORD (defaults to unset): setting this will change the password
-    of the user you provide.
--   MYSQL_ROOT_PASSWORD (defaults to unset): setting this will set a
-    root password.
--   SKIP_INNODB (defaults to unset): this can be used to skip using InnoDB
-    which will shave off both time and size. Note: If you do this at
-    initialization, you will have to subsequently pass it. This is a good thing.
+-   **MYSQL_DATABASE**: creates a database as provided by input
+-   **MYSQL_USER**: creates a user with owner permissions over said database
+-   **MYSQL_PASSWORD**: changes password of the provided user (not root)
+-   **MYSQL_ROOT_PASSWORD**: sets a root password
+-   **SKIP_INNODB**: skip using InnoDB which shaves off both time and
+                     disk allocation size. If you mount a persistent volume, 
+                     this setting will be remembered.
 
 
 ## License

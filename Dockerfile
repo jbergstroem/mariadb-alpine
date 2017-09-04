@@ -11,11 +11,9 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0" \
       org.label-schema.license="Apache-2.0"
 
-RUN  apk update \
-  && apk add mariadb \
-  && rm -rf /var/lib/apk/* /var/cache/apk/* /usr/data/test/db.opt \
+RUN  apk add --no-cache mariadb \
+  && rm -rf /usr/data/test/db.opt /usr/share/mysql/README* \
      /usr/share/mysql/COPYING* /usr/share/mysql/*.cnf \
-     /usr/share/mysql/README* \
   && find /usr/share/mysql/ -mindepth 1 -type d  ! -name 'charsets' ! -name 'english' -print0 | xargs -0 rm -rf \
   && find /usr/share/terminfo/ -mindepth 1 -type d  ! -name x -print0 | xargs -0 rm -rf \
   && touch /usr/share/mysql/mysql_system_tables_data.sql \

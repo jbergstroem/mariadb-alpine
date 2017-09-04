@@ -3,13 +3,14 @@
 touch /tmp/init
 
 # this needs to be run both for initialization and general startup
-[[ -n "${SKIP_INNODB}" ]] &&
+[[ -n "${SKIP_INNODB}" ]] || [[ -f "/var/lib/mysql/noinnodb" ]] &&
   sed -i -e '/\[mysqld\]/a skip-innodb\ndefault-storage-engine=MyISAM\ndefault-tmp-storage-engine=MyISAM' \
          -e '/^innodb/d' /etc/mysql/my.cnf
 
 # no previous installation
 if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   ROOTPW="''"
+  [[ -n "${SKIP_INNODB}" ]] && touch /var/lib/mysql/noinnodb
   [[ -n "${MYSQL_ROOT_PASSWORD}" ]] && ROOTPW="PASSWORD('${MYSQL_ROOT_PASSWORD}')"
   echo "INSERT INTO user VALUES ('%','root',${ROOTPW},'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','','','','',0,0,0,0,'','','N', 'N','', 0);" > /usr/share/mysql/mysql_system_tables_data.sql
   # as far as i can tell cross-bootstrap and rpm basically decreases verbosity
