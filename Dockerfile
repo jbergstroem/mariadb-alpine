@@ -18,7 +18,7 @@ RUN  apk update \
      /usr/share/mysql/README* \
   && find /usr/share/mysql/ -mindepth 1 -type d  ! -name 'charsets' ! -name 'english' -print0 | xargs -0 rm -rf \
   && find /usr/share/terminfo/ -mindepth 1 -type d  ! -name x -print0 | xargs -0 rm -rf \
-  && echo "INSERT INTO user VALUES ('%','root','','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','','','','',0,0,0,0,'','','N', 'N','', 0);" > /usr/share/mysql/mysql_system_tables_data.sql \
+  && touch /usr/share/mysql/mysql_system_tables_data.sql \
   && mkdir /run/mysqld \
   && chown mysql:mysql /run/mysqld \
   && sed -i -e '/^log-bin/d' \

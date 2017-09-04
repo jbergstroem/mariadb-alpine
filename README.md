@@ -1,4 +1,4 @@
-# Just another MariaDB in Alpine Linux container
+# A (small) MariaDB container
 
 [![](https://images.microbadger.com/badges/version/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/jbergstroem/mariadb-alpine.svg)](https://microbadger.com/images/jbergstroem/mariadb-alpine "Get your own image badge on microbadger.com") 
 
@@ -13,15 +13,16 @@ In addition to this, the versioning will also try to stay close to $current Alpi
 
 ## But why?
 
-Since you're new, lets start with Alpine. Alpine Linux is (with their own words) security-oriented, lightweight Linux distribution based on musl libc and busybox.
+Since you're new, lets start with Alpine. Alpine Linux is (in their own words) a security-oriented, lightweight Linux distribution based on musl libc and busybox.
 
-Being based on musl gives the additional benefit of size concerns. Each megabyte matters.
+Being based on musl gives the additional benefit of size concerns. Each kilobyte matters.
 
 ### Another MariaDB container though?
 
 1.  The ones I found were out of date. Either based on the 5.x series or just not kept up to date
-2.  It was obviously too large
-3.  Not trapping CTRL+C. Not being able to quickly signal out is annoying.
+2.  They were obviously too large
+3.  Didn't trap CTRL+C -- not being able to quickly signal out is annoying.
+4.  Startup needs to be lighting fast
 
 
 ## Changed behavior
@@ -51,12 +52,40 @@ Here's what's gone (so far):
 -   resolveip
 -   replace
 
+### Faster initialization
+
+Replaced both init and seeding scripts with as little boilerplate as possible.
+
+### Laxed ACL
+
+`root` Just Works without having to take hosts into consideration. You can set a root password on initialization should you need the extra security. You can
+always increase it further with custom sql past creation.
+
+### Your feature here
+
 Need something else gone? Added? File a PR.
 
 
 ## Usage
 
-Todo. Mount storage folder to `/var/lib/mysql`.
+Typical usage would look something like this:
+```console
+$ docker run -it --rm --name=db \
+         -v $(PWD)/mariadb/:/var/lib/mysql \
+         jbergstroem/mariadb-alpine
+```
+
+Or, creating your own database with a user/password assigned to it:
+```console
+$ docker run -it --rm --name=db \
+         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -e MYSQL_USER=foo \
+         -e MYSQL_DATABASE=bar \
+         -e MYSQL_PASSWORD=baz \
+         jbergstroem/mariadb-alpine
+```
+
+The `root` user is intentionally left passwordless. Should you need the extra security layer, pass `MYSQL_ROOT_PASSWORD` at initialization stage.
 
 ### Customization
 
@@ -67,7 +96,9 @@ You can override default behavior by passing environment variables:
 -   MYSQL_USER (defaults to `root`): setting this will create a user and assign
     ownership over the database you _may_ provide
 -   MYSQL_PASSWORD (defaults to unset): setting this will change the password
-    of either the user you provide or default (`root`).
+    of the user you provide.
+-   MYSQL_ROOT_PASSWORD (defaults to unset): setting this will set a
+    root password.
 
 ## License
 
