@@ -4,7 +4,7 @@
 
 Here's another MariaDB container based on [Alpine Linux][1]. It's opinionated: trade tools and functionality for startup speed/disk size. See it as a small, quick-to-get-going development edition.
 
-I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.1.26` should you prefer.
+I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.2.15` should you prefer.
 
 [1]: https://alpinelinux.org
 
@@ -32,6 +32,7 @@ Here's a quick comparison:
 | yobasystems/alpine-mariadb | 10.1.22 | 59mb            |
 | webhippie/mariadb          | 10.1.26 | 72mb            |
 | jbergstroem/mariadb-alpine | 10.1.26 | **12mb**        |
+| jbergstroem/mariadb-alpine | 10.2.15 | **12mb**        |
 
 
 ## Changed behavior
@@ -102,14 +103,14 @@ Need something else gone? Added (less likely)? File a PR.
 Typical usage:
 ```console
 $ docker run -it --rm --name=db \
-         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -v $(PWD)/mariadb/:/var/lib/mariadb \
          jbergstroem/mariadb-alpine
 ```
 
 If you prefer skipping InnoDB (read: faster), this is for you:
 ```console
 $ docker run -it --rm --name=db \
-         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -v $(PWD)/mariadb/:/var/lib/mariadb \
          -e SKIP_INNODB=yes \
          jbergstroem/mariadb-alpine
 ```
@@ -117,7 +118,7 @@ $ docker run -it --rm --name=db \
 Creating your own database with a user/password assigned to it:
 ```console
 $ docker run -it --rm --name=db \
-         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -v $(PWD)/mariadb/:/var/lib/mariadb \
          -e MYSQL_USER=foo \
          -e MYSQL_DATABASE=bar \
          -e MYSQL_PASSWORD=baz \
@@ -127,7 +128,7 @@ $ docker run -it --rm --name=db \
 The `root` user is intentionally left passwordless. If you insist on one, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
 ```console
 $ docker run -it --rm --name=db \
-         -v $(PWD)/mariadb/:/var/lib/mysql \
+         -v $(PWD)/mariadb/:/var/lib/mariadb \
          -e MYSQL_ROOT_PASSWORD=secretsauce \
          jbergstroem/mariadb-alpine
 ```
