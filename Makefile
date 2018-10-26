@@ -3,7 +3,7 @@ default: build
 DOCKER_IMAGE?=jbergstroem/mariadb-alpine
 
 # fix this later
-DOCKER_TAG?=10.1.28
+DOCKER_TAG?=10.2.15
 
 build:
 	@docker build \
