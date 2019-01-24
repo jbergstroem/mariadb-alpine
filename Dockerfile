@@ -11,7 +11,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0" \
       org.label-schema.license="Apache-2.0"
 
-RUN  apk add --no-cache mariadb \
+RUN apk add --no-cache mariadb \
   && rm -rf /usr/data/test/db.opt /usr/share/mariadb/README* \
      /usr/share/mariadb/COPYING* /usr/share/mariadb/*.cnf \
      /usr/share/mariadb/install_spider.sql \
@@ -28,15 +28,13 @@ RUN  apk add --no-cache mariadb \
             -e '/\[mysqld\]/a skip_name_resolve' \
             /etc/mysql/my.cnf \
   && for p in aria* myisam* mysqld_* innochecksum  \
-              mysqlslap replace resolveip wsrep* \
+              mysqlslap replace wsrep* \
               resolve_stack_dump mysqlbinlog \
               $(cd /usr/bin; ls mysql_*| grep -v mysql_install_db); \
-              do eval rm /usr/bin/${p}; done \
-  && ln -s /var/lib/mariadb /var/lib/mysql
-#    ^ backwards compatibility because alpine changed storage folders
+              do eval rm /usr/bin/${p}; done 
 
 COPY run.sh /run.sh
 
-VOLUME ["/var/lib/mariadb"]
+VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
 EXPOSE 3306
