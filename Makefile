@@ -1,9 +1,14 @@
 default: build
+.PHONY: check-tag
 
 DOCKER_IMAGE?=jbergstroem/mariadb-alpine
 
 # fix this later
-DOCKER_TAG?=10.2.19
+DOCKER_TAG?=$(shell git tag -l --points-at HEAD)
+
+ifndef DOCKER_TAG
+	$(error Can't find a corresponding git tag)
+endif
 
 build:
 	@docker build \
