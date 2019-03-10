@@ -23,7 +23,7 @@ RUN apk add --no-cache mariadb \
   && chown mysql:mysql /run/mysqld \
   && for p in aria* myisam* mysqld_* innochecksum \
               mysqlslap replace wsrep* \
-              resolve_stack_dump mysqlbinlog \
+              resolve_stack_dump mysqlbinlog test-connect-t \
               $(cd /usr/bin; ls mysql_*| grep -v mysql_install_db); \
               do eval rm /usr/bin/${p}; done
 

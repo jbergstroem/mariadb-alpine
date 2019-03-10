@@ -42,7 +42,7 @@ I rarely use InnoDB in testing/development. Provide the option to skip it.
 
 ### Removed tooling
 
-Remove a lot of "quality of life: userland-tools, startup scripts and replication-related tools.
+Remove a lot of "quality of life: userland-tools, startup scripts, test stuff and replication-related tools.
 
 ### Faster initialization
 
