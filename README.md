@@ -4,9 +4,7 @@
 
 Here's another MariaDB container based on [Alpine Linux][1]. It's opinionated: trade tools and functionality for startup speed/disk size. See it as a small, quick-to-get-going development edition.
 
-I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.2.19` should you prefer.
-
-### Another MariaDB container though?
+I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.3.13` should you prefer.
 
 Container size and assumptions about default featureset. It's considerably faster to get up and running.
 
@@ -19,13 +17,14 @@ Here's a quick comparison:
 
 | Name                       | Version | Compressed size |
 | -------------------------- | ------- | --------------- |
-| mysql                      | 5.7.19  | 144mb           |
-| mariadb                    | 10.1.26 | 135mb           |
-| bitnami/mariadb            | 10.1.26 | 131mb           |
-| yobasystems/alpine-mariadb | 10.1.22 | 59mb            |
+| mysql                      | 5.7.25  | 124mb           |
+| mariadb                    | 10.2.21 | 114mb           |
+| bitnami/mariadb            | 10.2.21 | 93mb            |
 | webhippie/mariadb          | 10.1.26 | 72mb            |
+| yobasystems/alpine-mariadb | amd64   | 46mb            |
 | jbergstroem/mariadb-alpine | 10.1.26 | **12mb**        |
 | jbergstroem/mariadb-alpine | 10.2.19 | **12mb**        |
+| jbergstroem/mariadb-alpine | 10.3.13 |                 |
 
 ## Changes from other containers
 
@@ -43,17 +42,7 @@ I rarely use InnoDB in testing/development. Provide the option to skip it.
 
 ### Removed tooling
 
-Here's what's removed:
-
-```
-aria_chk, aria_dump_log, aria_ftdump, aria_pack, aria_read_log, myisamchk,
-myisamlog, myisampack, mysqld_multi, mysqld_safe, mysqld_safe_helper,
-innochecksum, mysqlslap, replace, wsrep_sst_common, wsrep_sst_mariabackup,
-wsrep_sst_mysqldump, wsrep_sst_rsync, wsrep_sst_xtrabackup, wsrep_sst_xtrabackup-v2
-resolve_stack_dump, mysqlbinlog, mysql_client_test_embedded, mysql_convert_table_format
-mysql_embedded, mysql_plugin, mysql_secure_installation, mysql_setpermission,
-mysql_tzinfo_to_sql, mysql_upgrade, mysql_zap
-```
+Remove a lot of "quality of life: userland-tools, startup scripts and replication-related tools.
 
 ### Faster initialization
 
@@ -132,4 +121,3 @@ are unset unless provided.
 
 [1]: https://alpinelinux.org
 [2]: https://github.com/jbergstroem/mariadb-alpine/issues/1
-
