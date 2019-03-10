@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -ex
+
+#
+# checks if the current git commit has a tag and pushes it
+#
+
+TAG=$(git tag -l --points-at HEAD)
+
+if [ -n "$TAG" ] ; then
+	docker tag $IMAGE_NAME $DOCKER_REPO:$TAG
+	docker push $DOCKER_REPO:$TAG
+fi
