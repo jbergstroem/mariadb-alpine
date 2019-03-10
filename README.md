@@ -24,7 +24,7 @@ Here's a quick comparison:
 | yobasystems/alpine-mariadb | amd64   | 46mb            |
 | jbergstroem/mariadb-alpine | 10.1.26 | **12mb**        |
 | jbergstroem/mariadb-alpine | 10.2.19 | **12mb**        |
-| jbergstroem/mariadb-alpine | 10.3.13 |                 |
+| jbergstroem/mariadb-alpine | 10.3.13 | **14mb**        |
 
 ## Changes from other containers
 
