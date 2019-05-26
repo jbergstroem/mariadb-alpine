@@ -115,6 +115,34 @@ are unset unless provided.
    disk allocation size. If you mount a persistent volume
    this setting will be remembered.
 
+### Adding custom sql on init
+
+When a database is empty, the `mysql_install_db` script will be invoked. As part of this, you can pass custom input via the commonly used `/docker-entrypoint-initdb.d` convention. This will not be run when an existing database is found.
+
+```console
+$ mkdir init && echo "create database mydatabase;" > init/mydatabase.sql
+$ echo "#\!/bin/sh\necho Hello from script" > init/custom.sh
+$ docker volume create db
+db
+$ docker run -it --rm -e SKIP_INNODB=1 -v db:/var/lib/mysql -v $(PWD)/init:/docker-entrypoint-initdb.d -p 3306:3306 jbergstroem/mariadb-alpine:latest
+init: installing mysql client
+init: updating system tables
+init: adding /docker-entrypoint-initdb.d/mydatabase.sql
+init: executing /docker-entrypoint-initdb.d/custom.sh
+Hello from script
+init: removing mysql client
+2019-06-17 18:41:14 0 [Note] /usr/bin/mysqld (mysqld 10.3.15-MariaDB) starting as process 55 ...
+2019-06-17 18:41:14 0 [Note] Plugin 'InnoDB' is disabled.
+2019-06-17 18:41:14 0 [Note] Plugin 'FEEDBACK' is disabled.
+2019-06-17 18:41:14 0 [Note] Server socket created on IP: '::'.
+2019-06-17 18:41:14 0 [Note] Reading of all Master_info entries succeded
+2019-06-17 18:41:14 0 [Note] Added new Master_info '' to hash table
+2019-06-17 18:41:14 0 [Note] /usr/bin/mysqld: ready for connections.
+Version: '10.3.15-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
+```
+
+The procedure is similar to how other containers implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
+
 ## License
 
 [APL-2](./LICENSE).
