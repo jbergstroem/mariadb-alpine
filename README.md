@@ -4,7 +4,7 @@
 
 Here's another MariaDB container based on [Alpine Linux][1]. It's opinionated: trade tools and functionality for startup speed/disk size. See it as a small, quick-to-get-going development edition.
 
-I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.3.13` should you prefer.
+I intend to keep this up to date, building a new container on each new MariaDB release, meaning `:latest` actually mean latest as well as having the comfort of staying with `10.3.15` should you prefer.
 
 Container size and assumptions about default featureset. It's considerably faster to get up and running.
 
@@ -15,16 +15,14 @@ Container size and assumptions about default featureset. It's considerably faste
 
 Here's a quick comparison:
 
-| Name                       | Version | Compressed size |
-| -------------------------- | ------- | --------------- |
-| mysql                      | 5.7.25  | 124mb           |
-| mariadb                    | 10.2.21 | 114mb           |
-| bitnami/mariadb            | 10.2.21 | 93mb            |
-| webhippie/mariadb          | 10.1.26 | 72mb            |
-| yobasystems/alpine-mariadb | amd64   | 46mb            |
-| jbergstroem/mariadb-alpine | 10.1.26 | **12mb**        |
-| jbergstroem/mariadb-alpine | 10.2.19 | **12mb**        |
-| jbergstroem/mariadb-alpine | 10.3.13 | **14mb**        |
+| Name                       | Version      | Compressed size |
+| -------------------------- | ------------ | --------------- |
+| mysql                      | 5.7.26       | 124mb           |
+| mariadb                    | 10.3.15      | 112mb           |
+| bitnami/mariadb            | 10.3.15      | 94mb            |
+| webhippie/mariadb          | latest-amd64 | 88mb            |
+| yobasystems/alpine-mariadb | 10.3.15      | 67mb            |
+| jbergstroem/mariadb-alpine | 10.3.15      | **12.5mb**      |
 
 ## Changes from other containers
 

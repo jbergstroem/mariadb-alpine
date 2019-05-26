@@ -12,7 +12,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0.0-rc.1" \
       org.label-schema.license="Apache-2.0"
 
-RUN apk add --no-cache mariadb \
+RUN apk add --no-cache mariadb=10.3.15-r0 \
   && rm -rf /etc/my.cnf.d /usr/data/test/db.opt /usr/share/mariadb/README* \
      /usr/share/mariadb/COPYING* /usr/share/mariadb/*.cnf /usr/share/terminfo \
      /usr/share/mariadb/{binary-configure,mysqld_multi.server,mysql-log-rotate,mysql.server,install_spider.sql} \
