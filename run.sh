@@ -14,7 +14,16 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   [[ -n "${SKIP_INNODB}" ]] && touch /var/lib/mysql/noinnodb
   [[ -n "${MYSQL_ROOT_PASSWORD}" ]] && ROOTPW="PASSWORD('${MYSQL_ROOT_PASSWORD}')"
   echo "INSERT INTO user VALUES ('%','root',${ROOTPW},'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','','','','',0,0,0,0,'','','N', 'N','', 0);" > /usr/share/mariadb/mysql_system_tables_data.sql
-  /usr/bin/mysql_install_db --user=mysql --cross-bootstrap --rpm --skip-test-db --datadir=/var/lib/mysql
+
+  INSTALL_OPTS="--user=mysql"
+  INSTALL_OPTS="${INSTALL_OPTS} --cross-bootstrap"
+  INSTALL_OPTS="${INSTALL_OPTS} --rpm"
+  # https://github.com/MariaDB/server/commit/b9f3f06857ac6f9105dc65caae19782f09b47fb3
+  INSTALL_OPTS="${INSTALL_OPTS} --auth-root-authentication-method=normal"
+  INSTALL_OPTS="${INSTALL_OPTS} --skip-test-db"
+  INSTALL_OPTS="${INSTALL_OPTS} --datadir=/var/lib/mysql"
+  /usr/bin/mysql_install_db ${INSTALL_OPTS}
+
   [[ -n "${MYSQL_DATABASE}" ]] && echo "create database if not exists \`${MYSQL_DATABASE}\` character set utf8 collate utf8_general_ci; " >> /tmp/init
   if [ -n "${MYSQL_USER}" -a -n "${MYSQL_DATABASE}" ]; then
     echo "grant all on \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'; " >> /tmp/init
