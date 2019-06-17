@@ -31,4 +31,11 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   echo "flush privileges;" >> /tmp/init
 fi
 
-/usr/bin/mysqld --skip-name-resolve --user=mysql --debug-gdb --init-file=/tmp/init
+MYSQLD_OPTS="--user=mysql"
+MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"
+MYSQLD_OPTS="${MYSQLD_OPTS} --skip-host-cache"
+MYSQLD_OPTS="${MYSQLD_OPTS} --skip-slave-start"
+# listen to signals, most importantly CTRL+C
+MYSQLD_OPTS="${MYSQLD_OPTS} --debug-gdb"
+MYSQLD_OPTS="${MYSQLD_OPTS} --init-file=/tmp/init"
+/usr/bin/mysqld ${MYSQLD_OPTS}
