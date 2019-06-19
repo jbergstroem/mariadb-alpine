@@ -7,8 +7,8 @@ set -eo pipefail
 # Use `apk` to list package contents and selectively choose what we want
 #
 
-# General stuff that can go. mysqld_safe gets picked up by grep;
-# not sure how to work around this
+# General stuff that can go. `mysqld_safe` gets picked up by grep;
+# so we need to remove it manually. Not sure how to work around this.
 GENERAL="/usr/share/terminfo
 	/usr/bin/mysqld_safe"
 
@@ -55,3 +55,7 @@ cd /
 for path in ${FILES}; do
 	eval rm -rf "$(readlink -f "${path}")"
 done
+
+# Replace resolveip with a oneliner to shave some size
+printf "#!/bin/sh\necho \"IP address of ${1} is 127.0.0.1\"" > /usr/bin/resolveip
+chmod +x /usr/bin/resolveip
