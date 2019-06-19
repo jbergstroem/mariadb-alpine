@@ -19,7 +19,7 @@ PLUGINS="
     /usr/lib/mariadb/plugin/dialog_examples.so
     /usr/lib/mariadb/plugin/example_key_management.so
 	/usr/lib/mariadb/plugin/ha_connect.so
-    /usr/lib/mariadb/plugin/ha_example
+	/usr/lib/mariadb/plugin/ha_example
     /usr/lib/mariadb/plugin/ha_spider.so
     /usr/lib/mariadb/plugin/handlersocket.so
     /usr/lib/mariadb/plugin/libdaemon_example.so"
