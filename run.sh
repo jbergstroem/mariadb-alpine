@@ -40,7 +40,7 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   # Execute custom scripts provided by a user. This will spawn a mysqld and
   # pass scripts to it. Since we're already up an running we might as well
   # pass the init script and avoid it later.
-  if [ "$(ls -A /docker-entrypoint-initdb.d)" ]; then
+  if [ "$(ls -A /docker-entrypoint-initdb.d 2> /dev/null)" ]; then
     # Download the mysql client since we will need it to feed data to our server.
     # This kind of sucks but seems unavoidable since using --init-file
     # has size restrictions:
