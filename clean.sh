@@ -16,13 +16,13 @@ GENERAL="
 # Pointless plugins we want to remove because they're somewhat
 # bigger than most other ones. Also, remove examples
 PLUGINS="
-    /usr/lib/mariadb/plugin/dialog_examples.so
-    /usr/lib/mariadb/plugin/example_key_management.so
+	/usr/lib/mariadb/plugin/dialog_examples.so
+	/usr/lib/mariadb/plugin/example_key_management.so
 	/usr/lib/mariadb/plugin/ha_connect.so
 	/usr/lib/mariadb/plugin/ha_example
-    /usr/lib/mariadb/plugin/ha_spider.so
-    /usr/lib/mariadb/plugin/handlersocket.so
-    /usr/lib/mariadb/plugin/libdaemon_example.so"
+	/usr/lib/mariadb/plugin/ha_spider.so
+	/usr/lib/mariadb/plugin/handlersocket.so
+	/usr/lib/mariadb/plugin/libdaemon_example.so"
 
 # Things we'd like to keep. Double sed since busybox sed doesn't seem to
 # support '2g' which would skip the first match.
@@ -41,8 +41,7 @@ KEEP=$(echo "usr/bin/mysqld
 	usr/share/mariadb/errmsg-utf8.txt
 	usr/lib/mariadb" | sed -e 's/usr/|usr/g' -e 's/^.//' | tr -d " \t\n\r")
 
-
-# Retrieve a list of files from `apk`, remove the header and finally 
+# Retrieve a list of files from `apk`, remove the header and finally
 # exclude files/folders in $KEEP
 FILES="$(apk info -L mariadb | tail -n +2 | grep -v -E "${KEEP}")
 	$(apk info -L mariadb-common | tail -n +2 | grep -v -E "${KEEP}")
@@ -60,5 +59,5 @@ for path in ${FILES}; do
 done
 
 # Replace resolveip with a oneliner to shave some size
-printf "#!/bin/sh\necho \"IP address of \${1} is 127.0.0.1\"" > /usr/bin/resolveip
+printf "#!/bin/sh\necho \"IP address of \${1} is 127.0.0.1\"" >/usr/bin/resolveip
 chmod +x /usr/bin/resolveip
