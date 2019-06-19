@@ -54,5 +54,5 @@ for path in ${FILES}; do
 done
 
 # Replace resolveip with a oneliner to shave some size
-printf "#!/bin/sh\necho \"IP address of ${1} is 127.0.0.1\"" > /usr/bin/resolveip
+printf "#!/bin/sh\necho \"IP address of \${1} is 127.0.0.1\"" > /usr/bin/resolveip
 chmod +x /usr/bin/resolveip
