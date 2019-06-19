@@ -43,9 +43,6 @@ FILES="$(apk info -L mariadb | tail -n +2 | grep -v -E "${KEEP}")
 	   ${PLUGINS}
 	   ${GENERAL}"
 
-# 	   $(apk info -L mariadb-common | tail -n +2 | grep -v -E \'"$(echo ${KEEP})"\')
-
-
 # Finally, remove it all.
 #
 # Note: some path in packages are not absolute. By using readlink
