@@ -4,7 +4,7 @@ set -eo pipefail
 touch /tmp/init
 
 # This needs to be run both for initialization and general startup
-[[ -n "${SKIP_INNODB}" ]] || [[ -f "/var/lib/mysql/noinnodb" ]] &&
+[ -n "${SKIP_INNODB}" ] || [ -f "/var/lib/mysql/noinnodb" ] &&
   sed -i -e '/\[mariadb\]/a skip_innodb = yes\ndefault_storage_engine = MyISAM\ndefault_tmp_storage_engine = MyISAM' \
          -e '/^innodb/d' /etc/my.cnf
 
@@ -18,8 +18,8 @@ MYSQLD_OPTS="${MYSQLD_OPTS} --debug-gdb"
 # No previous installation
 if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   ROOTPW="''"
-  [[ -n "${SKIP_INNODB}" ]] && touch /var/lib/mysql/noinnodb
-  [[ -n "${MYSQL_ROOT_PASSWORD}" ]] && ROOTPW="PASSWORD('${MYSQL_ROOT_PASSWORD}')"
+  [ -n "${SKIP_INNODB}" ] && touch /var/lib/mysql/noinnodb
+  [ -n "${MYSQL_ROOT_PASSWORD}" ] && ROOTPW="PASSWORD('${MYSQL_ROOT_PASSWORD}')"
   echo "INSERT INTO user VALUES ('%','root',${ROOTPW},'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','','','','',0,0,0,0,'','','N', 'N','', 0);" > /usr/share/mariadb/mysql_system_tables_data.sql
 
   INSTALL_OPTS="--user=mysql"
@@ -29,10 +29,10 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   INSTALL_OPTS="${INSTALL_OPTS} --auth-root-authentication-method=normal"
   INSTALL_OPTS="${INSTALL_OPTS} --skip-test-db"
   INSTALL_OPTS="${INSTALL_OPTS} --datadir=/var/lib/mysql"
-  /usr/bin/mysql_install_db ${INSTALL_OPTS}
+  eval /usr/bin/mysql_install_db "${INSTALL_OPTS}"
 
-  [[ -n "${MYSQL_DATABASE}" ]] && echo "create database if not exists \`${MYSQL_DATABASE}\` character set utf8 collate utf8_general_ci; " >> /tmp/init
-  if [ -n "${MYSQL_USER}" -a -n "${MYSQL_DATABASE}" ]; then
+  [ -n "${MYSQL_DATABASE}" ] && echo "create database if not exists \`${MYSQL_DATABASE}\` character set utf8 collate utf8_general_ci; " >> /tmp/init
+  if [ -n "${MYSQL_USER}" ] && [ -n "${MYSQL_DATABASE}" ]; then
     echo "grant all on \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'; " >> /tmp/init
   fi 
   echo "flush privileges;" >> /tmp/init
@@ -54,7 +54,7 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
     MYSQL_CMD="mysql --protocol=socket -u root -h localhost --socket=${SOCKET}"
 
     # Start a mysqld we will use to pass init stuff to
-    mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} &> /dev/null &
+    mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
     PID="$!"
 
     # perhaps trap this to avoid issues on slow systems?
@@ -62,16 +62,16 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
 
     # Run the init script
     echo "init: updating system tables"
-    eval ${MYSQL_CMD} < /tmp/init
+    eval "${MYSQL_CMD}" < /tmp/init
 
     # Default scope is our newly created database
     MYSQL_CMD="${MYSQL_CMD} ${MYSQL_DATABASE} "
 
     for f in /docker-entrypoint-initdb.d/*; do
       case "${f}" in
-        *.sh)     echo "init: executing ${f}"; . "${f}" ;;
-        *.sql)    echo "init: adding ${f}"; eval ${MYSQL_CMD} < "$f" ;;
-        *.sql.gz) echo "init: adding ${f}"; gunzip -c "$f" | eval ${MYSQL_CMD} ;;
+        *.sh)     echo "init: executing ${f}"; sh "${f}" ;;
+        *.sql)    echo "init: adding ${f}"; eval "${MYSQL_CMD}" < "$f" ;;
+        *.sql.gz) echo "init: adding ${f}"; gunzip -c "$f" | eval "${MYSQL_CMD}" ;;
         *)        echo "init: ignoring ${f}: not a recognized format" ;;
       esac
     done
@@ -85,4 +85,4 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   fi
 fi
 
-/usr/bin/mysqld ${MYSQLD_OPTS}
+eval /usr/bin/mysqld "${MYSQLD_OPTS}"
