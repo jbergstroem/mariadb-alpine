@@ -12,13 +12,15 @@ LABEL maintainer="Johan Bergström <bugs@bergstroem.nu>" \
       org.label-schema.schema-version="1.0.0-rc.1" \
       org.label-schema.license="Apache-2.0"
 
+COPY clean.sh /tmp/clean.sh
+
 # We need to keep cache since `clean.sh` uses `apk show` until its finished
 # hadolint ignore=DL3019 
-RUN apk add mariadb=10.3.15-r0
-RUN mkdir /run/mysqld && chown mysql:mysql /run/mysqld
-
-COPY clean.sh /tmp/clean.sh
-RUN /tmp/clean.sh && rm -rf /tmp/clean.sh /var/cache/apk /usr/share/apk
+RUN apk add mariadb=10.3.15-r0 \
+  && /tmp/clean.sh \
+  && mkdir /run/mysqld \
+  && chown mysql:mysql /run/mysqld \
+  && rm -rf /tmp/clean.sh /var/cache/apk /usr/share/apk
 
 COPY run.sh /usr/local/bin/start
 COPY my.cnf /etc/
