@@ -15,3 +15,15 @@ action "lint: shellcheck" {
 action "lint: shfmt" {
   uses = "bltavares/actions/shfmt@master"
 }
+
+
+workflow "docker" {
+  on = "push"
+  resolves = ["docker: build"]
+}
+
+action "docker: build" {
+  needs = "lint: shfmt"
+  uses = "actions/docker/cli@master"
+  args = "build -t  jbergstroem/mariadb-alpine ."
+}
