@@ -8,7 +8,7 @@ action "hadolint" {
 }
 
 action "shellcheck" {
-  uses = "actions/bin/shellcheck@master"
+  uses = "bltavares/actions/shellcheck@master"
   args = "*.sh"
 }
 
