@@ -1,17 +1,17 @@
 workflow "lint" {
   on = "push"
-  resolves = ["hadolint", "shfmt", "shellcheck"]
+  resolves = ["lint: hadolint", "lint: shfmt", "lint: shellcheck"]
 }
 
-action "hadolint" {
+action "lint: hadolint" {
   uses = "docker://cdssnc/docker-lint"
 }
 
-action "shellcheck" {
+action "lint: shellcheck" {
   uses = "bltavares/actions/shellcheck@master"
   args = "*.sh"
 }
 
-action "shfmt" {
+action "lint: shfmt" {
   uses = "bltavares/actions/shfmt@master"
 }
