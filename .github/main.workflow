@@ -1,6 +1,6 @@
 workflow "lint" {
   on = "push"
-  resolves = ["lint: hadolint", "lint: shfmt", "lint: shellcheck"]
+  resolves = ["lint: hadolint", "lint: shfmt", "lint: shellcheck", "docker: build"]
 }
 
 action "lint: hadolint" {
@@ -16,14 +16,8 @@ action "lint: shfmt" {
   uses = "bltavares/actions/shfmt@master"
 }
 
-
-workflow "docker" {
-  on = "push"
-  resolves = ["docker: build"]
-}
-
 action "docker: build" {
-  needs = "lint: shfmt"
+  needs = ["lint: shfmt", "lint: shellcheck", "lint: hadolint"]
   uses = "actions/docker/cli@master"
   args = "build -t  jbergstroem/mariadb-alpine ."
 }
