@@ -8,7 +8,7 @@ set -ex
 
 TAG=$(git tag -l --points-at HEAD)
 
-if [ -n "$TAG" ] ; then
+if [ -n "$TAG" ]; then
 	docker tag $IMAGE_NAME $DOCKER_REPO:$TAG
 	docker push $DOCKER_REPO:$TAG
 fi
