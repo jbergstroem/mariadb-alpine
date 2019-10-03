@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER Johan Bergström <bugs@bergstroem.nu>
 
 # Build-time metadata as defined at http://label-schema.org
