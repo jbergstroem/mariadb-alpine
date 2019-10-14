@@ -29,6 +29,8 @@ RUN apk add --no-cache mariadb=10.3.17-r0 \
 COPY run.sh /run.sh
 COPY my.cnf /etc/
 
+USER mysql
+
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
 EXPOSE 3306
