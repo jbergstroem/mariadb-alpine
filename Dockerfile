@@ -19,7 +19,7 @@ RUN apk add --no-cache mariadb=10.3.18-r0 \
   && find /usr/share/mariadb/ -mindepth 1 -type d ! -name 'charsets' ! -name 'english' -print0 | xargs -0 rm -rf \
   && touch /usr/share/mariadb/mysql_system_tables_data.sql \
   && mkdir /run/mysqld \
-  && chown mysql:mysql /run/mysqld \
+  && chown mysql:mysql /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql \
   && for p in aria* myisam* mysqld_* innochecksum \
               mysqlslap replace wsrep* msql2mysql sst_dump \
               resolve_stack_dump mysqlbinlog myrocks_hotbackup test-connect-t \
@@ -30,6 +30,12 @@ COPY run.sh /run.sh
 COPY my.cnf /etc/
 
 USER mysql
+
+# This is not super helpful; mysqld might be running but not accepting connections.
+# Since we have no clients, we can't really connect to it and check.
+#
+# Below is in my opinion better than no health check.
+HEALTHCHECK --start-period=3s CMD pgrep mysqld
 
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
