@@ -4,9 +4,12 @@ set -eo pipefail
 touch /tmp/init
 
 # This needs to be run both for initialization and general startup
+# sed into /tmp/ since the user won't have access to create new
+# files in /etc/
+cp /tmp/my.cnf /etc/my.cnf.d/
 [[ -n "${SKIP_INNODB}" ]] || [[ -f "/var/lib/mysql/noinnodb" ]] &&
   sed -i -e '/\[mariadb\]/a skip_innodb = yes\ndefault_storage_engine = MyISAM\ndefault_tmp_storage_engine = MyISAM' \
-         -e '/^innodb/d' /etc/my.cnf
+      -e '/^innodb/d' /etc/my.cnf.d/my.cnf
 
 MYSQLD_OPTS="--user=mysql"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"

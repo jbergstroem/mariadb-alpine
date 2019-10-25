@@ -12,22 +12,22 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0.0-rc.1" \
       org.label-schema.license="Apache-2.0"
 
+COPY run.sh /run.sh
+COPY my.cnf /tmp/
+
 RUN apk add --no-cache mariadb=10.3.18-r0 \
-  && rm -rf /etc/my.cnf.d /usr/data/test/db.opt /usr/share/mariadb/README* \
+  && rm -rf /etc/my.cnf.d/* /etc/my.cnf.apk-new /usr/data/test/db.opt /usr/share/mariadb/README* \
      /usr/share/mariadb/COPYING* /usr/share/mariadb/*.cnf /usr/share/terminfo \
      /usr/share/mariadb/{binary-configure,mysqld_multi.server,mysql-log-rotate,mysql.server,install_spider.sql} \
   && find /usr/share/mariadb/ -mindepth 1 -type d ! -name 'charsets' ! -name 'english' -print0 | xargs -0 rm -rf \
   && touch /usr/share/mariadb/mysql_system_tables_data.sql \
   && mkdir /run/mysqld \
-  && chown mysql:mysql /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql \
+  && chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql \
   && for p in aria* myisam* mysqld_* innochecksum \
               mysqlslap replace wsrep* msql2mysql sst_dump \
               resolve_stack_dump mysqlbinlog myrocks_hotbackup test-connect-t \
               $(cd /usr/bin; ls mysql_*| grep -v mysql_install_db); \
               do eval rm /usr/bin/${p}; done
-
-COPY run.sh /run.sh
-COPY my.cnf /etc/
 
 USER mysql
 
