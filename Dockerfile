@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.11
 MAINTAINER Johan Bergström <bugs@bergstroem.nu>
 
 # Build-time metadata as defined at http://label-schema.org
@@ -15,7 +15,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 COPY run.sh /run.sh
 COPY my.cnf /tmp/
 
-RUN apk add --no-cache mariadb=10.3.18-r0 \
+RUN apk add --no-cache mariadb=10.4.12-r0 \
   && rm -rf /etc/my.cnf.d/* /etc/my.cnf.apk-new /usr/data/test/db.opt /usr/share/mariadb/README* \
      /usr/share/mariadb/COPYING* /usr/share/mariadb/*.cnf /usr/share/terminfo \
      /usr/share/mariadb/{binary-configure,mysqld_multi.server,mysql-log-rotate,mysql.server,install_spider.sql} \
