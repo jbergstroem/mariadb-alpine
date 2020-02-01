@@ -20,10 +20,9 @@ MYSQLD_OPTS="${MYSQLD_OPTS} --debug-gdb"
 
 # No previous installation
 if [ -z "$(ls -A /var/lib/mysql/)" ]; then
-  ROOTPW="''"
   [[ -n "${SKIP_INNODB}" ]] && touch /var/lib/mysql/noinnodb
-  [[ -n "${MYSQL_ROOT_PASSWORD}" ]] && ROOTPW="PASSWORD('${MYSQL_ROOT_PASSWORD}')"
-  echo "INSERT INTO user VALUES ('%','root',${ROOTPW},'Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','Y','','','','',0,0,0,0,'','','N', 'N','', 0);" > /usr/share/mariadb/mysql_system_tables_data.sql
+  [[ -n "${MYSQL_ROOT_PASSWORD}" ]] && \
+    echo "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');" >> /tmp/init
 
   INSTALL_OPTS="--user=mysql"
   INSTALL_OPTS="${INSTALL_OPTS} --cross-bootstrap"

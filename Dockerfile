@@ -20,7 +20,9 @@ RUN apk add --no-cache mariadb=10.3.18-r0 \
      /usr/share/mariadb/COPYING* /usr/share/mariadb/*.cnf /usr/share/terminfo \
      /usr/share/mariadb/{binary-configure,mysqld_multi.server,mysql-log-rotate,mysql.server,install_spider.sql} \
   && find /usr/share/mariadb/ -mindepth 1 -type d ! -name 'charsets' ! -name 'english' -print0 | xargs -0 rm -rf \
-  && touch /usr/share/mariadb/mysql_system_tables_data.sql \
+  # We need to allow anyone connect as root and need to do this while building the container
+  # since we can't modify this file at a later stage.
+  && sed -i -e 's/127.0.0.1/%/' /usr/share/mariadb/mysql_system_tables_data.sql \
   && mkdir /run/mysqld \
   && chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql \
   && for p in aria* myisam* mysqld_* innochecksum \
