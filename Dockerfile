@@ -1,16 +1,17 @@
 FROM alpine:3.11
-MAINTAINER Johan Bergström <bugs@bergstroem.nu>
 
-# Build-time metadata as defined at http://label-schema.org
+# https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
 ARG VCS_REF
-LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.name="mariadb-alpine" \
-      org.label-schema.description="A MariaDB container suitable for development" \
-      org.label-schema.vcs-ref=$VCS_REF \
-      org.label-schema.vcs-url="https://github.com/jbergstroem/mariadb-alpine" \
-      org.label-schema.schema-version="1.0.0-rc.1" \
-      org.label-schema.license="Apache-2.0"
+LABEL org.opencontainers.image.created=$BUILD_DATE \
+      org.opencontainers.image.title="mariadb-alpine" \
+      org.opencontainers.image.description="A MariaDB container suitable for development" \
+      org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
+      org.opencontainers.image.revision=$VCS_REF \
+      org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
+      org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
+      org.opencontainers.image.schema-version="1.0.0-rc.1" \
+      org.opencontainers.image.license="Apache-2.0"
 
 COPY run.sh /run.sh
 COPY my.cnf /tmp/
