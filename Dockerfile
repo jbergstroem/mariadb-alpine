@@ -40,6 +40,5 @@ USER mysql
 # Below is in my opinion better than no health check.
 HEALTHCHECK --start-period=3s CMD pgrep mysqld
 
-VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
 EXPOSE 3306
