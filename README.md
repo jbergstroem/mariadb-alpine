@@ -143,7 +143,7 @@ The procedure is similar to how other containers implements it; shell scripts ar
 
 ## License
 
-[APL-2](./LICENSE).
+[MIT](./LICENSE).
 
 [1]: https://alpinelinux.org
 [2]: https://github.com/jbergstroem/mariadb-alpine/issues/1

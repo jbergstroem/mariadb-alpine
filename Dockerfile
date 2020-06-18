@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
       org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
       org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
       org.opencontainers.image.schema-version="1.0.0-rc.1" \
-      org.opencontainers.image.license="Apache-2.0"
+      org.opencontainers.image.license="MIT"
 
 COPY run.sh /run.sh
 COPY my.cnf /tmp/
