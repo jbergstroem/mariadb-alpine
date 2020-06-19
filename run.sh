@@ -87,4 +87,4 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
   fi
 fi
 
-/usr/bin/mysqld ${MYSQLD_OPTS}
+exec /usr/bin/mysqld ${MYSQLD_OPTS}
