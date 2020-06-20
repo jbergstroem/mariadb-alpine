@@ -32,8 +32,6 @@ RUN apk add --no-cache mariadb=10.4.13-r0 \
               $(cd /usr/bin; ls mysql_*| grep -v mysql_install_db); \
               do eval rm /usr/bin/${p}; done
 
-USER mysql
-
 # This is not super helpful; mysqld might be running but not accepting connections.
 # Since we have no clients, we can't really connect to it and check.
 #
