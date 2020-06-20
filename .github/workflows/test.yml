@@ -1,0 +1,26 @@
+name: test
+on: pull_request
+
+jobs:
+  bats:
+    name: bats
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: assign version for usage
+        run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
+        id: assign
+      - name: build the container
+        run: bin/build-image.sh
+        env:
+          VERSION: ${{ steps.assign.outputs.version }}
+          DOCKER_BUILDKIT: 1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: install
+        run: npm install -g bats
+      - name: run suite
+        run: bats test
+        env:
+          VERSION: ${{ steps.assign.outputs.version }}
