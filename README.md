@@ -141,9 +141,33 @@ Version: '10.3.15-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  Maria
 
 The procedure is similar to how other containers implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
 
+## Testing
+
+This container image is tested with [`bats`][3] - a bash testing framework. You can find installation
+instructions in [their repository][4]. To test:
+
+```console
+$ bin/build-image.sh
+<snip>
+$ bats test
+ ✓ should output mysqld version
+ ✓ start a default server with InnoDB and no password
+ ✓ start a server without InnoDB
+ ✓ start a server with a custom root password
+ ✓ start a server with a custom database, user and password
+ ✓ verfiy that binary logging is turned off
+ ✓ should import a .sql file and execute it
+ ✓ should import a compressed file and execute it
+ ✓ should execute an imported shell script
+
+9 tests, 0 failures
+```
+
 ## License
 
 [MIT](./LICENSE).
 
 [1]: https://alpinelinux.org
 [2]: https://github.com/jbergstroem/mariadb-alpine/issues/1
+[3]: https://github.com/bats-core/bats-core
+[4]: https://github.com/bats-core/bats-core#installation
