@@ -52,10 +52,11 @@ if [ -z "$(ls -A /var/lib/mysql/)" ]; then
     echo "init: installing mysql client"
     apk add -q --no-cache mariadb-client
 
-    SOCKET="/run/mysqld/mysql.sock"
-    MYSQL_CMD="mysql --protocol=socket -u root -h localhost --socket=${SOCKET}"
+    SOCKET="/run/mysqld/mysqld.sock"
+    MYSQL_CMD="mysql"
 
-    # Start a mysqld we will use to pass init stuff to
+    # Start a mysqld we will use to pass init stuff to. Can't use the same options
+    # as a standard instance; pass them manually.
     mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} &> /dev/null &
     PID="$!"
 
