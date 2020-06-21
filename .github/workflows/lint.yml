@@ -17,3 +17,9 @@ jobs:
         run: shellcheck -s bash test/*
       - name: test utility scripts
         run: shellcheck -s dash *.sh bin/*
+  hadolint:
+    runs-on: ubuntu-latest
+    name: hadolint
+    steps:
+      - uses: actions/checkout@v2
+      - uses: brpaz/hadolint-action@master
