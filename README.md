@@ -1,4 +1,4 @@
-[![mariadb-alpine](site/img/mariadb-alpine.png)](https://github.com/jbergstroem/mariadb-alpine)
+[![mariadb-alpine](https://raw.githubusercontent.com/jbergstroem/mariadb-alpine/master/site/img/mariadb-alpine.png)](https://github.com/jbergstroem/mariadb-alpine)
 
 <p align="center">
   <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=999&sort=semver">
@@ -25,10 +25,11 @@ Licensed under [MIT](./LICENSE).
 ## Features
 
 - Test suite: Each PR is tested to make sure that things stay working
-- No bin-logging: Not your default-case deployment
-- Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
-- Conveniently skip InnoDB: Gain a few seconds on startup
 - Ultra-fast startup: all init scripts are re-rewritten or skipped for a faster startup
+- No bin-logging: Not your default-case deployment
+- Conveniently skip InnoDB: Gain a few seconds on startup
+- Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
+- Simple and fast shutdowns: Both `CTRL+C` in interactive mode and `docker stop` does the job
 - Permissive ACL: A minimal no-flags startup "just works"; convenient for development
 - Your feature here: File an issue or PR
 
@@ -102,21 +103,21 @@ db
 $ docker run -it --rm -e SKIP_INNODB=1 -v db:/var/lib/mysql -v $(PWD)/init:/docker-entrypoint-initdb.d jbergstroem/mariadb-alpine:latest
 init: installing mysql client
 init: updating system tables
-init: adding /docker-entrypoint-initdb.d/mydatabase.sql
 init: executing /docker-entrypoint-initdb.d/custom.sh
 Hello from script
+init: adding /docker-entrypoint-initdb.d/mydatabase.sql
 init: removing mysql client
-2019-06-17 18:41:14 0 [Note] /usr/bin/mysqld (mysqld 10.3.15-MariaDB) starting as process 55 ...
-2019-06-17 18:41:14 0 [Note] Plugin 'InnoDB' is disabled.
-2019-06-17 18:41:14 0 [Note] Plugin 'FEEDBACK' is disabled.
-2019-06-17 18:41:14 0 [Note] Server socket created on IP: '::'.
-2019-06-17 18:41:14 0 [Note] Reading of all Master_info entries succeded
-2019-06-17 18:41:14 0 [Note] Added new Master_info '' to hash table
-2019-06-17 18:41:14 0 [Note] /usr/bin/mysqld: ready for connections.
-Version: '10.3.15-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
+2020-06-21  5:28:02 0 [Note] /usr/bin/mysqld (mysqld 10.4.13-MariaDB) starting as process 1 ...
+2020-06-21  5:28:03 0 [Note] Plugin 'InnoDB' is disabled.
+2020-06-21  5:28:03 0 [Note] Plugin 'FEEDBACK' is disabled.
+2020-06-21  5:28:03 0 [Note] Server socket created on IP: '::'.
+2020-06-21  5:28:03 0 [Note] Reading of all Master_info entries succeeded
+2020-06-21  5:28:03 0 [Note] Added new Master_info '' to hash table
+2020-06-21  5:28:03 0 [Note] /usr/bin/mysqld: ready for connections.
+Version: '10.4.13-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
 ```
 
-The procedure is similar to how other containers implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
+The procedure is similar to how other images implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
 
 ## Testing
 
