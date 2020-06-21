@@ -13,16 +13,20 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
       org.opencontainers.image.schema-version="1.0.0-rc.1" \
       org.opencontainers.image.license="MIT"
 
-COPY run.sh /run.sh
 COPY clean.sh /clean.sh
-COPY my.cnf /tmp/
 
 RUN apk add --no-cache mariadb=10.4.13-r0 && \
   /bin/sh /clean.sh && \
+  # removed in cleaning
   touch /usr/share/mariadb/mysql_test_db.sql && \
+  # allow anyone to connect by default
   sed -i -e 's/127.0.0.1/%/' /usr/share/mariadb/mysql_system_tables_data.sql && \
   mkdir /run/mysqld && \
   chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
+
+COPY resolveip.sh /usr/bin/resolveip
+COPY run.sh /run.sh
+COPY my.cnf /tmp/my.cnf
 
 # This is not super helpful; mysqld might be running but not accepting connections.
 # Since we have no clients, we can't really connect to it and check.
