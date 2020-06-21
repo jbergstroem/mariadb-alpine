@@ -7,7 +7,7 @@ load test_helper
   local name="default-startup"
   create ${name} ""
   sleep 5
-  run docker run --rm jbergstroem/mariadb-client-alpine -h "$(get_ip ${name})" -e "SHOW ENGINE INNODB STATUS;"
+  run client_query "${name}" "-e 'SHOW ENGINE INNODB STATUS;'"
   [[ "$status" -eq 0 ]]
   decommission "${name}"
 }

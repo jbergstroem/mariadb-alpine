@@ -12,7 +12,7 @@ load test_helper
   echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   sleep 5
-  run docker run --rm jbergstroem/mariadb-client-alpine -h "$(get_ip ${name})" --database=mydatabase -e "select 1;"
+  run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
   decommission "${name}"
@@ -23,10 +23,13 @@ load test_helper
   local tmpdir="${BATS_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
   echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
+  # if you seemingly get stuck here, it's because gzip is attempting to overwrite
+  # the existing file. This means your previous run didn't execute successfully
+  # and for some reason the temp directory wasn't properly cleaned.
   gzip  "${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   sleep 5
-  run docker run --rm jbergstroem/mariadb-client-alpine -h "$(get_ip ${name})" --database=mydatabase -e "select 1;"
+  run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
   decommission "${name}"
@@ -39,7 +42,7 @@ load test_helper
   echo "mysql -e \"create database mydatabase;\"" > "${tmpdir}/custom.sh"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   sleep 5
-  run docker run --rm jbergstroem/mariadb-client-alpine -h "$(get_ip ${name})" --database=mydatabase -e "select 1;"
+  run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
   decommission "${name}"
