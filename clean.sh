@@ -7,7 +7,6 @@ TO_KEEP=$(echo "
   usr/bin/mariadb$
   usr/bin/getconf$
   usr/bin/getent$
-  usr/bin/resolveip$
   usr/bin/my_print_defaults$
   usr/bin/mysql_install_db$
   usr/share/mariadb/charsets

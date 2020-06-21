@@ -1,4 +1,5 @@
 *
 !run.sh
 !clean.sh
+!resolveip.sh
 !my.cnf
