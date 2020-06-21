@@ -48,3 +48,13 @@ load test_helper
   [[ "$status" -eq 0 ]]
   decommission "${name}"
 }
+
+@test "should allow a user to pass a custom config" {
+  local name="custom-config"
+  create ${name} "-e SKIP_INNODB=1 -v ${BATS_TEST_DIRNAME}/fixtures/user-my.cnf:/etc/my.cnf.d/my.cnf"
+  sleep 2
+  run client_query "${name}" "-s -N -e 'select @@key_buffer_size;'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "1048576" ]]
+  decommission "${name}"
+}
