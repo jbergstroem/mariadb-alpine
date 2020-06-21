@@ -11,3 +11,12 @@ load test_helper
   [[ "$status" -eq 0 ]]
   decommission "${name}"
 }
+
+@test "start a server without a dedicated volume (issue #1)" {
+  local name="innodb-issue-1"
+  docker run -d --rm --name "${TEST_PREFIX}-${name}" "${IMAGE}":"${VERSION}"
+  sleep 5
+  run client_query "${name}" "-e 'select 1;'"
+  [[ "$status" -eq 0 ]]
+  decommission "${name}"
+}
