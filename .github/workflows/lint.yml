@@ -14,7 +14,7 @@ jobs:
           wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${scversion?}/shellcheck-${scversion?}.linux.x86_64.tar.xz" | tar -xJ
           sudo cp "shellcheck-${scversion}/shellcheck" /usr/local/bin/
       - name: test bats suite
-        run: shellcheck -s bash test/*
+        run: shellcheck -s bash test/*.bats test/*.bash
       - name: test utility scripts
         run: shellcheck -s dash *.sh bin/*
   hadolint:

@@ -91,6 +91,17 @@ are unset unless provided.
    disk allocation size. If you mount a persistent volume
    this setting will be remembered.
 
+### Adding your custom config
+
+You can add your custom `my.cnf` with various settings (be it for production or tuning InnoDB).
+Note: this will bypass `SKIP_INNODB` since it is injected into the default config on launch.
+
+```console
+$ docker run -it --rm --name=db \
+         -v $(PWD)/config/my.cnf:/etc/my.cnf.d/my.cnf
+         jbergstroem/mariadb-alpine
+```
+
 ### Adding custom sql on init
 
 When a database is empty, the `mysql_install_db` script will be invoked. As part of this, you can pass custom input via the commonly used `/docker-entrypoint-initdb.d` convention. This will not be run when an existing database is found.
@@ -127,7 +138,7 @@ instructions in [their repository][4]. To test:
 ```console
 $ bin/build-image.sh
 <snip>
-$ bats test
+$ VERSION=c363434 bats test
  ✓ should output mysqld version
  ✓ start a default server with InnoDB and no password
  ✓ start a server without a dedicated volume (issue #1)
@@ -136,11 +147,12 @@ $ bats test
  ✓ start a server with a custom database
  ✓ start a server with a custom database, user and password
  ✓ verfiy that binary logging is turned off
+ ✓ should allow a user to pass a custom config
  ✓ should import a .sql file and execute it
  ✓ should import a compressed file and execute it
  ✓ should execute an imported shell script
 
-11 tests, 0 failures
+12 tests, 0 failures
 ```
 
 ## Benchmarks

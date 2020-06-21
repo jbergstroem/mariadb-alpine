@@ -3,13 +3,16 @@ set -eo pipefail
 
 touch /tmp/init
 
-# This needs to be run both for initialization and general startup
-# sed into /tmp/ since the user won't have access to create new
-# files in /etc/
-cp /tmp/my.cnf /etc/my.cnf.d/
-[ -n "${SKIP_INNODB}" ] || [ -f "/var/lib/mysql/noinnodb" ] &&
-  sed -i -e '/\[mariadb\]/a skip_innodb = yes\ndefault_storage_engine = MyISAM\ndefault_tmp_storage_engine = MyISAM' \
-      -e '/^innodb/d' /etc/my.cnf.d/my.cnf
+# Check if a user is mounting their own config
+if [ -z "$(ls -A /etc/my.cnf.d/* 2> /dev/null)" ]; then
+  # This needs to be run both for initialization and general startup
+  # sed into /tmp/ since the user won't have access to create new
+  # files in /etc/
+  cp /tmp/my.cnf /etc/my.cnf.d/
+  [ -n "${SKIP_INNODB}" ] || [ -f "/var/lib/mysql/noinnodb" ] &&
+    sed -i -e '/\[mariadb\]/a skip_innodb = yes\ndefault_storage_engine = MyISAM\ndefault_tmp_storage_engine = MyISAM' \
+        -e '/^innodb/d' /etc/my.cnf.d/my.cnf
+fi
 
 MYSQLD_OPTS="--user=mysql"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"
@@ -19,7 +22,7 @@ MYSQLD_OPTS="${MYSQLD_OPTS} --skip-slave-start"
 MYSQLD_OPTS="${MYSQLD_OPTS} --debug-gdb"
 
 # No previous installation
-if [ -z "$(ls -A /var/lib/mysql/)" ]; then
+if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   [ -n "${SKIP_INNODB}" ] && touch /var/lib/mysql/noinnodb
   [ -n "${MYSQL_ROOT_PASSWORD}" ] && \
     echo "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');" >> /tmp/init

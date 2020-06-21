@@ -1,0 +1,5 @@
+[mariadb]
+skip_innodb = yes
+default_storage_engine = MyISAM
+default_tmp_storage_engine = MyISAM
+key_buffer_size = 1048576
