@@ -40,6 +40,26 @@ load test_helper
   decommission "${name}"
 }
 
+@test "should allow to customize the database charset" {
+  local name="custom-charset"
+  create ${name} "-e SKIP_INNODB=1 -e MYSQL_DATABASE=bar -e MYSQL_CHARSET=hebrew"
+  sleep 2
+  run client_query "${name}" "-s -N --database=bar -e 'select @@character_set_database;'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "hebrew" ]]
+  decommission "${name}"
+}
+
+@test "should allow to customize the database collation" {
+  local name="custom-collation"
+  create ${name} "-e SKIP_INNODB=1 -e MYSQL_DATABASE=bar -e MYSQL_CHARSET=utf8mb4 -e MYSQL_COLLATION=utf8mb4_bin"
+  sleep 2
+  run client_query "${name}" "-s -N --database=bar -e 'select @@collation_database;'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "utf8mb4_bin" ]]
+  decommission "${name}"
+}
+
 @test "verfiy that binary logging is turned off" {
   local name="no-log-bin"
   create ${name} "-e SKIP_INNODB=1"

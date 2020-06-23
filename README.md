@@ -83,10 +83,12 @@ $ docker run -it --rm --name=db \
 You can override default behavior by passing environment variables. All flags
 are unset unless provided.
 
-- **MYSQL_DATABASE**: creates a database as provided by input
-- **MYSQL_USER**: creates a user with owner permissions over said database
-- **MYSQL_PASSWORD**: changes password of the provided user (not root)
-- **MYSQL_ROOT_PASSWORD**: sets a root password
+- **MYSQL_DATABASE**: create a database as provided by input
+- **MYSQL_CHARSET**: set charset for said database
+- **MYSQL_COLLATION**: set default collation for said database
+- **MYSQL_USER**: create a user with owner permissions over said database
+- **MYSQL_PASSWORD**: change password of the provided user (not root)
+- **MYSQL_ROOT_PASSWORD**: set a root password
 - **SKIP_INNODB**: skip using InnoDB which shaves off both time and
   disk allocation size. If you mount a persistent volume
   this setting will be remembered.

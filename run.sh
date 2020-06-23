@@ -36,7 +36,11 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   INSTALL_OPTS="${INSTALL_OPTS} --datadir=/var/lib/mysql"
   eval /usr/bin/mysql_install_db "${INSTALL_OPTS}"
 
-  [ -n "${MYSQL_DATABASE}" ] && echo "create database if not exists \`${MYSQL_DATABASE}\` character set utf8 collate utf8_general_ci; " >> /tmp/init
+  if [ -n "${MYSQL_DATABASE}" ]; then
+    [ -n "${MYSQL_CHARSET}" ] || MYSQL_CHARSET="utf8"
+    [ -n "${MYSQL_COLLATION}" ] && MYSQL_COLLATION="collate '${MYSQL_COLLATION}'"
+    echo "create database if not exists \`${MYSQL_DATABASE}\` character set '${MYSQL_CHARSET}' ${MYSQL_COLLATION}; " >> /tmp/init
+  fi
   if [ -n "${MYSQL_USER}" ] && [ "${MYSQL_DATABASE}" ]; then
     echo "grant all on \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'; " >> /tmp/init
   fi 
