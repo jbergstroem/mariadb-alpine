@@ -44,8 +44,9 @@ load test_helper
   local name="no-log-bin"
   create ${name} "-e SKIP_INNODB=1"
   sleep 2
-  run client_query "${name}" "-e 'select 1 where @@log_bin = 1;'"
+  run client_query "${name}" "-s -N -e 'select @@log_bin;'"
   [[ "$status" -eq 0 ]]
+  [[ "$output" == "0" ]]
   decommission "${name}"
 }
 
