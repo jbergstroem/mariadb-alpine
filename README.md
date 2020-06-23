@@ -83,13 +83,13 @@ $ docker run -it --rm --name=db \
 You can override default behavior by passing environment variables. All flags
 are unset unless provided.
 
--  **MYSQL_DATABASE**: creates a database as provided by input
--  **MYSQL_USER**: creates a user with owner permissions over said database
--  **MYSQL_PASSWORD**: changes password of the provided user (not root)
--  **MYSQL_ROOT_PASSWORD**: sets a root password
--  **SKIP_INNODB**: skip using InnoDB which shaves off both time and
-   disk allocation size. If you mount a persistent volume
-   this setting will be remembered.
+- **MYSQL_DATABASE**: creates a database as provided by input
+- **MYSQL_USER**: creates a user with owner permissions over said database
+- **MYSQL_PASSWORD**: changes password of the provided user (not root)
+- **MYSQL_ROOT_PASSWORD**: sets a root password
+- **SKIP_INNODB**: skip using InnoDB which shaves off both time and
+  disk allocation size. If you mount a persistent volume
+  this setting will be remembered.
 
 ### Adding your custom config
 
@@ -160,13 +160,13 @@ $ VERSION=c363434 bats test
 The main goal of this project is to save disk space and startup time. At the moment,
 we only track disk space:
 
- | Name | Version | Size |
- | ---- | ------- | ---- |
- | mysql  | <img src="https://img.shields.io/docker/v/_/mysql/5.7?color=666&label=%22%22"> | <img src="https://img.shields.io/docker/image-size/_/mysql/5.7?color=666&label=%22%22"> |
- | mariadb | <img src="https://img.shields.io/docker/v/_/mariadb/10.4?color=666&label=%22%22"> | <img src="https://img.shields.io/docker/image-size/_/mariadb/10.4?color=666&label=%22%22"> |
- | bitnami/mariadb | <img src="https://img.shields.io/docker/v/bitnami/mariadb/10.4?color=666&label=%22%22"> | <img src="https://img.shields.io/docker/image-size/bitnami/mariadb/10.4?color=666&label=%22%22"> |
- | yobasystems/alpine-mariadb | <img src="https://img.shields.io/docker/v/yobasystems/alpine-mariadb?color=666&label=%22%22"> | <img src="https://img.shields.io/docker/image-size/yobasystems/alpine-mariadb?color=666&label=%22%22"> |
- | jbergstroem/mariadb-alpine | <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=666&&sort=semver&label="> | <img src="https://img.shields.io/docker/image-size/jbergstroem/mariadb-alpine?color=666&sort=semver&label="> |
+| Name                       | Version                                                                                              | Size                                                                                                         |
+| -------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| mysql                      | <img src="https://img.shields.io/docker/v/_/mysql/5.7?color=666&label=%22%22">                       | <img src="https://img.shields.io/docker/image-size/_/mysql/5.7?color=666&label=%22%22">                      |
+| mariadb                    | <img src="https://img.shields.io/docker/v/_/mariadb/10.4?color=666&label=%22%22">                    | <img src="https://img.shields.io/docker/image-size/_/mariadb/10.4?color=666&label=%22%22">                   |
+| bitnami/mariadb            | <img src="https://img.shields.io/docker/v/bitnami/mariadb/10.4?color=666&label=%22%22">              | <img src="https://img.shields.io/docker/image-size/bitnami/mariadb/10.4?color=666&label=%22%22">             |
+| yobasystems/alpine-mariadb | <img src="https://img.shields.io/docker/v/yobasystems/alpine-mariadb?color=666&label=%22%22">        | <img src="https://img.shields.io/docker/image-size/yobasystems/alpine-mariadb?color=666&label=%22%22">       |
+| jbergstroem/mariadb-alpine | <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=666&&sort=semver&label="> | <img src="https://img.shields.io/docker/image-size/jbergstroem/mariadb-alpine?color=666&sort=semver&label="> |
 
 [1]: https://mariadb.org
 [2]: https://alpinelinux.org

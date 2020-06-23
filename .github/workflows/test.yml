@@ -17,7 +17,7 @@ jobs:
           DOCKER_BUILDKIT: 1
       - uses: actions/setup-node@v1
         with:
-          node-version: '12.x'
+          node-version: "12.x"
       - name: install
         run: npm install -g bats
       - name: run suite
