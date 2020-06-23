@@ -11,7 +11,7 @@ jobs:
         id: assign
         run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
       - name: build the container
-        run: bin/build-image.sh
+        run: sh/build-image.sh
         env:
           VERSION: ${{ steps.assign.outputs.version }}
           DOCKER_BUILDKIT: 1

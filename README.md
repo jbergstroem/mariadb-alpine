@@ -138,7 +138,7 @@ This container image is tested with [`bats`][3] - a bash testing framework. You 
 instructions in [their repository][4]. To test:
 
 ```console
-$ bin/build-image.sh
+$ sh/build-image.sh
 <snip>
 $ VERSION=c363434 bats test
  ✓ should output mysqld version
