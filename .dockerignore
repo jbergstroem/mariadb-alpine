@@ -1,5 +1,5 @@
 *
-!run.sh
-!clean.sh
-!resolveip.sh
+!sh/run.sh
+!sh/clean.sh
+!sh/resolveip.sh
 !my.cnf

@@ -4,16 +4,16 @@ FROM alpine:3.11
 ARG BUILD_DATE
 ARG VCS_REF
 LABEL org.opencontainers.image.created=$BUILD_DATE \
-      org.opencontainers.image.title="mariadb-alpine" \
-      org.opencontainers.image.description="A MariaDB container suitable for development" \
-      org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
-      org.opencontainers.image.revision=$VCS_REF \
-      org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
-      org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
-      org.opencontainers.image.schema-version="1.0.0-rc.1" \
-      org.opencontainers.image.license="MIT"
+  org.opencontainers.image.title="mariadb-alpine" \
+  org.opencontainers.image.description="A MariaDB container suitable for development" \
+  org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
+  org.opencontainers.image.revision=$VCS_REF \
+  org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
+  org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
+  org.opencontainers.image.schema-version="1.0.0-rc.1" \
+  org.opencontainers.image.license="MIT"
 
-COPY clean.sh /clean.sh
+COPY sh/clean.sh /clean.sh
 
 RUN apk add --no-cache mariadb=10.4.13-r0 && \
   /bin/sh /clean.sh && \
@@ -24,8 +24,8 @@ RUN apk add --no-cache mariadb=10.4.13-r0 && \
   mkdir /run/mysqld && \
   chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
 
-COPY resolveip.sh /usr/bin/resolveip
-COPY run.sh /run.sh
+COPY sh/resolveip.sh /usr/bin/resolveip
+COPY sh/run.sh /run.sh
 COPY my.cnf /tmp/my.cnf
 
 # This is not super helpful; mysqld might be running but not accepting connections.
