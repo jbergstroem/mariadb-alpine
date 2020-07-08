@@ -21,6 +21,6 @@ jobs:
       - name: install
         run: npm install -g bats
       - name: run suite
-        run: sh/build-image.sh
+        run: sh/run-tests.bash
         env:
           VERSION: ${{ steps.assign.outputs.version }}
