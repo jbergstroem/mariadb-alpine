@@ -36,4 +36,4 @@ clean
 # remove temp folders. make sure this cannot be destructive if for instance
 # ${MY_TMPDIR} would be "/"
 SUFFIX=$(basename "${MY_TMPDIR}")
-find "${DEFAULT_TMPDIR}" -type d -maxdepth 1 -name "${SUFFIX}" -delete
+find "${DEFAULT_TMPDIR}" -type d -maxdepth 1 -name "${SUFFIX}" -delete > /dev/null 2>&1
