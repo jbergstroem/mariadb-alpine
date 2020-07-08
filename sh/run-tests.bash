@@ -25,8 +25,7 @@ clean() {
 
 # clean previous runs
 clean
-# pass all xargs since we might wanna do `-j 3`
-bats test/*.bats "$@"
+bats test/*.bats -j "$(nproc)"
 clean
 # remove temp folders. make sure this cannot be destructive if for instance
 # ${MY_TMPDIR} would be "/"
