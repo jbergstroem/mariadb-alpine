@@ -9,6 +9,14 @@ create() {
   run eval docker run -d --rm --name "${TEST_PREFIX}-${1}" -v "${TEST_PREFIX}-${1}":/var/lib/mysql "${2}" "${IMAGE}":"${VERSION}"
 }
 
+wait_until_up() {
+  # $1: container name
+  until docker logs --tail 1 "${TEST_PREFIX}-${1}" 2>&1 | grep "Version:"
+  do
+    sleep 0.25
+  done
+}
+
 client_query() {
   # $1: name of container
   # $2: query to run

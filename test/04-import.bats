@@ -11,7 +11,7 @@ load test_helper
   mkdir -p "${tmpdir}"
   echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
-  sleep 5
+  wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
@@ -28,7 +28,7 @@ load test_helper
   # and for some reason the temp directory wasn't properly cleaned.
   gzip  "${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
-  sleep 5
+  wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
@@ -41,7 +41,7 @@ load test_helper
   mkdir -p "${tmpdir}"
   echo "mysql -e \"create database mydatabase;\"" > "${tmpdir}/custom.sh"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
-  sleep 5
+  wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
