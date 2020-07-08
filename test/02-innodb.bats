@@ -9,7 +9,7 @@ load test_helper
   sleep 5
   run client_query "${name}" "-e 'SHOW ENGINE INNODB STATUS;'"
   [[ "$status" -eq 0 ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "start a server without a dedicated volume (issue #1)" {
@@ -18,5 +18,5 @@ load test_helper
   sleep 5
   run client_query "${name}" "-e 'select 1;'"
   [[ "$status" -eq 0 ]]
-  decommission "${name}"
+  stop "${name}"
 }
