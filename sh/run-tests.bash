@@ -5,12 +5,7 @@ export IMAGE=${IMAGE:-jbergstroem/mariadb-alpine}
 export VERSION=${VERSION:-latest}
 export TEST_PREFIX="mariadb-alpine-bats-test"
 
-# From https://github.com/bats-core/bats-core/blob/master/lib/bats-core/preprocessing.bash#L3
-if [ -z "$TMPDIR" ]; then
-	DEFAULT_TMPDIR='/tmp'
-else
-	DEFAULT_TMPDIR="${TMPDIR%/}"
-fi
+DEFAULT_TMPDIR=${TMPDIR:-/tmp}
 
 MY_TMPDIR=$(mktemp -d "${DEFAULT_TMPDIR}"/"${TEST_PREFIX}".XXXXXX)
 export MY_TMPDIR
