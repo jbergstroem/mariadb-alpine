@@ -2,18 +2,6 @@
 
 set -euo pipefail
 
-IMAGE=${IMAGE:-jbergstroem/mariadb-alpine}
-VERSION=${VERSION:-latest}
-TEST_PREFIX="mariadb-alpine-bats-test"
-
-setup() {
-  # no explanataion needed
-  command -v docker
-
-  # the test suite assumes that the image is built
-  docker inspect "${IMAGE}":"${VERSION}"
-}
-
 create() {
   # $1: volume and container name
   # $2: environment variables
@@ -29,8 +17,7 @@ client_query() {
 }
 
 # for local testing cleaning up makes sense
-decommission() {
+stop() {
   # $1: volume and container name
   run docker stop "${TEST_PREFIX}-${1}"
-  run docker volume rm "${TEST_PREFIX}-${1}"
 }

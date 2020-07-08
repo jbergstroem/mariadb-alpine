@@ -10,7 +10,7 @@ load test_helper
   [[ "$status" -eq 1 ]]
   run client_query "${name}" "-e 'select 1;'"
   [[ "$status" -eq 0 ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "start a server with a custom root password" {
@@ -19,7 +19,7 @@ load test_helper
   sleep 2
   run client_query "${name}"  "--password=secretsauce -e 'select 1;'"
   [[ "$status" -eq 0 ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "start a server with a custom database" {
@@ -28,7 +28,7 @@ load test_helper
   sleep 2
   run client_query "${name}" "--database=bar -e 'select 1;'"
   [[ "$status" -eq 0 ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "start a server with a custom database, user and password" {
@@ -37,7 +37,7 @@ load test_helper
   sleep 2
   run client_query "${name}" "--user=foo --database=bar --password=baz -e 'select 1;'"
   [[ "$status" -eq 0 ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "should allow to customize the database charset" {
@@ -47,7 +47,7 @@ load test_helper
   run client_query "${name}" "-s -N --database=bar -e 'select @@character_set_database;'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "hebrew" ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "should allow to customize the database collation" {
@@ -57,7 +57,7 @@ load test_helper
   run client_query "${name}" "-s -N --database=bar -e 'select @@collation_database;'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "utf8mb4_bin" ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "verfiy that binary logging is turned off" {
@@ -67,7 +67,7 @@ load test_helper
   run client_query "${name}" "-s -N -e 'select @@log_bin;'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "0" ]]
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "should allow a user to pass a custom config" {
@@ -77,5 +77,5 @@ load test_helper
   run client_query "${name}" "-s -N -e 'select @@key_buffer_size;'"
   [[ "$status" -eq 0 ]]
   [[ "$output" == "1048576" ]]
-  decommission "${name}"
+  stop "${name}"
 }

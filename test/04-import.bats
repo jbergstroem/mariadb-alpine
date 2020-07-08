@@ -7,7 +7,7 @@ load test_helper
 
 @test "should import a .sql file and execute it" {
   local name="sql-import"
-  local tmpdir="${BATS_TMPDIR}/${name}"
+  local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
   echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
@@ -15,12 +15,12 @@ load test_helper
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "should import a compressed file and execute it" {
   local name="sql-import-gz"
-  local tmpdir="${BATS_TMPDIR}/${name}"
+  local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
   echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
   # if you seemingly get stuck here, it's because gzip is attempting to overwrite
@@ -32,12 +32,12 @@ load test_helper
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
-  decommission "${name}"
+  stop "${name}"
 }
 
 @test "should execute an imported shell script" {
   local name="sh-import"
-  local tmpdir="${BATS_TMPDIR}/${name}"
+  local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
   echo "mysql -e \"create database mydatabase;\"" > "${tmpdir}/custom.sh"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
@@ -45,5 +45,5 @@ load test_helper
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
   [[ "${status}" -eq 0 ]]
   rm -rf "${tmpdir}"
-  decommission "${name}"
+  stop "${name}"
 }

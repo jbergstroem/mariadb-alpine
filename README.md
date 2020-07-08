@@ -140,7 +140,7 @@ instructions in [their repository][4]. To test:
 ```console
 $ sh/build-image.sh
 <snip>
-$ VERSION=c363434 bats test
+$ VERSION=c363434 sh/run-tests.bash
  ✓ should output mysqld version
  ✓ start a default server with InnoDB and no password
  ✓ start a server without a dedicated volume (issue #1)
