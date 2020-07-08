@@ -32,7 +32,7 @@ COPY my.cnf /tmp/my.cnf
 # Since we have no clients, we can't really connect to it and check.
 #
 # Below is in my opinion better than no health check.
-HEALTHCHECK --start-period=3s CMD pgrep mysqld
+HEALTHCHECK --start-period=5s CMD pgrep mysqld
 
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
