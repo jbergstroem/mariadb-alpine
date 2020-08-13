@@ -100,7 +100,7 @@ Note: this will bypass `SKIP_INNODB` since it is injected into the default confi
 
 ```console
 $ docker run -it --rm --name=db \
-         -v $(PWD)/config/my.cnf:/etc/my.cnf.d/my.cnf
+         -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf
          jbergstroem/mariadb-alpine
 ```
 
@@ -113,7 +113,7 @@ $ mkdir init && echo "create database mydatabase;" > init/mydatabase.sql
 $ echo "#\!/bin/sh\necho Hello from script" > init/custom.sh
 $ docker volume create db
 db
-$ docker run -it --rm -e SKIP_INNODB=1 -v db:/var/lib/mysql -v $(PWD)/init:/docker-entrypoint-initdb.d jbergstroem/mariadb-alpine:latest
+$ docker run -it --rm -e SKIP_INNODB=1 -v db:/var/lib/mysql -v $(pwd)/init:/docker-entrypoint-initdb.d jbergstroem/mariadb-alpine:latest
 init: installing mysql client
 init: updating system tables
 init: executing /docker-entrypoint-initdb.d/custom.sh
