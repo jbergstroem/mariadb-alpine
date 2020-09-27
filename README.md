@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/docker/pulls/jbergstroem/mariadb-alpine?color=999&sort=semver">
 </p>
 <p align="center">
-  <a href="#a-tiny-mariadb-image">About</a> | 
+  <a href="#a-tiny-mariadb-image">About</a> |
   <a href="#features">Features</a> |
   <a href="#usage">Usage</a> |
   <a href="#testing">Testing</a> |

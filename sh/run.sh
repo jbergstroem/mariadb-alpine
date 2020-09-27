@@ -14,7 +14,7 @@ if [ -z "$(ls -A /etc/my.cnf.d/* 2> /dev/null)" ]; then
         -e '/^innodb/d' /etc/my.cnf.d/my.cnf
 fi
 
-MYSQLD_OPTS="--user=mysql"
+MYSQLD_OPTS="--user=root"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-host-cache"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-slave-start"
@@ -27,14 +27,14 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   [ -n "${MYSQL_ROOT_PASSWORD}" ] && \
     echo "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');" >> /tmp/init
 
-  INSTALL_OPTS="--user=mysql"
+  INSTALL_OPTS="--user=root"
   INSTALL_OPTS="${INSTALL_OPTS} --cross-bootstrap"
   INSTALL_OPTS="${INSTALL_OPTS} --rpm"
   # https://github.com/MariaDB/server/commit/b9f3f068
   INSTALL_OPTS="${INSTALL_OPTS} --auth-root-authentication-method=normal"
   INSTALL_OPTS="${INSTALL_OPTS} --skip-test-db"
   INSTALL_OPTS="${INSTALL_OPTS} --datadir=/var/lib/mysql"
-  eval /usr/bin/mysql_install_db "${INSTALL_OPTS}"
+  eval /bin/mysql_install_db "${INSTALL_OPTS}"
 
   if [ -n "${MYSQL_DATABASE}" ]; then
     [ -n "${MYSQL_CHARSET}" ] || MYSQL_CHARSET="utf8"
@@ -43,7 +43,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   fi
   if [ -n "${MYSQL_USER}" ] && [ "${MYSQL_DATABASE}" ]; then
     echo "grant all on \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'; " >> /tmp/init
-  fi 
+  fi
   echo "flush privileges;" >> /tmp/init
 
   # Execute custom scripts provided by a user. This will spawn a mysqld and
@@ -95,4 +95,4 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   fi
 fi
 
-eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"
+eval exec /bin/mysqld "${MYSQLD_OPTS}"
