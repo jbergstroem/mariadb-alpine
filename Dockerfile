@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 
 COPY sh/clean.sh /clean.sh
 
-RUN apk add --no-cache mariadb=10.4.13-r0 && \
+RUN apk add --no-cache mariadb=10.4.15-r0 && \
   /bin/sh /clean.sh && \
   # removed in cleaning
   touch /usr/share/mariadb/mysql_test_db.sql && \
