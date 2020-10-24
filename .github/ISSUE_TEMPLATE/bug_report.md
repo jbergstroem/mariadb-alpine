@@ -1,13 +1,12 @@
 ---
 name: Bug report
 about: Report something that doesn't work as expected
-title: ''
+title: ""
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
-<!-- 
+<!--
 Thanks for filing a bug report. Please provide:
 
 1. A description of your problem or perhaps which test is failing
