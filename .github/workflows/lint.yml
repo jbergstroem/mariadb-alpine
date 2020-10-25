@@ -32,6 +32,6 @@ jobs:
         with:
           node-version: "14.x"
       - name: install prettier
-        run: npm install -g prettier
+        run: which prettier || npm install -g prettier
       - name: run prettier
         run: prettier -c .
