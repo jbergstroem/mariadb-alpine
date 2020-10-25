@@ -2,21 +2,24 @@ FROM fedora:rawhide AS builder
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG MARIADB_VERSION
+ARG MARIADB_VERSION="10.4.15"
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL org.opencontainers.image.created=$BUILD_DATE \
   org.opencontainers.image.title="mariadb" \
   org.opencontainers.image.description="A minimalist MariaDB container" \
   org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
+  org.opencontainers.image.revision=$MARIADB_VERSION \
   org.opencontainers.image.revision=$VCS_REF \
   org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
   org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
   org.opencontainers.image.schema-version="1.0.0-rc.1" \
-  org.opencontainers.image.license="MIT"
+  org.opencontainers.image.license="MIT GPL-2 LGPL-2.1+"
 
 WORKDIR /var/tmp/build
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# the cisco repo is slow and nothing we want anything from
 RUN rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \
     dnf update -y && \
     dnf install -y bison gcc-c++ ninja-build cmake busybox \
@@ -122,7 +125,7 @@ RUN rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \
         -DWITH_ZLIB=system && \
     DESTDIR=../out ninja install
 
-RUN strip /var/tmp/out/bin/{mysqld,my_print_defaults}
+RUN strip /var/tmp/out/bin/mysqld /var/tmp/out/bin/my_print_defaults
 
 FROM scratch
 
@@ -156,8 +159,8 @@ COPY sh/run.sh /run.sh
 COPY my.cnf /tmp/my.cnf
 RUN ["/bin/busybox", "--install", "-s", "/bin/"]
 RUN echo 'root:x:0:' > /etc/group && \
-    echo 'root:x:0:0:root:/root:/bin/sh' > /etc/passwd && \
-    echo $'[mysqld]\n!includedir /etc/my.cnf.d' > /etc/my.cnf && \
+    echo 'root:x:0:0:root:/:/bin/sh' > /etc/passwd && \
+    printf '[mysqld]\n!includedir /etc/my.cnf.d\n' > /etc/my.cnf && \
     mkdir -p /etc/my.cnf.d/ /run/mysqld && \
     touch /share/mysql_test_db.sql /share/fill_help_tables.sql && \
     sed -i -e 's/127.0.0.1/%/' /share/mysql_system_tables_data.sql
