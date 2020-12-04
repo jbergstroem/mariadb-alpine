@@ -15,7 +15,7 @@ jobs:
         env:
           VERSION: ${{ steps.assign.outputs.version }}
           DOCKER_BUILDKIT: 1
-      - name: install
+      - name: install bats
         run: |
           curl -L https://github.com/bats-core/bats-core/archive/v1.2.1.tar.gz | tar zx --strip=1 -C /tmp/ &&
           sudo /tmp/install.sh /usr/local

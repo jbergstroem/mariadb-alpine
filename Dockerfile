@@ -2,33 +2,27 @@ FROM fedora:rawhide AS builder
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG MARIADB_VERSION="10.4.15"
-
-# https://github.com/opencontainers/image-spec/blob/master/annotations.md
-LABEL org.opencontainers.image.created=$BUILD_DATE \
-  org.opencontainers.image.title="mariadb" \
-  org.opencontainers.image.description="A minimalist MariaDB container" \
-  org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
-  org.opencontainers.image.revision=$MARIADB_VERSION \
-  org.opencontainers.image.revision=$VCS_REF \
-  org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
-  org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
-  org.opencontainers.image.schema-version="1.0.0-rc.1" \
-  org.opencontainers.image.license="MIT GPL-2 LGPL-2.1+"
+ARG MARIADB_VERSION="10.4.17"
 
 WORKDIR /var/tmp/build
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # the cisco repo is slow and nothing we want anything from
+# specifically ignore linting rules:
+# - DL3041: we always want $latest from rawhide; we want rolling updates
+#           as a baseline for this image
+# - DL3040: no point in cleaning up after; we copy the resulting
+#           artifacts into another image
+# hadolint ignore=DL3040,DL3041
 RUN rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \
     dnf update -y && \
     dnf install -y bison gcc-c++ ninja-build cmake busybox \
         ncurses-devel pcre-devel openssl-devel libxml2-devel \
-        libaio-devel libedit-devel zlib-devel && \
-    mkdir ../mariadb && \
-    curl -L https://downloads.mariadb.org/interstitial/mariadb-${MARIADB_VERSION}/source/mariadb-${MARIADB_VERSION}.tar.gz | tar -xz  --strip-components=1 -C ../mariadb && \
+        libaio-devel libedit-devel zlib-devel diffutils
+RUN mkdir ../mariadb && \
+    curl -L https://downloads.mariadb.org/interstitial/mariadb-${MARIADB_VERSION}/source/mariadb-${MARIADB_VERSION}.tar.gz | tar -xz  --strip-components=1 -C ../mariadb
     # Avoid building things not in use
-    sed -i -e '/INCLUDE(mariadb_connector_c)/d' \
+RUN    sed -i -e '/INCLUDE(mariadb_connector_c)/d' \
         -e '/ADD_SUBDIRECTORY(client)/d' \
         -e '/ADD_SUBDIRECTORY(tests)/d' \
         -e '/ADD_SUBDIRECTORY(mysql-test/d' \
@@ -117,7 +111,7 @@ RUN rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \
         -DENABLED_PROFILING=OFF \
         -DWITH_SYSTEMD=no \
         -DWITH_WSREP=OFF \
-        -DWITH_UNIT_TESTS=NO \
+        -DWITH_UNIT_TESTS=OFF \
         -DDISABLE_SHARED=ON \
         -DAWS_SDK_EXTERNAL_PROJECT=OFF \
         -DUPDATE_SUBMODULES=OFF \
@@ -127,11 +121,23 @@ RUN rm -f /etc/yum.repos.d/fedora-cisco-openh264.repo && \
 
 RUN strip /var/tmp/out/bin/mysqld /var/tmp/out/bin/my_print_defaults
 
-FROM scratch
+FROM busybox:1
+
+# https://github.com/opencontainers/image-spec/blob/master/annotations.md
+LABEL org.opencontainers.image.created=$BUILD_DATE \
+  org.opencontainers.image.title="mariadb" \
+  org.opencontainers.image.description="A minimalist MariaDB container" \
+  org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
+  org.opencontainers.image.revision=$MARIADB_VERSION \
+  org.opencontainers.image.revision=$VCS_REF \
+  org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
+  org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
+  org.opencontainers.image.schema-version="1.0.0-rc.1" \
+  org.opencontainers.image.license="MIT GPL-2 LGPL-2.1+"
+
 
 COPY --from=builder /etc/ssl/certs/ca-bundle.crt /etc/ssl/certs/ca-bundle.crt
-COPY --from=builder /usr/sbin/busybox \
-                    /var/tmp/out/bin/my_print_defaults \
+COPY --from=builder /var/tmp/out/bin/my_print_defaults \
                     /var/tmp/out/scripts/mysql_install_db \
                     /var/tmp/out/bin/mysqld /bin/
 # output from `ldd`'ing mysqld. Not sure how to automate since `COPY` doesn't
@@ -157,11 +163,11 @@ COPY --from=builder /var/tmp/out/share/english /var/tmp/out/share/charsets \
 COPY sh/resolveip.sh /bin/resolveip
 COPY sh/run.sh /run.sh
 COPY my.cnf /tmp/my.cnf
-RUN ["/bin/busybox", "--install", "-s", "/bin/"]
-RUN echo 'root:x:0:' > /etc/group && \
-    echo 'root:x:0:0:root:/:/bin/sh' > /etc/passwd && \
+RUN mkdir -p /var/lib/mysql /etc/my.cnf.d /run/mysqld && \
+    addgroup mysql && \
+    adduser -s /bin/nologin -h /var/lib/mysql -D -G mysql mysql && \
+    chown mysql:mysql /var/lib/mysql /etc/my.cnf.d /run/mysqld && \
     printf '[mysqld]\n!includedir /etc/my.cnf.d\n' > /etc/my.cnf && \
-    mkdir -p /etc/my.cnf.d/ /run/mysqld && \
     touch /share/mysql_test_db.sql /share/fill_help_tables.sql && \
     sed -i -e 's/127.0.0.1/%/' /share/mysql_system_tables_data.sql
 
@@ -172,4 +178,5 @@ HEALTHCHECK --start-period=5s CMD pgrep mysqld
 
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
+USER mysql
 EXPOSE 3306

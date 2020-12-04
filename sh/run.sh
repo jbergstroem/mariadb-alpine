@@ -14,8 +14,7 @@ if [ -z "$(ls -A /etc/my.cnf.d/* 2> /dev/null)" ]; then
         -e '/^innodb/d' /etc/my.cnf.d/my.cnf
 fi
 
-MYSQLD_OPTS="--user=root"
-MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"
+MYSQLD_OPTS="--skip-name-resolve"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-host-cache"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-slave-start"
 # Listen to signals, most importantly CTRL+C
@@ -27,8 +26,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   [ -n "${MYSQL_ROOT_PASSWORD}" ] && \
     echo "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');" >> /tmp/init
 
-  INSTALL_OPTS="--user=root"
-  INSTALL_OPTS="${INSTALL_OPTS} --cross-bootstrap"
+  INSTALL_OPTS="--cross-bootstrap"
   INSTALL_OPTS="${INSTALL_OPTS} --rpm"
   # https://github.com/MariaDB/server/commit/b9f3f068
   INSTALL_OPTS="${INSTALL_OPTS} --auth-root-authentication-method=normal"
@@ -64,7 +62,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
 
     # Start a mysqld we will use to pass init stuff to. Can't use the same options
     # as a standard instance; pass them manually.
-    mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
+    mysqld --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
     PID="$!"
 
     # perhaps trap this to avoid issues on slow systems?
