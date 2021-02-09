@@ -60,14 +60,16 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
     echo "init: installing mysql client"
     apk add -q --no-cache mariadb-client
 
-    MYSQL_CMD="mariadb -h 127.0.0.1"
     # Start a mariadbd we will use to pass init stuff to. Can't use the same options
     # as a standard instance; pass them manually.
-    mariadbd --user=mysql --silent-startup >/dev/null 2>&1 &
+    MARIADBD_OUTPUT=/tmp/mysqldoutput
+    mariadbd --user=mysql --silent-startup >"${MARIADBD_OUTPUT}" 2>&1 &
     PID="$!"
 
-    # perhaps trap this to avoid issues on slow systems?
-    sleep 1
+    # wait for mysqld to accept connections
+    until tail "${MARIADBD_OUTPUT}" | grep -q "Version:"; do
+      sleep 0.2
+    done
 
     # Run the init script
     echo "init: updating system tables"
@@ -94,11 +96,14 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
       esac
     done
 
-    # Clean up
+    # shutdown temporary mariadbd
     kill -s TERM "${PID}"
+    wait "${PID}"
+
+    # Clean up
+    rm "${MARIADBD_OUTPUT}"
     echo "init: removing mysql client"
     apk del -q --no-cache mariadb-client
-    wait "${PID}"
   else
     MYSQLD_OPTS="${MYSQLD_OPTS} --init-file=/tmp/init"
   fi
