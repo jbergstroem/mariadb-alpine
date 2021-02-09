@@ -43,7 +43,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   fi
   if [ -n "${MYSQL_USER}" ] && [ "${MYSQL_DATABASE}" ]; then
     echo "grant all on \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'; " >> /tmp/init
-  fi 
+  fi
   echo "flush privileges;" >> /tmp/init
 
   # Execute custom scripts provided by a user. This will spawn a mysqld and
@@ -94,5 +94,9 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
     MYSQLD_OPTS="${MYSQLD_OPTS} --init-file=/tmp/init"
   fi
 fi
+
+# make sure directory permissions are correct before starting up
+# https://github.com/jbergstroem/mariadb-alpine/issues/54
+chown -R mysql:mysql /var/lib/mysql
 
 eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"
