@@ -60,7 +60,7 @@ load test_helper
   stop "${name}"
 }
 
-@test "verfiy that binary logging is turned off" {
+@test "verify that binary logging is turned off" {
   local name="no-log-bin"
   create ${name} "-e SKIP_INNODB=1"
   wait_until_up "${name}"

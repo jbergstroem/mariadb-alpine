@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/docker/pulls/jbergstroem/mariadb-alpine?color=999&sort=semver">
 </p>
 <p align="center">
-  <a href="#a-tiny-mariadb-image">About</a> | 
+  <a href="#a-tiny-mariadb-image">About</a> |
   <a href="#features">Features</a> |
   <a href="#usage">Usage</a> |
   <a href="#testing">Testing</a> |
@@ -60,7 +60,7 @@ $ docker run -it --rm --name=db \
          jbergstroem/mariadb-alpine
 ```
 
-The `root` user is intentionally left passwordless. Should you insist setting one, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
+The `root` user is intentionally left password-less. Should you insist setting one, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
 
 ```console
 $ docker run -it --rm --name=db \
@@ -74,7 +74,7 @@ Using a volume to persist your storage across restarts:
 $ docker volume create db
 db
 $ docker run -it --rm --name=db \
-         -v db:/var/lib/mysql
+         -v db:/var/lib/mysql \
          jbergstroem/mariadb-alpine
 ```
 
@@ -100,7 +100,7 @@ Note: this will bypass `SKIP_INNODB` since it is injected into the default confi
 
 ```console
 $ docker run -it --rm --name=db \
-         -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf
+         -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf \
          jbergstroem/mariadb-alpine
 ```
 
@@ -148,7 +148,7 @@ $ VERSION=c363434 sh/run-tests.bash
  ✓ start a server with a custom root password
  ✓ start a server with a custom database
  ✓ start a server with a custom database, user and password
- ✓ verfiy that binary logging is turned off
+ ✓ verify that binary logging is turned off
  ✓ should allow a user to pass a custom config
  ✓ should import a .sql file and execute it
  ✓ should import a compressed file and execute it
