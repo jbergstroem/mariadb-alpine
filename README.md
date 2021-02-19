@@ -1,5 +1,6 @@
-[![mariadb-alpine](https://raw.githubusercontent.com/jbergstroem/mariadb-alpine/master/mariadb-alpine.png)](https://github.com/jbergstroem/mariadb-alpine)
-
+<p align="center">
+  <a href="https://github.com/jbergstroem/mariadb-alpine"><img width="450" src="mariadb-alpine.svg"></a>
+</p>
 <p align="center">
   <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=999&sort=semver">
   <img src="https://img.shields.io/docker/image-size/jbergstroem/mariadb-alpine?color=999&sort=semver">
