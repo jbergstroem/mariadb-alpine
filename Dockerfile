@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.13
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
@@ -15,7 +15,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 
 COPY sh/clean.sh /clean.sh
 
-RUN apk add --no-cache mariadb=10.4.17-r1 && \
+RUN apk add --no-cache mariadb=10.5.8-r0 && \
   /bin/sh /clean.sh && \
   # removed in cleaning
   touch /usr/share/mariadb/mysql_test_db.sql && \
