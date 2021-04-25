@@ -2,13 +2,12 @@
 set -euo pipefail
 
 TO_KEEP=$(echo "
-  usr/bin/mysql$
+  usr/bin/mariadbd$
   usr/bin/mysqld$
-  usr/bin/mariadb$
   usr/bin/getconf$
   usr/bin/getent$
   usr/bin/my_print_defaults$
-  usr/bin/mysql_install_db$
+  usr/bin/mariadb-install-db$
   usr/share/mariadb/charsets
   usr/share/mariadb/english
   usr/share/mariadb/mysql_system_tables.sql$
@@ -18,9 +17,22 @@ TO_KEEP=$(echo "
   usr/share/mariadb/fill_help_tables.sql$" |
   tr -d " \t\n\r" | sed -e 's/usr/|usr/g' -e 's/^.//')
 
-INSTALLED_FILES="$(apk info -q -L mariadb-client | tail -n +2)
-$(apk info -q -L mariadb-common | tail -n +2)
-$(apk info -q -L mariadb | tail -n +2)"
+# Only keep the output certificate from ca-certificates
+cp /etc/ssl/certs/ca-certificates.crt /tmp/
+
+# We don't use pam to authenticate but its listed as a dependency
+INSTALLED_FILES="$(apk info -q -L mariadb-client)
+$(apk info -q -L mariadb-common)
+$(apk info -q -L mariadb)
+$(apk info -q -L linux-pam)
+$(apk info -q -L ca-certificates)"
+
+# move certificate back into place
+rm -f /etc/ssl/certs/*
+mv /tmp/ca-certificates.crt /etc/ssl/certs/
+
+# it seems that the mariadb install script still has legacy references to mysqld
+sed -i -e 's|rel_mysqld="$dirname0/bin/mysqld"|rel_mysqld="$dirname0/bin/mariadbd"|g' /usr/bin/mariadb-install-db
 
 for path in $(echo "${INSTALLED_FILES}" | grep -v -E "${TO_KEEP}"); do
   eval rm -rf "${path}"
