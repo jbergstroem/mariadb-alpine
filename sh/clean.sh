@@ -31,9 +31,6 @@ $(apk info -q -L ca-certificates)"
 rm -f /etc/ssl/certs/*
 mv /tmp/ca-certificates.crt /etc/ssl/certs/
 
-# it seems that the mariadb install script still has legacy references to mysqld
-sed -i -e 's|rel_mysqld="$dirname0/bin/mysqld"|rel_mysqld="$dirname0/bin/mariadbd"|g' /usr/bin/mariadb-install-db
-
 for path in $(echo "${INSTALLED_FILES}" | grep -v -E "${TO_KEEP}"); do
   eval rm -rf "${path}"
 done
