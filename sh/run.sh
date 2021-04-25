@@ -28,13 +28,14 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
     echo "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');" >> /tmp/init
 
   INSTALL_OPTS="--user=mysql"
+  INSTALL_OPTS="${INSTALL_OPTS} --basedir=/usr"
   INSTALL_OPTS="${INSTALL_OPTS} --cross-bootstrap"
   INSTALL_OPTS="${INSTALL_OPTS} --rpm"
   # https://github.com/MariaDB/server/commit/b9f3f068
   INSTALL_OPTS="${INSTALL_OPTS} --auth-root-authentication-method=normal"
   INSTALL_OPTS="${INSTALL_OPTS} --skip-test-db"
   INSTALL_OPTS="${INSTALL_OPTS} --datadir=/var/lib/mysql"
-  eval /usr/bin/mysql_install_db "${INSTALL_OPTS}"
+  eval /usr/bin/mariadb-install-db "${INSTALL_OPTS}"
 
   if [ -n "${MYSQL_DATABASE}" ]; then
     [ -n "${MYSQL_CHARSET}" ] || MYSQL_CHARSET="utf8"
@@ -46,7 +47,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   fi
   echo "flush privileges;" >> /tmp/init
 
-  # Execute custom scripts provided by a user. This will spawn a mysqld and
+  # Execute custom scripts provided by a user. This will spawn a mariadb and
   # pass scripts to it. Since we're already up an running we might as well
   # pass the init script and avoid it later.
   if [ "$(ls -A /docker-entrypoint-initdb.d 2> /dev/null)" ]; then
@@ -59,12 +60,12 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
     echo "init: installing mysql client"
     apk add -q --no-cache mariadb-client
 
-    SOCKET="/run/mysqld/mysqld.sock"
+    SOCKET="/run/mariadbd/mariadb.sock"
     MYSQL_CMD="mysql"
 
     # Start a mysqld we will use to pass init stuff to. Can't use the same options
     # as a standard instance; pass them manually.
-    mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
+    mariadbd --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
     PID="$!"
 
     # perhaps trap this to avoid issues on slow systems?
@@ -99,4 +100,4 @@ fi
 # https://github.com/jbergstroem/mariadb-alpine/issues/54
 chown -R mysql:mysql /var/lib/mysql
 
-eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"
+eval exec /usr/bin/mariadbd --socket=/run/mariadbd/mariadb.sock "${MYSQLD_OPTS}"
