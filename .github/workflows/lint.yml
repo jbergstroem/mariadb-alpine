@@ -22,7 +22,7 @@ jobs:
     name: hadolint
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: jbergstroem/hadolint-gh-action@v1
+      - uses: jbergstroem/hadolint-gh-action@v1.5.0
   prettier:
     runs-on: ubuntu-20.04
     name: prettier
