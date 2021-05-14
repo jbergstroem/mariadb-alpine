@@ -23,6 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2.3.4
       - uses: jbergstroem/hadolint-gh-action@v1.5.0
+        with:
+          error_level: 2
   prettier:
     runs-on: ubuntu-20.04
     name: prettier
