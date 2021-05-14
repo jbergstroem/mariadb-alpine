@@ -79,6 +79,17 @@ $ docker run -it --rm --name=db \
          jbergstroem/mariadb-alpine
 ```
 
+Using a volume and a port to allow the host to access the container:
+
+```console
+$ docker volume create db
+db
+$ docker run -it --rm --name=db \
+         -v db:/var/lib/mysql \
+         -p 3306:3306
+         jbergstroem/mariadb-alpine
+```
+
 ### Customization
 
 You can override default behavior by passing environment variables. All flags
@@ -97,11 +108,12 @@ are unset unless provided.
 ### Adding your custom config
 
 You can add your custom `my.cnf` with various settings (be it for production or tuning InnoDB).
+You can also add other `.cnf` files in `/etc/my.cnf.d/` they will be loaded.
 Note: this will bypass `SKIP_INNODB` since it is injected into the default config on launch.
 
 ```console
 $ docker run -it --rm --name=db \
-         -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf \
+         -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf:ro \
          jbergstroem/mariadb-alpine
 ```
 
@@ -170,6 +182,8 @@ we only track disk space:
 | bitnami/mariadb            | <img src="https://img.shields.io/docker/v/bitnami/mariadb/10.4?color=666&label=%22%22">              | <img src="https://img.shields.io/docker/image-size/bitnami/mariadb/10.4?color=666&label=%22%22">             |
 | yobasystems/alpine-mariadb | <img src="https://img.shields.io/docker/v/yobasystems/alpine-mariadb?color=666&label=%22%22">        | <img src="https://img.shields.io/docker/image-size/yobasystems/alpine-mariadb?color=666&label=%22%22">       |
 | jbergstroem/mariadb-alpine | <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=666&&sort=semver&label="> | <img src="https://img.shields.io/docker/image-size/jbergstroem/mariadb-alpine?color=666&sort=semver&label="> |
+| tobi312/rpi-mariadb        | <img src="https://img.shields.io/docker/v/tobi312/rpi-mariadb?color=666&&sort=semver&label=">        | <img src="https://img.shields.io/docker/image-size/tobi312/rpi-mariadb?color=666&sort=semver&label=">        |
+| linuxserver/mariadb:alpine | <img src="https://img.shields.io/docker/v/linuxserver/mariadb/alpine?color=666&&sort=semver&label="> | <img src="https://img.shields.io/docker/image-size/linuxserver/mariadb/alpine?color=666&sort=semver&label="> |
 
 [1]: https://mariadb.org
 [2]: https://alpinelinux.org
