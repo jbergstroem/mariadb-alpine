@@ -19,7 +19,6 @@ SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 RUN \
   apk add --no-cache mariadb=10.4.18-r0 && \
   TO_KEEP=$(echo " \
-    usr/bin/mysql$ \
     usr/bin/mysqld$ \
     usr/bin/mariadb$ \
     usr/bin/getconf$ \
@@ -34,15 +33,15 @@ RUN \
     usr/share/mariadb/maria_add_gis_sp_bootstrap.sql$ \
     usr/share/mariadb/fill_help_tables.sql$" | \
     tr -d " \t\n\r" | sed -e 's/usr/|usr/g' -e 's/^.//') && \
-  INSTALLED_FILES="$(apk info -q -L mariadb-client | tail -n +2) \
-  $(apk info -q -L mariadb-common | tail -n +2) \
-  $(apk info -q -L mariadb | tail -n +2)" && \
-  for path in $(echo "${INSTALLED_FILES}" | grep -v -E "${TO_KEEP}"); do \
+  INSTALLED=$(apk info -q -L mariadb-common mariadb linux-pam | grep "\S") && \
+  for path in $(echo "${INSTALLED}" | grep -v -E "${TO_KEEP}"); do \
     eval rm -rf "${path}"; \
   done && \
   touch /usr/share/mariadb/mysql_test_db.sql && \
+  # this file is removed since we remove most things from mariadb-common
+  echo "!includedir /etc/my.cnf.d" > /etc/my.cnf && \
   # allow anyone to connect by default
-  sed -i -e 's/127.0.0.1/%/' /usr/share/mariadb/mysql_system_tables_data.sql && \
+  sed -ie 's/127.0.0.1/%/' /usr/share/mariadb/mysql_system_tables_data.sql && \
   mkdir /run/mysqld && \
   chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
 
