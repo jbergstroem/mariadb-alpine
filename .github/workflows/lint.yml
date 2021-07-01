@@ -22,7 +22,7 @@ jobs:
     name: hadolint
     steps:
       - uses: actions/checkout@v2.3.4
-      - uses: jbergstroem/hadolint-gh-action@v1.6.0
+      - uses: jbergstroem/hadolint-gh-action@v1.7.0
         with:
           error_level: 2
   prettier:
