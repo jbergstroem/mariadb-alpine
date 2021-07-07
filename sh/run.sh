@@ -62,13 +62,14 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
     SOCKET="/run/mysqld/mysqld.sock"
     MYSQL_CMD="mysql"
 
+    MYSQLD_OUTPUT=/tmp/mysqldoutput
     # Start a mysqld we will use to pass init stuff to. Can't use the same options
     # as a standard instance; pass them manually.
-    mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
+    mysqld --user=mysql --skip-networking --socket=${SOCKET} > "${MYSQLD_OUTPUT}" 2>&1 &
     PID="$!"
 
-    # perhaps trap this to avoid issues on slow systems?
-    sleep 1
+    # wait for mysqld to accept connections
+    ( tail -f "${MYSQLD_OUTPUT}" & ) | grep -q "mysqld: ready for connections"
 
     # Run the init script
     echo "init: updating system tables"
@@ -86,8 +87,13 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
       esac
     done
 
-    # Clean up
+    # shutdown temporary mysqld
     kill -s TERM "${PID}"
+    # wait for mysqld to be shutdown
+    ( tail -f "${MYSQLD_OUTPUT}" & ) | grep -q "mysqld: Shutdown complete"
+
+    # Clean up
+    rm -f "${MYSQLD_OUTPUT}"
     echo "init: removing mysql client"
     apk del -q --no-cache mariadb-client
   else
@@ -98,5 +104,9 @@ fi
 # make sure directory permissions are correct before starting up
 # https://github.com/jbergstroem/mariadb-alpine/issues/54
 chown -R mysql:mysql /var/lib/mysql
+
+# explicitly set skip-networking to FALSE due to some problems in mariadb version lower than 10.4.17
+# https://github.com/jbergstroem/mariadb-alpine/issues/62
+MYSQLD_OPTS="${MYSQLD_OPTS} --skip-networking=FALSE"
 
 eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"
