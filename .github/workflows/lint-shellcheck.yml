@@ -1,5 +1,10 @@
 name: lint
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - "**.bash"
+      - "**.bats"
+      - "**.sh"
 
 jobs:
   shellcheck:
@@ -17,23 +22,3 @@ jobs:
         run: shellcheck -s bash test/*.bats test/*.bash sh/*.bash
       - name: test utility scripts
         run: shellcheck -s dash sh/*.sh
-  hadolint:
-    runs-on: ubuntu-20.04
-    name: hadolint
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: jbergstroem/hadolint-gh-action@v1.8.0
-        with:
-          error_level: 2
-  prettier:
-    runs-on: ubuntu-20.04
-    name: prettier
-    steps:
-      - uses: actions/checkout@v2.3.4
-      - uses: actions/setup-node@v2.4.0
-        with:
-          node-version: "14.x"
-      - name: install prettier
-        run: npm install -g prettier
-      - name: run prettier
-        run: prettier -c .
