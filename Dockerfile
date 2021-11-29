@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
 RUN \
-  apk add --no-cache mariadb=10.4.21-r0 && \
+  apk add --no-cache mariadb=10.4.22-r0 && \
   TO_KEEP=$(echo " \
     usr/bin/mysqld$ \
     usr/bin/mariadb$ \
