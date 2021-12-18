@@ -62,3 +62,9 @@ HEALTHCHECK --start-period=5s CMD pgrep mysqld
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
 EXPOSE 3306
+
+
+# docker login
+# docker build ./ -f Dockerfile -t mysql:1
+# docker tag mysql:1 yorkane/alpine-mariadb:10.4.22
+# docker push yorkane/alpine-mariadb:10.4.22
