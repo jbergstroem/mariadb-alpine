@@ -14,7 +14,7 @@ if [ -z "$(ls -A /etc/my.cnf.d/* 2> /dev/null)" ]; then
         -e '/^innodb/d' /etc/my.cnf.d/my.cnf
 fi
 
-MYSQLD_OPTS="--user=mysql"
+MYSQLD_OPTS="--user=mysql --port=${MYSQL_PORT} ${MYSQL_EXT_OPTS}"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-host-cache"
 MYSQLD_OPTS="${MYSQLD_OPTS} --skip-slave-start"
@@ -99,4 +99,6 @@ fi
 # https://github.com/jbergstroem/mariadb-alpine/issues/54
 chown -R mysql:mysql /var/lib/mysql
 
+printenv
+echo "/usr/bin/mysqld ${MYSQLD_OPTS}"
 eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"

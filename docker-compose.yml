@@ -1,0 +1,22 @@
+version: "3"
+services:
+  mysql:
+    image: jbergstroem/mariadb-alpine
+    container_name: mysql
+    ports:
+      - "3306:3306/tcp"
+    volumes:
+      - ${DATA_ROOT:-.}/db/data:/var/lib/mysql # where database and logs preserve
+      - ${DATA_ROOT:-.}/db/init:/docker-entrypoint-initdb.d # All xxx.sql, xxx.sql.gz will load into MY_DB. All `xxx.sh` will be executed
+    environment:
+      - MYSQL_DATABASE=${MY_DB:-mtest}
+      - MYSQL_CHARSET=${MY_DB_CHARSET:-utf8mb4}
+      - MYSQL_COLLATION=${MY_DB_COLLATION:-utf8mb4_general_ci}
+      - MYSQL_USER=${MY_DB_USER:-mtest}
+      - MYSQL_PASSWORD=${MY_DB_PASSWORD:-mtest} #
+      - MYSQL_ROOT_PASSWORD=${MY_ROOT_PASSWORD:-root} # set the root password
+      - MYSQL_PORT=3306
+# extra options for mysqld
+#https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html
+# Verify by `SHOW GLOBAL VARIABLES LIKE 'innodb_flush_log%';`
+      - MYSQL_EXT_OPTS= --innodb-flush-log-at-trx-commit=0 --innodb-flush-log-at-timeout=0

@@ -35,6 +35,7 @@ RUN \
     tr -d " \t\n\r" | sed -e 's/usr/|usr/g' -e 's/^.//') && \
   INSTALLED=$(apk info -q -L mariadb-common mariadb linux-pam | grep "\S") && \
   for path in $(echo "${INSTALLED}" | grep -v -E "${TO_KEEP}"); do \
+    echo "remove ${path}";\
     eval rm -rf "${path}"; \
   done && \
   touch /usr/share/mariadb/mysql_test_db.sql && \
@@ -43,7 +44,8 @@ RUN \
   # allow anyone to connect by default
   sed -ie 's/127.0.0.1/%/' /usr/share/mariadb/mysql_system_tables_data.sql && \
   mkdir /run/mysqld && \
-  chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
+  chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql && \
+  rm /etc/my.cnf.d/* -rf
 
 # The one installed by MariaDB was removed in the clean step above due to its large footprint
 COPY sh/resolveip.sh /usr/bin/resolveip
