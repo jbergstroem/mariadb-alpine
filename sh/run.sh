@@ -98,7 +98,7 @@ fi
 # make sure directory permissions are correct before starting up
 # https://github.com/jbergstroem/mariadb-alpine/issues/54
 chown -R mysql:mysql /var/lib/mysql
-
+chmod 644 /etc/my.cnf.d/my.cnf
 printenv
 echo "/usr/bin/mysqld ${MYSQLD_OPTS}"
 eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"
