@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:3.15
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
@@ -17,13 +17,16 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
 RUN \
-  apk add --no-cache mariadb=10.4.22-r0 && \
+  apk add --no-cache mariadb=10.6.4-r2 && \
   TO_KEEP=$(echo " \
+    usr/bin/mariadbd$ \
     usr/bin/mysqld$ \
     usr/bin/mariadb$ \
+    usr/bin/mysql$ \
     usr/bin/getconf$ \
     usr/bin/getent$ \
     usr/bin/my_print_defaults$ \
+    usr/bin/mariadb-install-db$ \
     usr/bin/mysql_install_db$ \
     usr/share/mariadb/charsets \
     usr/share/mariadb/english \
@@ -31,6 +34,7 @@ RUN \
     usr/share/mariadb/mysql_performance_tables.sql$ \
     usr/share/mariadb/mysql_system_tables_data.sql$ \
     usr/share/mariadb/maria_add_gis_sp_bootstrap.sql$ \
+    usr/share/mariadb/mysql_sys_schema.sql$ \
     usr/share/mariadb/fill_help_tables.sql$" | \
     tr -d " \t\n\r" | sed -e 's/usr/|usr/g' -e 's/^.//') && \
   INSTALLED=$(apk info -q -L mariadb-common mariadb linux-pam | grep "\S") && \
