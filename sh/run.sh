@@ -10,7 +10,7 @@ if [ -z "$(ls -A /etc/my.cnf.d/* 2> /dev/null)" ]; then
   # files in /etc/
   cp /tmp/my.cnf /etc/my.cnf.d/
   [ -n "${SKIP_INNODB}" ] || [ -f "/var/lib/mysql/noinnodb" ] &&
-    sed -i -e '/\[mariadb\]/a skip_innodb = yes\ndefault_storage_engine = MyISAM\ndefault_tmp_storage_engine = MyISAM' \
+    sed -i -e '/\[mariadb\]/a skip_innodb = yes\ndefault_storage_engine = Aria\ndefault_tmp_storage_engine = Aria' \
         -e '/^innodb/d' /etc/my.cnf.d/my.cnf
 fi
 
