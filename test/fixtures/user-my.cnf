@@ -1,5 +1,6 @@
 [mariadb]
 skip_innodb = yes
-default_storage_engine = MyISAM
-default_tmp_storage_engine = MyISAM
+default_storage_engine = Aria
+default_tmp_storage_engine = Aria
 key_buffer_size = 1048576
+aria_log_file_size = 8M
