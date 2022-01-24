@@ -20,14 +20,11 @@ RUN \
   apk add --no-cache mariadb=10.6.4-r2 && \
   TO_KEEP=$(echo " \
     usr/bin/mariadbd$ \
-    usr/bin/mysqld$ \
     usr/bin/mariadb$ \
-    usr/bin/mysql$ \
     usr/bin/getconf$ \
     usr/bin/getent$ \
     usr/bin/my_print_defaults$ \
     usr/bin/mariadb-install-db$ \
-    usr/bin/mysql_install_db$ \
     usr/share/mariadb/charsets \
     usr/share/mariadb/english \
     usr/share/mariadb/mysql_system_tables.sql$ \
