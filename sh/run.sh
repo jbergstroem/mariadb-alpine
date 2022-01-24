@@ -34,7 +34,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
   INSTALL_OPTS="${INSTALL_OPTS} --auth-root-authentication-method=normal"
   INSTALL_OPTS="${INSTALL_OPTS} --skip-test-db"
   INSTALL_OPTS="${INSTALL_OPTS} --datadir=/var/lib/mysql"
-  eval /usr/bin/mysql_install_db "${INSTALL_OPTS}"
+  eval /usr/bin/mariadb-install-db "${INSTALL_OPTS}"
 
   if [ -n "${MYSQL_DATABASE}" ]; then
     [ -n "${MYSQL_CHARSET}" ] || MYSQL_CHARSET="utf8"
@@ -60,11 +60,11 @@ if [ -z "$(ls -A /var/lib/mysql/ 2> /dev/null)" ]; then
     apk add -q --no-cache mariadb-client
 
     SOCKET="/run/mysqld/mysqld.sock"
-    MYSQL_CMD="mysql"
+    MYSQL_CMD="mariadb"
 
     # Start a mysqld we will use to pass init stuff to. Can't use the same options
     # as a standard instance; pass them manually.
-    mysqld --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
+    mariadbd --user=mysql --silent-startup --skip-networking --socket=${SOCKET} > /dev/null 2>&1 &
     PID="$!"
 
     # perhaps trap this to avoid issues on slow systems?
@@ -99,4 +99,4 @@ fi
 # https://github.com/jbergstroem/mariadb-alpine/issues/54
 chown -R mysql:mysql /var/lib/mysql
 
-eval exec /usr/bin/mysqld "${MYSQLD_OPTS}"
+eval exec /usr/bin/mariadbd "${MYSQLD_OPTS}"
