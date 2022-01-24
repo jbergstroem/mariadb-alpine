@@ -39,7 +39,7 @@ load test_helper
   local name="sh-import"
   local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
-  echo "mysql -e \"create database mydatabase;\"" > "${tmpdir}/custom.sh"
+  echo "mariadb -e \"create database mydatabase;\"" > "${tmpdir}/custom.sh"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
