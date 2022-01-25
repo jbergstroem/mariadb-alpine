@@ -13,6 +13,16 @@ load test_helper
   stop "${name}"
 }
 
+@test "default to Aria when InnoDB is turned off" {
+  local name="skipinnodb-ariadb-default"
+  create ${name} "-e SKIP_INNODB=1"
+  wait_until_up "${name}"
+  run client_query "${name}" "-s -N -e 'SELECT ENGINE FROM INFORMATION_SCHEMA.ENGINES where SUPPORT=\"DEFAULT\";'"
+  [[ "$status" -eq 0 ]]
+  [[ "$output" == "Aria" ]]
+  stop "${name}"
+}
+
 @test "start a server with a custom root password" {
   local name="root-password"
   create ${name} "-e SKIP_INNODB=1 -e MYSQL_ROOT_PASSWORD=secretsauce"
