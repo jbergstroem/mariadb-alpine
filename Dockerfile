@@ -19,6 +19,7 @@ SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 RUN \
   apk add --no-cache mariadb=10.6.4-r2 && \
   TO_KEEP=$(echo " \
+    etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadbd$ \
     usr/bin/mariadb$ \
     usr/bin/getconf$ \
@@ -34,7 +35,7 @@ RUN \
     usr/share/mariadb/mysql_sys_schema.sql$ \
     usr/share/mariadb/fill_help_tables.sql$" | \
     tr -d " \t\n\r" | sed -e 's/usr/|usr/g' -e 's/^.//') && \
-  INSTALLED=$(apk info -q -L mariadb-common mariadb linux-pam | grep "\S") && \
+  INSTALLED=$(apk info -q -L mariadb-common mariadb linux-pam ca-certificates | grep "\S") && \
   for path in $(echo "${INSTALLED}" | grep -v -E "${TO_KEEP}"); do \
     eval rm -rf "${path}"; \
   done && \
