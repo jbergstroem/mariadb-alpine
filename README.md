@@ -1,5 +1,6 @@
 <p align="center">
-  <a href="https://github.com/jbergstroem/mariadb-alpine"><img width="450" src="mariadb-alpine.svg"></a>
+  <a href="https://github.com/jbergstroem/mariadb-alpine#gh-light-mode-only"><img width="450" src="mariadb-alpine.svg"></a>
+  <a href="https://github.com/jbergstroem/mariadb-alpine#gh-dark-mode-only"><img width="450" src="mariadb-alpine-light.svg"></a>
 </p>
 <p align="center">
   <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=999&sort=semver">
