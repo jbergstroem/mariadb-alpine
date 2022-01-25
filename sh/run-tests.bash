@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+[[ -n "${DEBUG}" ]] && set -x
 set -euo pipefail
 
 export IMAGE=${IMAGE:-jbergstroem/mariadb-alpine}
@@ -9,6 +11,13 @@ DEFAULT_TMPDIR=${TMPDIR:-/tmp}
 
 MY_TMPDIR=$(mktemp -d "${DEFAULT_TMPDIR}"/"${TEST_PREFIX}".XXXXXX)
 export MY_TMPDIR
+
+PROC=""
+if [[ "$(uname)" == "Darwin" ]]; then
+  PROC="$(sysctl -n hw.logicalcpu)"
+else
+  PROC="$(nproc)"
+fi
 
 # Check prerequisites before starting
 command -v docker  > /dev/null 2>&1
@@ -25,7 +34,7 @@ clean() {
 
 # clean previous runs
 clean
-bats test/*.bats -j "$(nproc)"
+bats -j "${PROC}" test/*.bats
 clean
 # remove temp folders. make sure this cannot be destructive if for instance
 # ${MY_TMPDIR} would be "/"
