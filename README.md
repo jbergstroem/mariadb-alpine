@@ -154,21 +154,24 @@ instructions in [their repository][4]. To test:
 ```console
 $ sh/build-image.sh
 <snip>
-$ VERSION=c363434 sh/run-tests.bash
- ✓ should output mysqld version
+$ VERSION=e558404 sh/run-tests.bash
+ ✓ should output mariadbd version
  ✓ start a default server with InnoDB and no password
  ✓ start a server without a dedicated volume (issue #1)
  ✓ start a server without InnoDB
+ ✓ default to Aria when InnoDB is turned off
  ✓ start a server with a custom root password
  ✓ start a server with a custom database
  ✓ start a server with a custom database, user and password
+ ✓ should allow to customize the database charset
+ ✓ should allow to customize the database collation
  ✓ verify that binary logging is turned off
  ✓ should allow a user to pass a custom config
  ✓ should import a .sql file and execute it
  ✓ should import a compressed file and execute it
  ✓ should execute an imported shell script
 
-12 tests, 0 failures
+15 tests, 0 failures
 ```
 
 ## Benchmarks
