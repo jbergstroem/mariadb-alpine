@@ -24,3 +24,8 @@ test_verify_no_default_binlog() {
   assert_equals "0" "${ret}"
   stop "${name}"
 }
+
+test_verify_running_user() {
+  ret=$(docker run --rm --entrypoint whoami "jbergstroem/mariadb-alpine:${IMAGE_VERSION}")
+  assert_equals "mysql" "${ret}"
+}
