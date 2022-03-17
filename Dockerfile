@@ -45,11 +45,14 @@ RUN \
   # allow anyone to connect by default
   sed -ie 's/127.0.0.1/%/' /usr/share/mariadb/mysql_system_tables_data.sql && \
   mkdir /run/mysqld && \
-  chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
+  chown -R mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
 
 # The one installed by MariaDB was removed in the clean step above due to its large footprint
 COPY sh/resolveip.sh /usr/bin/resolveip
 COPY sh/run.sh /run.sh
+
+USER mysql
+
 # Used in run.sh as a default config
 COPY my.cnf /tmp/my.cnf
 
