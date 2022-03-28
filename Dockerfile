@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
 RUN \
-  apk add --no-cache mariadb=10.6.4-r2 && \
+  apk add --no-cache mariadb=10.6.7-r0 && \
   TO_KEEP=$(echo " \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadbd$ \
