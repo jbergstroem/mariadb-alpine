@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-20.04
     name: prettier
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.0
       - uses: actions/setup-node@v3.1.0
         with:
-          node-version: "14.x"
+          node-version: 16
       - name: install prettier
         run: npm install -g prettier
       - name: run prettier
