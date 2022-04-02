@@ -9,10 +9,10 @@ jobs:
     name: actionlint
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3.0.0
       - name: Install Actionlint
         env:
-          ACTIONLINT_VERSION: 1.6.3
+          ACTIONLINT_VERSION: 1.6.10
         run: |
           wget -q -O- "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar -x -z -C . actionlint && \
           mv actionlint /usr/local/bin
