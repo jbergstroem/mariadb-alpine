@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.16
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
 RUN \
-  apk add --no-cache mariadb=10.6.7-r0 && \
+  apk add --no-cache mariadb=10.6.8-r0 && \
   TO_KEEP=$(echo " \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadbd$ \
