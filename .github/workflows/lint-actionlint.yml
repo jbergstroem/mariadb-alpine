@@ -9,7 +9,7 @@ jobs:
     name: actionlint
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
       - name: Install Actionlint
         env:
           ACTIONLINT_VERSION: 1.6.10
