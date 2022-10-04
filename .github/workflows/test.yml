@@ -6,7 +6,7 @@ jobs:
     name: bats
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
       - name: assign version for usage
         run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
         id: assign
