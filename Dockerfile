@@ -16,15 +16,16 @@ LABEL org.opencontainers.image.created=$BUILD_DATE \
 
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
+ARG VERSION=10.6.9-r0
+
 RUN \
-  apk add --no-cache mariadb=10.6.9-r0 && \
+  apk add --no-cache mariadb=${VERSION} && \
   TO_KEEP=$(echo " \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadbd$ \
     usr/bin/mariadb$ \
     usr/bin/getconf$ \
     usr/bin/getent$ \
-    usr/bin/my_print_defaults$ \
     usr/bin/mariadb-install-db$ \
     usr/share/mariadb/charsets \
     usr/share/mariadb/english \
@@ -47,8 +48,10 @@ RUN \
   mkdir /run/mysqld && \
   chown mysql:mysql /etc/my.cnf.d/ /run/mysqld /usr/share/mariadb/mysql_system_tables_data.sql
 
-# The one installed by MariaDB was removed in the clean step above due to its large footprint
+# The ones installed by MariaDB was removed in the clean step above due to its large footprint
+# my_print_defaults should cover 95% of cases since it doesn't properly do recursion
 COPY sh/resolveip.sh /usr/bin/resolveip
+COPY sh/my_print_defaults.sh /usr/bin/my_print_defaults
 COPY sh/run.sh /run.sh
 # Used in run.sh as a default config
 COPY my.cnf /tmp/my.cnf
