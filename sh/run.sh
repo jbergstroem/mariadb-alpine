@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 set -eo pipefail
 
 touch /tmp/init

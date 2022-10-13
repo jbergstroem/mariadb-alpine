@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=dash
 set -euo pipefail
 
 [ -z "${1:-}" ] && exit 1
