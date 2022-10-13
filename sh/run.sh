@@ -99,6 +99,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
     kill -s TERM "${PID}"
     echo "init: removing mysql client"
     apk del -q --no-cache mariadb-client
+    wait "${PID}"
   else
     MYSQLD_OPTS="${MYSQLD_OPTS} --init-file=/tmp/init"
   fi
