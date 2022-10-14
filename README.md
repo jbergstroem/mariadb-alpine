@@ -6,9 +6,9 @@
   </picture>
 </p>
 <p align="center">
-  <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?color=999&sort=semver">
-  <img src="https://img.shields.io/docker/image-size/jbergstroem/mariadb-alpine?color=999&sort=semver">
-  <img src="https://img.shields.io/docker/pulls/jbergstroem/mariadb-alpine?color=999&sort=semver">
+  <img src="https://img.shields.io/docker/v/jbergstroem/mariadb-alpine?style=flat&color=999&sort=semver">
+  <img src="https://img.shields.io/docker/image-size/jbergstroem/mariadb-alpine?style=flat&color=999&sort=semver">
+  <img src="https://img.shields.io/docker/pulls/jbergstroem/mariadb-alpine?style=flat&color=999&sort=semver">
 </p>
 <p align="center">
   <a href="#a-tiny-mariadb-image">About</a> |
@@ -43,34 +43,34 @@ Licensed under [MIT](./LICENSE).
 "Default" startup:
 
 ```console
-$ docker run -it --rm --name=db \
-         jbergstroem/mariadb-alpine
+$ docker run -it --rm -p 3306:3306 --name=mariadb \
+    jbergstroem/mariadb-alpine
 ```
 
-If you prefer skipping InnoDB (read: faster), this is for you:
+Skip InnoDB (faster startup):
 
 ```console
 $ docker run -it --rm --name=db \
-         -e SKIP_INNODB=yes \
-         jbergstroem/mariadb-alpine
+    -e SKIP_INNODB=yes \
+    jbergstroem/mariadb-alpine
 ```
 
-Creating your own database with a user/password assigned to it:
+Create a database with a user/password to access it:
 
 ```console
-$ docker run -it --rm --name=db \
-         -e MYSQL_USER=foo \
-         -e MYSQL_DATABASE=bar \
-         -e MYSQL_PASSWORD=baz \
-         jbergstroem/mariadb-alpine
+$ docker run -it --rm --name=mariadb \
+    -e MYSQL_USER=foo \
+    -e MYSQL_DATABASE=bar \
+    -e MYSQL_PASSWORD=baz \
+    jbergstroem/mariadb-alpine
 ```
 
-The `root` user is intentionally left password-less. Should you insist setting one, pass `MYSQL_ROOT_PASSWORD` at initialization stage:
+The `root` user is intentionally left password-less. To set it, define `MYSQL_ROOT_PASSWORD` at initialization stage:
 
 ```console
-$ docker run -it --rm --name=db \
-         -e MYSQL_ROOT_PASSWORD=secretsauce \
-         jbergstroem/mariadb-alpine
+$ docker run -it --rm --name=mariadb \
+    -e MYSQL_ROOT_PASSWORD=secret \
+    jbergstroem/mariadb-alpine
 ```
 
 Using a volume to persist your storage across restarts:
@@ -78,20 +78,20 @@ Using a volume to persist your storage across restarts:
 ```console
 $ docker volume create db
 db
-$ docker run -it --rm --name=db \
-         -v db:/var/lib/mysql \
-         jbergstroem/mariadb-alpine
+$ docker run -it --rm --name=mariadb \
+    -v db:/var/lib/mysql \
+    jbergstroem/mariadb-alpine
 ```
 
-Using a volume and a port to allow the host to access the container:
+Using a volume and a different port (3307) to access the container:
 
 ```console
 $ docker volume create db
 db
 $ docker run -it --rm --name=db \
-         -v db:/var/lib/mysql \
-         -p 3306:3306
-         jbergstroem/mariadb-alpine
+    -v db:/var/lib/mysql \
+    -p 3307:3306
+    jbergstroem/mariadb-alpine
 ```
 
 ### Customization
@@ -112,13 +112,13 @@ are unset unless provided.
 ### Adding your custom config
 
 You can add your custom `my.cnf` with various settings (be it for production or tuning InnoDB).
-You can also add other `.cnf` files in `/etc/my.cnf.d/` they will be loaded.
-Note: this will bypass `SKIP_INNODB` since it is injected into the default config on launch.
+You can also add other `.cnf` files in `/etc/my.cnf.d/`, which will be [included by MariaDB on start][5].
+Note: If you mount your own configs, defaults and custom logic like `SKIP_INNODB` will be ignored.
 
 ```console
-$ docker run -it --rm --name=db \
-         -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf:ro \
-         jbergstroem/mariadb-alpine
+$ docker run -it --rm --name=mariadb \
+    -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf:ro \
+    jbergstroem/mariadb-alpine
 ```
 
 ### Adding custom sql on init
@@ -137,14 +137,14 @@ init: executing /docker-entrypoint-initdb.d/custom.sh
 Hello from script
 init: adding /docker-entrypoint-initdb.d/mydatabase.sql
 init: removing mysql client
-2020-06-21  5:28:02 0 [Note] /usr/bin/mysqld (mysqld 10.4.13-MariaDB) starting as process 1 ...
-2020-06-21  5:28:03 0 [Note] Plugin 'InnoDB' is disabled.
-2020-06-21  5:28:03 0 [Note] Plugin 'FEEDBACK' is disabled.
-2020-06-21  5:28:03 0 [Note] Server socket created on IP: '::'.
-2020-06-21  5:28:03 0 [Note] Reading of all Master_info entries succeeded
-2020-06-21  5:28:03 0 [Note] Added new Master_info '' to hash table
-2020-06-21  5:28:03 0 [Note] /usr/bin/mysqld: ready for connections.
-Version: '10.4.13-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
+2022-10-14 12:09:24 0 [Note] /usr/bin/mariadbd (server 10.6.9-MariaDB) starting as process 1 ...
+2022-10-14 12:09:24 0 [Note] Plugin 'InnoDB' is disabled.
+2022-10-14 12:09:24 0 [Note] Plugin 'FEEDBACK' is disabled.
+2022-10-14 12:09:24 0 [Note] Server socket created on IP: '0.0.0.0'.
+2022-10-14 12:09:24 0 [Note] /usr/bin/mariadbd: ready for connections.
+Version: '10.6.9-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
+^C2022-10-14 12:09:35 0 [Note] /usr/bin/mariadbd (initiated by: unknown): Normal shutdown
+2022-10-14 12:09:35 0 [Note] /usr/bin/mariadbd: Shutdown complete
 ```
 
 The procedure is similar to how other images implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
@@ -196,3 +196,4 @@ we only track disk space:
 [2]: https://alpinelinux.org
 [3]: https://github.com/bats-core/bats-core
 [4]: https://github.com/bats-core/bats-core#installation
+[5]: https://git.alpinelinux.org/aports/tree/main/mariadb/APKBUILD#n327
