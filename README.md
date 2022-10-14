@@ -143,8 +143,6 @@ init: removing mysql client
 2022-10-14 12:09:24 0 [Note] Server socket created on IP: '0.0.0.0'.
 2022-10-14 12:09:24 0 [Note] /usr/bin/mariadbd: ready for connections.
 Version: '10.6.9-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
-^C2022-10-14 12:09:35 0 [Note] /usr/bin/mariadbd (initiated by: unknown): Normal shutdown
-2022-10-14 12:09:35 0 [Note] /usr/bin/mariadbd: Shutdown complete
 ```
 
 The procedure is similar to how other images implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
