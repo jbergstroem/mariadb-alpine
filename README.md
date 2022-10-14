@@ -25,7 +25,7 @@
 The goal of this project is to achieve a high quality, bite-sized, fast startup docker image for [MariaDB][1].
 It is built on the excellent, container-friendly Linux distribution [Alpine Linux][2].
 
-Licensed under [MIT](./LICENSE).
+Licensed under [MIT][7].
 
 ## Features
 
@@ -50,7 +50,7 @@ $ docker run -it --rm -p 3306:3306 --name=mariadb \
 Skip InnoDB (faster startup):
 
 ```console
-$ docker run -it --rm --name=db \
+$ docker run -it --rm --name=mariadb \
     -e SKIP_INNODB=yes \
     jbergstroem/mariadb-alpine
 ```
@@ -90,7 +90,7 @@ $ docker volume create db
 db
 $ docker run -it --rm --name=db \
     -v db:/var/lib/mysql \
-    -p 3307:3306
+    -p 3307:3306 \
     jbergstroem/mariadb-alpine
 ```
 
@@ -194,4 +194,5 @@ Check out the tool to generate this data [here][6].
 [3]: https://github.com/bats-core/bats-core
 [4]: https://github.com/bats-core/bats-core#installation
 [5]: https://git.alpinelinux.org/aports/tree/main/mariadb/APKBUILD#n327
-[6]: https://github.com/jbergstroem/mariadb-alpine/blob/main/sh/generate-benchmark.sh
+[6]: ./sh/generate-benchmark.sh
+[7]: ./LICENSE
