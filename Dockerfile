@@ -3,20 +3,21 @@ FROM alpine:3.16
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
 ARG VCS_REF
+ARG VERSION=10.6.9-r0
 
-LABEL org.opencontainers.image.created=$BUILD_DATE \
-  org.opencontainers.image.title="mariadb-alpine" \
-  org.opencontainers.image.description="A MariaDB container suitable for development" \
+LABEL \
   org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
-  org.opencontainers.image.revision=$VCS_REF \
+  org.opencontainers.image.created="$BUILD_DATE" \
+  org.opencontainers.image.description="A tiny MariaDB container" \
+  org.opencontainers.image.licenses="MIT" \
+  org.opencontainers.image.revision="$VCS_REF" \
   org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
+  org.opencontainers.image.title="jbergstroem/mariadb-alpine" \
   org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
-  org.opencontainers.image.schema-version="1.0.0-rc.1" \
-  org.opencontainers.image.license="MIT"
+  org.opencontainers.image.vendor="Johan Bergström" \
+  org.opencontainers.image.version="$VERSION"
 
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
-
-ARG VERSION=10.6.9-r0
 
 RUN \
   apk add --no-cache mariadb=${VERSION} && \
