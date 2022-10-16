@@ -24,7 +24,6 @@ RUN \
   TO_KEEP=$(echo " \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadbd$ \
-    usr/bin/mariadb$ \
     usr/bin/getconf$ \
     usr/bin/getent$ \
     usr/bin/mariadb-install-db$ \
