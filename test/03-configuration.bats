@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck shell=bash
 
 load test_helper
 
@@ -27,7 +28,7 @@ load test_helper
   local name="root-password"
   create ${name} "-e SKIP_INNODB=1 -e MYSQL_ROOT_PASSWORD=secretsauce"
   wait_until_up "${name}"
-  run client_query "${name}"  "--password=secretsauce -e 'select 1;'"
+  run client_query "${name}" "--password=secretsauce -e 'select 1;'"
   [[ "$status" -eq 0 ]]
   stop "${name}"
 }

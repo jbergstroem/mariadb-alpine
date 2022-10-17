@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 
 [[ -n "${DEBUG}" ]] && set -x
 set -euo pipefail
@@ -20,16 +21,16 @@ else
 fi
 
 # Check prerequisites before starting
-command -v docker  > /dev/null 2>&1
-docker inspect "${IMAGE}":"${VERSION}" > /dev/null 2>&1
+command -v docker >/dev/null 2>&1
+docker inspect "${IMAGE}":"${VERSION}" >/dev/null 2>&1
 
 clean() {
   local filter="" running="" volumes=""
   filter="-f name=${TEST_PREFIX}"
   running=$(docker ps -q "${filter}")
   volumes=$(docker volume ls -q "${filter}")
-  [ "${running}" == "" ] || echo "${running}" | xargs docker stop {} > /dev/null 2>&1
-  [ "${volumes}" == "" ] || echo "${volumes}" | xargs docker volume rm -f {} > /dev/null 2>&1
+  [ "${running}" == "" ] || echo "${running}" | xargs docker stop {} >/dev/null 2>&1
+  [ "${volumes}" == "" ] || echo "${volumes}" | xargs docker volume rm -f {} >/dev/null 2>&1
 }
 
 # clean previous runs
@@ -39,4 +40,4 @@ clean
 # remove temp folders. make sure this cannot be destructive if for instance
 # ${MY_TMPDIR} would be "/"
 SUFFIX=$(basename "${MY_TMPDIR}")
-find "${DEFAULT_TMPDIR}" -type d -maxdepth 1 -name "${SUFFIX}" -delete > /dev/null 2>&1
+find "${DEFAULT_TMPDIR}" -type d -maxdepth 1 -name "${SUFFIX}" -delete >/dev/null 2>&1

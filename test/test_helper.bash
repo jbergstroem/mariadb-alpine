@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# shellcheck shell=bash
 
 set -euo pipefail
 
@@ -11,8 +12,7 @@ create() {
 
 wait_until_up() {
   # $1: container name
-  until docker logs --tail 1 "${TEST_PREFIX}-${1}" 2>&1 | grep "Version:"
-  do
+  until docker logs --tail 1 "${TEST_PREFIX}-${1}" 2>&1 | grep "Version:"; do
     sleep 0.2
   done
 }
