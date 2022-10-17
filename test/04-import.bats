@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck shell=bash
 
 load test_helper
 
@@ -9,7 +10,7 @@ load test_helper
   local name="sql-import"
   local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
-  echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
+  echo "create database mydatabase;" >"${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
@@ -22,11 +23,11 @@ load test_helper
   local name="sql-import-gz"
   local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
-  echo "create database mydatabase;" > "${tmpdir}/mydatabase.sql"
+  echo "create database mydatabase;" >"${tmpdir}/mydatabase.sql"
   # if you seemingly get stuck here, it's because gzip is attempting to overwrite
   # the existing file. This means your previous run didn't execute successfully
   # and for some reason the temp directory wasn't properly cleaned.
-  gzip  "${tmpdir}/mydatabase.sql"
+  gzip "${tmpdir}/mydatabase.sql"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"
@@ -39,7 +40,7 @@ load test_helper
   local name="sh-import"
   local tmpdir="${MY_TMPDIR}/${name}"
   mkdir -p "${tmpdir}"
-  echo "mariadb -e \"create database mydatabase;\"" > "${tmpdir}/custom.sh"
+  echo "mariadb -e \"create database mydatabase;\"" >"${tmpdir}/custom.sh"
   create "${name}" "-e SKIP_INNODB=1 -v ${tmpdir}:/docker-entrypoint-initdb.d"
   wait_until_up "${name}"
   run client_query "${name}" "--database=mydatabase -e 'select 1;'"

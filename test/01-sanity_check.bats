@@ -1,4 +1,5 @@
 #!/usr/bin/env bats
+# shellcheck shell=bash
 
 load test_helper
 
@@ -10,6 +11,6 @@ load test_helper
   if [[ $(uname -s) == "Linux" ]]; then
     grepopt="-P"
   fi
-  run grep "${grepopt}" '^mariadbd\s+Ver\s+\d+\.\d+\.\d+-MariaDB*' <<< "${output}"
+  run grep "${grepopt}" '^mariadbd\s+Ver\s+\d+\.\d+\.\d+-MariaDB*' <<<"${output}"
   [[ "${status}" -eq 0 ]]
 }
