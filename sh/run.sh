@@ -82,6 +82,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
       case "${f}" in
       *.sh)
         echo "init: executing ${f}"
+        grep -q bash "${f}" && echo "Bash shell scripts are not supported - use busybox sh syntax instead." && exit 1
         /bin/sh "${f}"
         ;;
       *.sql)
