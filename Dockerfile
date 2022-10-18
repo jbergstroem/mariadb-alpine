@@ -4,7 +4,7 @@ FROM alpine:3.16
 ARG BUILD_DATE
 ARG VCS_REF
 # renovate: datasource=repology depName=alpine_3_16/mariadb versioning=loose
-ARG VERSION=10.6.9-r0
+ARG VERSION="10.6.9-r0"
 
 LABEL \
   org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
