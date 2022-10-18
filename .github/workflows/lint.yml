@@ -3,8 +3,17 @@ on:
   pull_request:
 
 jobs:
+  validate-renovate-config:
+    name: validate renovate config
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: validate
+        uses: rinchsan/renovate-config-validator@v0.0.12
+        with:
+          pattern: ".github/renovate.json"
   shellcheck:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: shellcheck
     steps:
       - uses: actions/checkout@v3.1.0
@@ -17,7 +26,7 @@ jobs:
       - name: test shell scripts
         run: shellcheck -S warning sh/*.sh test/*.{sh,bash}
   hadolint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: hadolint
     steps:
       - uses: actions/checkout@v3.1.0
@@ -26,12 +35,12 @@ jobs:
           error_level: 2
   actionlint:
     name: actionlint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3.1.0
       - name: Install Actionlint
         env:
-          ACTIONLINT_VERSION: 1.6.10
+          ACTIONLINT_VERSION: 1.6.21
         run: |
           wget -q -O- "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar -x -z -C . actionlint && \
           mv actionlint /usr/local/bin
@@ -39,7 +48,7 @@ jobs:
         run: |
           actionlint -format '{{range $err := .}}::error file={{$err.Filepath}},line={{$err.Line}},col={{$err.Column}}::{{$err.Message}}{{end}}' -ignore 'SC2016:' .github/workflows/*.yml
   prettier:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: prettier
     steps:
       - uses: actions/checkout@v3.1.0

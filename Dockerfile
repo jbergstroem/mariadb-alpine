@@ -3,6 +3,7 @@ FROM alpine:3.16
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
 ARG VCS_REF
+# renovate: datasource=repology depName=alpine_3_16/mariadb versioning=loose
 ARG VERSION=10.6.9-r0
 
 LABEL \

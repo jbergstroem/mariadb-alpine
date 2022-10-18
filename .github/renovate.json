@@ -1,0 +1,30 @@
+{
+  "timezone": "America/New_York",
+  "baseBranches": ["main"],
+  "dependencyDashboard": true,
+  "extends": [
+    "config:base",
+    "group:allNonMajor",
+    "helpers:disableTypesNodeMajor",
+    "schedule:earlyMondays"
+  ],
+  "prConcurrentLimit": 0,
+  "branchConcurrentLimit": 0,
+  "commitMessageAction": "",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "{{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
+  "regexManagers": [
+    {
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sENV .*?_VERSION=\"(?<currentValue>.*)\"\\s"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    }
+  ],
+  "labels": ["dependencies"],
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
+  "prHeader": "",
+  "prFooter": "",
+  "semanticCommits": "enabled"
+}
