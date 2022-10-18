@@ -1,4 +1,4 @@
-name: build & test
+name: test
 on: pull_request
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3.1.0
       - name: assign version for usage
         id: assign
-        run: echo "name=version::$(git rev-parse --short HEAD) >> $GITHUB_OUTPUT"
+        run: echo version="$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
       - name: build the container
         run: sh/build-image.sh
         env:
