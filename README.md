@@ -149,30 +149,31 @@ The procedure is similar to how other images implements it; shell scripts are ex
 
 ## Testing
 
-This container image is tested with [`bats`][3] - a bash testing framework. You can find installation
+This container image is tested with [`bash_unit`][3] - a bash testing framework. You can find installation
 instructions in [their repository][4]. To test:
 
 ```console
 $ sh/build-image.sh
 <snip>
-$ VERSION=e558404 sh/run-tests.bash
- ✓ should output mariadbd version
- ✓ start a default server with InnoDB and no password
- ✓ start a server without a dedicated volume (issue #1)
- ✓ start a server without InnoDB
- ✓ default to Aria when InnoDB is turned off
- ✓ start a server with a custom root password
- ✓ start a server with a custom database
- ✓ start a server with a custom database, user and password
- ✓ should allow to customize the database charset
- ✓ should allow to customize the database collation
- ✓ verify that binary logging is turned off
- ✓ should allow a user to pass a custom config
- ✓ should import a .sql file and execute it
- ✓ should import a compressed file and execute it
- ✓ should execute an imported shell script
-
-15 tests, 0 failures
+$ IMAGE_VERSION=a22c300 bash_unit test/*.sh
+Running tests in test/basic.sh
+  Running test_connect_and_version_output ... SUCCESS ✓
+  Running test_verify_no_default_binlog ... SUCCESS ✓
+Running tests in test/config.sh
+  Running test_custom_charset_collation ... SUCCESS ✓
+  Running test_custom_database ... SUCCESS ✓
+  Running test_custom_dsn ... SUCCESS ✓
+  Running test_custom_root_password ... SUCCESS ✓
+  Running test_mount_custom_config ... SUCCESS ✓
+  Running test_no_innodb_ariadb_default ... SUCCESS ✓
+Running tests in test/import.sh
+  Running test_import_compressed_sql ... SUCCESS ✓
+  Running test_import_sql ... SUCCESS ✓
+  Running test_run_shell_script ... SUCCESS ✓
+Running tests in test/innodb.sh
+  Running test_default_innodb_no_password ... SUCCESS ✓
+  Running test_innodb_no_volume_issue_1 ... SUCCESS ✓
+Overall result: SUCCESS ✓
 ```
 
 ## Benchmarks
@@ -191,8 +192,8 @@ Check out the tool to generate this data [here][6].
 
 [1]: https://mariadb.org
 [2]: https://alpinelinux.org
-[3]: https://github.com/bats-core/bats-core
-[4]: https://github.com/bats-core/bats-core#installation
+[3]: https://github.com/pgrange/bash_unit
+[4]: https://github.com/pgrange/bash_unit#how-to-install-bash_unit
 [5]: https://git.alpinelinux.org/aports/tree/main/mariadb/APKBUILD#n327
 [6]: ./sh/generate-benchmark.sh
 [7]: ./LICENSE

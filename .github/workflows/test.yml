@@ -15,11 +15,13 @@ jobs:
         env:
           VERSION: ${{ steps.assign.outputs.version }}
           DOCKER_BUILDKIT: 1
-      - name: install
-        run: |
-          curl -L https://github.com/bats-core/bats-core/archive/v1.6.0.tar.gz | tar zx --strip=1 -C /tmp/ &&
-          sudo /tmp/install.sh /usr/local
-      - name: run suite
-        run: sh/run-tests.bash
+      - name: install bash_unit
         env:
-          VERSION: ${{ steps.assign.outputs.version }}
+          BASH_UNIT_VERSION: 2.0.1
+        run: |
+          wget -q -O- https://github.com/pgrange/bash_unit/archive/refs/tags/v${{ env.BASH_UNIT_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
+          sudo mv bash_unit /usr/local/bin
+      - name: run suite
+        run: bash_unit test/*.sh
+        env:
+          IMAGE_VERSION: ${{ steps.assign.outputs.version }}
