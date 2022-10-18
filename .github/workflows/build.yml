@@ -18,19 +18,11 @@ jobs:
           VERSION: ${{ steps.assign.outputs.version }}
           DOCKER_BUILDKIT: 1
   test:
-    name: test
+    name: test bash_unit
     runs-on: ubuntu-20.04
     needs: build
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: assign version for usage
-        run: echo "::set-output name=version::$(git rev-parse --short HEAD)"
-        id: assign
-      - name: build the container
-        run: sh/build-image.sh
-        env:
-          VERSION: ${{ steps.assign.outputs.version }}
-          DOCKER_BUILDKIT: 1
       - name: install bash_unit
         env:
           BASH_UNIT_VERSION: 2.0.1
