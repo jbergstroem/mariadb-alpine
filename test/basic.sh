@@ -14,7 +14,7 @@ teardown_suite() {
 }
 
 test_connect_and_version_output() {
-  assert_matches "mariadbd  Ver [0-9]+.[0-9]+.[0-9]+-MariaDB*" "$(docker run --rm --entrypoint mariadbd jbergstroem/mariadb-alpine:latest --version)" "MariaDB should output a version"
+  assert_matches "mariadbd  Ver [0-9]+.[0-9]+.[0-9]+-MariaDB*" "$(docker run --rm --entrypoint mariadbd jbergstroem/mariadb-alpine:${IMAGE_VERSION} --version)" "MariaDB should output a version"
 }
 
 test_verify_no_default_binlog() {

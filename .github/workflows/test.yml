@@ -14,6 +14,8 @@ jobs:
         run: sh/build-image.sh
         env:
           VERSION: ${{ env.IMAGE_VERSION }}
+      - name: download cli
+        run: docker pull jbergstroem/mariadb-client-alpine:latest
       - name: install bash_unit
         env:
           BASH_UNIT_VERSION: 2.0.1
