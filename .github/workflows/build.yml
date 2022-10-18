@@ -3,7 +3,7 @@ on: pull_request
 
 jobs:
   build:
-    name: docker image
+    name: build container
     runs-on: ubuntu-20.04
     outputs:
       version: ${{ steps.assign.outputs.version }}
@@ -18,7 +18,7 @@ jobs:
           VERSION: ${{ steps.assign.outputs.version }}
           DOCKER_BUILDKIT: 1
   test:
-    name: test bash_unit
+    name: run tests
     runs-on: ubuntu-20.04
     needs: build
     steps:
@@ -30,6 +30,6 @@ jobs:
           wget -q -O- https://github.com/pgrange/bash_unit/archive/refs/tags/v${{ env.BASH_UNIT_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
           sudo mv bash_unit /usr/local/bin
       - name: run suite
-        run: bash_unit -S warning test/*.sh
+        run: bash_unit test/*.sh
         env:
           IMAGE_VERSION: ${{ needs.build.outputs.version }}
