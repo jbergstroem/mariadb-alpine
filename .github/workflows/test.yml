@@ -22,6 +22,6 @@ jobs:
           wget -q -O- https://github.com/pgrange/bash_unit/archive/refs/tags/v${{ env.BASH_UNIT_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
           sudo mv bash_unit /usr/local/bin
       - name: run suite
-        run: bash_unit test/*.sh
+        run: bash_unit -S warning test/*.sh
         env:
           IMAGE_VERSION: ${{ steps.assign.outputs.version }}
