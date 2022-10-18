@@ -1,0 +1,52 @@
+name: lint
+on:
+  pull_request:
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-20.04
+    name: shellcheck
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: install shellcheck
+        env:
+          scversion: stable
+        run: |
+          wget -qO- "https://github.com/koalaman/shellcheck/releases/download/${scversion?}/shellcheck-${scversion?}.linux.x86_64.tar.xz" | tar -xJ
+          sudo cp "shellcheck-${scversion}/shellcheck" /usr/local/bin/
+      - name: test shell scripts
+        run: shellcheck -S warning sh/*.sh test/*.{sh,bash}
+  hadolint:
+    runs-on: ubuntu-20.04
+    name: hadolint
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: jbergstroem/hadolint-gh-action@v1.9.1
+        with:
+          error_level: 2
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Install Actionlint
+        env:
+          ACTIONLINT_VERSION: 1.6.10
+        run: |
+          wget -q -O- "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar -x -z -C . actionlint && \
+          mv actionlint /usr/local/bin
+      - name: Run Actionlint
+        run: |
+          actionlint -format '{{range $err := .}}::error file={{$err.Filepath}},line={{$err.Line}},col={{$err.Column}}::{{$err.Message}}{{end}}' -ignore 'SC2016:' .github/workflows/*.yml
+  prettier:
+    runs-on: ubuntu-20.04
+    name: prettier
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version: 18
+      - name: install prettier
+        run: npm install -g prettier
+      - name: run prettier
+        run: prettier -c .
