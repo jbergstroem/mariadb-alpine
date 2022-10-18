@@ -22,3 +22,5 @@ jobs:
           sudo mv bash_unit /usr/local/bin
       - name: run suite
         run: bash_unit test/*.sh
+        env:
+          IMAGE_VERSION: ${{ env.IMAGE_VERSION }}
