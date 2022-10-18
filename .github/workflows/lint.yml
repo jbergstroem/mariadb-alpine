@@ -17,13 +17,13 @@ jobs:
       - name: test shell scripts
         run: shellcheck -S warning sh/*.sh test/*.{sh,bash}
   hadolint:
-        runs-on: ubuntu-20.04
-        name: hadolint
-        steps:
-          - uses: actions/checkout@v3.1.0
-          - uses: jbergstroem/hadolint-gh-action@v1.9.1
-            with:
-              error_level: 2
+    runs-on: ubuntu-20.04
+    name: hadolint
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - uses: jbergstroem/hadolint-gh-action@v1.9.1
+        with:
+          error_level: 2
   actionlint:
     name: actionlint
     runs-on: ubuntu-20.04
