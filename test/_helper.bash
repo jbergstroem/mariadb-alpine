@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # shellcheck shell=bash
-
+set -x
 set -euo pipefail
 
 IMAGE=${IMAGE:-jbergstroem/mariadb-alpine}
