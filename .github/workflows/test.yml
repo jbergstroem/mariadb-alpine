@@ -3,7 +3,7 @@ on: pull_request
 
 jobs:
   build:
-    name: build container
+    name: test container
     runs-on: ubuntu-20.04
     outputs:
       version: ${{ steps.assign.outputs.version }}
@@ -17,12 +17,6 @@ jobs:
         env:
           VERSION: ${{ steps.assign.outputs.version }}
           DOCKER_BUILDKIT: 1
-  test:
-    name: run tests
-    runs-on: ubuntu-20.04
-    needs: build
-    steps:
-      - uses: actions/checkout@v3.1.0
       - name: install bash_unit
         env:
           BASH_UNIT_VERSION: 2.0.1
@@ -32,4 +26,4 @@ jobs:
       - name: run suite
         run: bash_unit test/*.sh
         env:
-          IMAGE_VERSION: ${{ needs.build.outputs.version }}
+          IMAGE_VERSION: ${{ steps.assign.outputs.version }}
