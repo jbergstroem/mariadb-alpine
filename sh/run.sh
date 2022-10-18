@@ -60,6 +60,8 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
     echo "init: installing mysql client"
     apk add -q --no-cache mariadb-client
 
+    MYSQL_CMD="mariadb -h 127.0.0.1"
+
     # Start a mariadbd we will use to pass init stuff to. Can't use the same options
     # as a standard instance; pass them manually.
     MARIADBD_OUTPUT=/tmp/mysqldoutput
