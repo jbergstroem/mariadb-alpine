@@ -5,8 +5,7 @@
   "extends": [
     "config:base",
     "group:allNonMajor",
-    "helpers:disableTypesNodeMajor",
-    "schedule:earlyMondays"
+    "helpers:disableTypesNodeMajor"
   ],
   "prConcurrentLimit": 0,
   "branchConcurrentLimit": 0,
