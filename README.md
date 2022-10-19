@@ -48,12 +48,12 @@ $ docker run -it --rm -p 3306:3306 \
     jbergstroem/mariadb-alpine
 ```
 
-Next steps:
+## Next steps
 
-- [Usage](doc/usage.md)
-- [Configuration](doc/configuration.md)
-- [Tests](doc/tests.md)
-- [Benchmarks](doc/benchmarks.md)
+- [Usage](docs/usage.md)
+- [Configuration](docs/configuration.md)
+- [Tests](docs/tests.md)
+- [Benchmarks](docs/benchmarks.md)
 
 [1]: https://mariadb.org
 [2]: https://alpinelinux.org

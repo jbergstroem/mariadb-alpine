@@ -1,4 +1,4 @@
-## Benchmarks
+# Benchmarks
 
 The main goal of this project is to save disk space and startup time.
 At the moment, only disk space is tracked. Check out the tool to generate this data [here][1].

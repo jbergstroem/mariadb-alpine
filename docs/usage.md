@@ -43,7 +43,7 @@ $ docker run -it --rm --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
-### UUse a volume and a different port (3307) to access the container
+### Use a volume and a different port (3307) to access the container
 
 ```console
 $ docker volume create db
@@ -54,6 +54,6 @@ $ docker run -it --rm --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
-Full options can be found in [configuration][1].
+All ways to configure the container can be found in [configuration][1].
 
 [1]: ./configuration.md
