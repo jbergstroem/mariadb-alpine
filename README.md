@@ -129,7 +129,7 @@ $ docker run -it --rm --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
-#### Executing custom sql on startpu
+#### Executing custom sql on startup
 
 When a database is empty, the `mysql_install_db` script will be invoked. As part of this, you can pass custom input via the commonly used `/docker-entrypoint-initdb.d` convention. This will not be run when an existing database is found.
 
