@@ -3,7 +3,7 @@ on: pull_request
 
 jobs:
   build:
-    name: test container
+    name: container e2e tests
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3.1.0

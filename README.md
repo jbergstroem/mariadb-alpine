@@ -20,22 +20,23 @@
 
 ---
 
-# A tiny MariaDB image
+# A tiny MariaDB container
 
 The goal of this project is to achieve a high quality, bite-sized, fast startup docker image for [MariaDB][1].
 It is built on the excellent, container-friendly Linux distribution [Alpine Linux][2].
+
+The container makes certain compromises to achieve arguably the smallest and fastest starting MariaDB. Should you run into problems, feel free to [open an issue][8].
 
 Licensed under [MIT][7].
 
 ## Features
 
+- Lightning fast startup. Everything is built with performance in mind.
 - Test suite: Each PR is tested to make sure that things stay working
-- Ultra-fast startup: all init scripts are re-rewritten or skipped for a faster startup
-- No bin-logging: Not your default-case deployment
+- No bin-logging: Not relevant for most deployments
 - Conveniently skip InnoDB: Gain a few seconds on startup
 - Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
 - Simple and fast shutdowns: Both `CTRL+C` in interactive mode and `docker stop` does the job
-- Permissive ACL: A minimal no-flags startup "just works"; convenient for development
 - Your feature here: File an issue or PR
 
 ## Usage
@@ -47,7 +48,7 @@ $ docker run -it --rm -p 3306:3306 --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
-Skip InnoDB (faster startup):
+Disable InnoDB (faster startup):
 
 ```console
 $ docker run -it --rm --name=mariadb \
@@ -88,28 +89,35 @@ Using a volume and a different port (3307) to access the container:
 ```console
 $ docker volume create db
 db
-$ docker run -it --rm --name=db \
+$ docker run -it --rm --name=mariadb \
     -v db:/var/lib/mysql \
     -p 3307:3306 \
     jbergstroem/mariadb-alpine
 ```
 
-### Customization
+### Customizing your deployment
 
-You can override default behavior by passing environment variables. All flags
-are unset unless provided.
+You can override default behavior by passing environment variables or providing custom configs. **All flags are unset unless provided**.
 
-- **MYSQL_DATABASE**: create a database as provided by input
-- **MYSQL_CHARSET**: set charset for said database
-- **MYSQL_COLLATION**: set default collation for said database
-- **MYSQL_USER**: create a user with owner permissions over said database
-- **MYSQL_PASSWORD**: change password of the provided user (not root)
-- **MYSQL_ROOT_PASSWORD**: set a root password
-- **SKIP_INNODB**: skip using InnoDB which shaves off both time and
-  disk allocation size. If you mount a persistent volume
-  this setting will be remembered.
+Pass any of below as you would other environment variable to a container (below example uses `MYSQL_DATABASE`):
 
-### Adding your custom config
+```console
+$ docker run -it --rm --name=mariadb \
+    -e MYSQL_DATABASE=mydatabase \
+    jbergstroem/mariadb-alpine
+```
+
+| Variable                | Description                                                                                                                                   |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **MYSQL_DATABASE**      | Create a database with provided name                                                                                                          |
+| **MYSQL_CHARSET**       | Define charset for provided database                                                                                                          |
+| **MYSQL_COLLATION**     | Set default collation for provided database                                                                                                   |
+| **MYSQL_USER**          | Create a user with owner permissions. Will be owner of the optionally provided database                                                       |
+| **MYSQL_PASSWORD**      | Set a password of the provided user                                                                                                           |
+| **MYSQL_ROOT_PASSWORD** | Set a root password. Will be unset otherwise                                                                                                  |
+| **SKIP_INNODB**         | If set, disable InnoDB which shaves off both time and disk allocation size. If you mount a persistent volume this setting will be remembered. |
+
+#### Adding a custom config
 
 You can add your custom `my.cnf` with various settings (be it for production or tuning InnoDB).
 You can also add other `.cnf` files in `/etc/my.cnf.d/`, which will be [included by MariaDB on start][5].
@@ -121,7 +129,7 @@ $ docker run -it --rm --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
-### Adding custom sql on init
+#### Executing custom sql on startpu
 
 When a database is empty, the `mysql_install_db` script will be invoked. As part of this, you can pass custom input via the commonly used `/docker-entrypoint-initdb.d` convention. This will not be run when an existing database is found.
 
@@ -145,12 +153,15 @@ init: removing mysql client
 Version: '10.6.9-MariaDB'  socket: '/run/mysqld/mysqld.sock'  port: 3306  MariaDB Server
 ```
 
-The procedure is similar to how other images implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any script or sql will use the scope of `MYSQL_DATABASE` if provided.
+The procedure is similar to how other images implements it; shell scripts are executed (`.sh`), optionally compressed sql (`.sql` or `.sql.gz`) is piped to mysqld as part of it starting up. Any sql will use the scope of `MYSQL_DATABASE` if provided.
 
-## Testing
+Shell scripts will have the `mariadb` cli available. Should you set a database, username or password, remeber to
+pass these options to the `mariadb` client.
+
+## Tests
 
 This container image is tested with [`bash_unit`][3] - a bash testing framework. You can find installation
-instructions in [their repository][4]. To test:
+instructions in [their repository][4] (using homebrew: `brew install bash_unit`). To test:
 
 ```console
 $ sh/build-image.sh
@@ -197,3 +208,4 @@ Check out the tool to generate this data [here][6].
 [5]: https://git.alpinelinux.org/aports/tree/main/mariadb/APKBUILD#n327
 [6]: ./sh/generate-benchmark.sh
 [7]: ./LICENSE
+[8]: https://github.com/jbergstroem/mariadb-alpine/issues
