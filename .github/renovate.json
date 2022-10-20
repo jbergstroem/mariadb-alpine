@@ -17,22 +17,19 @@
       "fileMatch": ["^Dockerfile$"],
       "matchStrings": ["^ARG VERSION=\"(?<currentValue>.*)\"$"],
       "datasourceTemplate": "repology",
-      "depNameTemplate": "alpine_3_16/mariadb",
-      "versioningTemplate": "semver"
+      "depNameTemplate": "alpine_3_16/mariadb"
     },
     {
       "fileMatch": ["^.github/workflows/lint.yml$"],
       "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)$"],
       "datasourceTemplate": "github-releases",
-      "depNameTemplate": "rhysd/actionlint",
-      "versioningTemplate": "semver"
+      "depNameTemplate": "rhysd/actionlint"
     },
     {
       "fileMatch": ["^.github/workflows/test.yml$"],
       "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)$"],
       "datasourceTemplate": "github-releases",
-      "depNameTemplate": "pgrange/bash_unit",
-      "versioningTemplate": "semver"
+      "depNameTemplate": "pgrange/bash_unit"
     }
   ],
   "labels": ["dependencies"],
