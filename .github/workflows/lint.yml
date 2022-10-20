@@ -25,7 +25,9 @@ jobs:
           wget -qO- "${{ env.SC_BASEURL }}/${{ env.SC_VERSION }}/shellcheck-${{ env.SC_VERSION }}.linux.x86_64.tar.xz" | tar -xJ
           sudo cp "shellcheck-${{ env.SC_VERSION }}/shellcheck" /usr/local/bin/
       - name: test shell scripts
-        run: shellcheck -S warning sh/*.sh test/*.{sh,bash}
+        run: |
+          echo "::add-matcher::.github/matcher-shellcheck.json"
+          shellcheck -f gcc -S warning sh/*.sh test/*.{sh,bash}
   hadolint:
     runs-on: ubuntu-22.04
     name: hadolint
