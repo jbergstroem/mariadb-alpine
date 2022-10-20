@@ -22,19 +22,19 @@
     },
     {
       "fileMatch": ["^.github/workflows/lint.yml$"],
-      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)$"],
+      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)\\s"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "rhysd/actionlint"
     },
     {
       "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)$"],
+      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)\\s"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "pgrange/bash_unit"
     },
     {
       "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+SC_VERSION:\\s(?<currentValue>.*)$"],
+      "matchStrings": ["^\\s+SC_VERSION:\\s(?<currentValue>.*)\\s"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "koalaman/shellcheck"
     }
