@@ -18,10 +18,10 @@ jobs:
         run: docker pull jbergstroem/mariadb-client-alpine:latest
       - name: install bash_unit
         env:
-          BU_VERSION: 2.0.1
+          BU_VERSION: v2.0.1
           BU_BASEURL: https://github.com/pgrange/bash_unit/archive/refs/tags
         run: |
-          wget -q -O- ${{ env.BU_BASEURL }}/v${{ env.BU_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
+          wget -q -O- ${{ env.BU_BASEURL }}/${{ env.BU_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
           sudo mv bash_unit /usr/local/bin
       - name: run suite
         run: bash_unit test/*.sh
