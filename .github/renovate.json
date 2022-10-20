@@ -30,6 +30,12 @@
       "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)$"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "pgrange/bash_unit"
+    },
+    {
+      "fileMatch": ["^.github/workflows/test.yml$"],
+      "matchStrings": ["^\\s+SC_VERSION:\\s(?<currentValue>.*)$"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "koalaman/shellcheck"
     }
   ],
   "labels": ["dependencies"],
