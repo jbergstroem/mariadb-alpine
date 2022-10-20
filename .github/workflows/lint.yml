@@ -1,10 +1,10 @@
-name: lint
+name: Lint
 on:
   pull_request:
 
 jobs:
   validate-renovate-config:
-    name: validate renovate config
+    name: Validate renovate config
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3.1.0
@@ -14,30 +14,30 @@ jobs:
           pattern: ".github/renovate.json"
   shellcheck:
     runs-on: ubuntu-22.04
-    name: shellcheck
+    name: Shellcheck
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: install shellcheck
+      - name: Install Shellcheck
         env:
           SC_VERSION: v0.8.0
           SC_BASEURL: https://github.com/koalaman/shellcheck/releases/download
         run: |
           wget -qO- "${{ env.SC_BASEURL }}/${{ env.SC_VERSION }}/shellcheck-${{ env.SC_VERSION }}.linux.x86_64.tar.xz" | tar -xJ
           sudo cp "shellcheck-${{ env.SC_VERSION }}/shellcheck" /usr/local/bin/
-      - name: test shell scripts
+      - name: Verify shell scripts
         run: |
           echo "::add-matcher::.github/matcher-shellcheck.json"
           shellcheck -f gcc -S warning sh/*.sh test/*.{sh,bash}
   hadolint:
     runs-on: ubuntu-22.04
-    name: hadolint
+    name: Hadolint
     steps:
       - uses: actions/checkout@v3.1.0
       - uses: jbergstroem/hadolint-gh-action@v1.9.1
         with:
           error_level: 2
   actionlint:
-    name: actionlint
+    name: Actionlint
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3.1.0
@@ -54,13 +54,13 @@ jobs:
           actionlint -color
   prettier:
     runs-on: ubuntu-22.04
-    name: prettier
+    name: Prettier
     steps:
       - uses: actions/checkout@v3.1.0
       - uses: actions/setup-node@v3.5.1
         with:
           node-version: 18
-      - name: install prettier
+      - name: Install prettier
         run: npm install -g prettier
-      - name: run prettier
+      - name: Run prettier
         run: prettier -c .

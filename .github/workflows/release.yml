@@ -1,0 +1,106 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      override:
+        type: boolean
+        description: Replace existing tag/version
+        default: false
+      latest:
+        type: boolean
+        description: Update `:latest` on docker hub
+        default: false
+
+jobs:
+  sanity_check:
+    runs-on: ubuntu-22.04
+    name: Prepare version
+    outputs:
+      tag: ${{ steps.extract.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v3.1.0
+        with:
+          # get all tags
+          fetch-depth: 0
+      - name: Extract tag from Dockerfile
+        shell: bash
+        id: extract
+        run: |
+          echo tag="$(sed -rn 's/^ARG APK_VERSION=\"([0-9]+\.[0-9]+\.[0-9]+).*\"$/\1/p' Dockerfile)" >> "$GITHUB_OUTPUT"\
+      - name: Verify tag extraction
+        shell: bash
+        run: |
+          [[ -z "${{ steps.extract.outputs.tag }}" ]] && echo "Could not extract current version" && exit 1 || exit 0
+      - name: Check if tag exists
+        shell: bash
+        if: ${{ ! inputs.override }}
+        env:
+          TAG_URL: "https://hub.docker.com/v2/repositories/jbergstroem/mariadb-alpine/tags?page_size=100"
+        run: |
+          [[ $(git tag -l "${{ steps.extract.outputs.tag }}") || $(curl -L -s "${{ env.TAG_URL }}" | jq -r '.results[] | select(.name=="${{ steps.extract.outputs.tag }}")') ]] && \
+          echo "Tag already exists. Quitting." && exit 1 || exit 0
+  test:
+    name: Run e2e tests
+    needs:
+      - sanity_check
+    uses: ./.github/workflows/test.yml
+
+  release:
+    name: Build and push multi-platform
+    runs-on: ubuntu-22.04
+    needs:
+      - sanity_check
+      - test
+    env:
+      platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/386,linux/s390x,linux/ppc64le
+      image: jbergstroem/mariadb-alpine
+      ref_url: ${{ github.api_url }}/repos/${{ github.repository }}/git/refs
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.2.1
+        with:
+          platforms: ${{ env.platforms }}
+      - name: Enable latest tag
+        if: ${{ inputs.latest }}
+        run: echo LATEST=",${{ env.image }}:latest" >> "$GITHUB_ENV"
+      - name: Set build args
+        run: |
+          echo BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
+          echo BUILD_REF="$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+      - name: Build containers for all platforms
+        uses: docker/build-push-action@v3.2.0
+        with:
+          platforms: ${{ env.platforms }}
+          tags: ${{ env.image }}:${{ needs.sanity_check.outputs.tag }}${{ env.LATEST }}
+          push: false
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            BUILD_REF=${{ env.BUILD_REF }}
+            BUILD_VERSION=${{ needs.sanity_check.outputs.tag }}
+      - name: Remove old git reference
+        if: ${{ inputs.override }}
+        run: |
+          curl -s -X DELETE "${{ env.ref_url }}/tags/${{ needs.sanity_check.outputs.tag }}" \
+            -H "Authorization: token ${{ github.token }}"
+      - name: Create git reference
+        run: |
+          curl -s -X POST "${{ env.ref_url }}" \
+            -H "Authorization: token ${{ github.token }}" \
+            -d '{ "ref": "refs/tags/${{ needs.sanity_check.outputs.tag }}", "sha": "${{ github.sha }}" }' | \
+            grep "Reference already exists" && echo "Tag already exists. Quitting." && exit 1 || exit 0
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to Docker hub
+        uses: docker/build-push-action@v3.2.0
+        with:
+          platforms: ${{ env.platforms }}
+          tags: ${{ env.image }}:${{ needs.sanity_check.outputs.tag }}${{ env.LATEST }}
+          push: true
+          build-args: |
+            BUILD_DATE=${{ env.BUILD_DATE }}
+            BUILD_REF=${{ env.BUILD_REF }}
+            BUILD_VERSION=${{ needs.sanity_check.outputs.tag }}
