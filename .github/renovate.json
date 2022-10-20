@@ -15,10 +15,24 @@
   "regexManagers": [
     {
       "fileMatch": ["^Dockerfile$"],
-      "matchStrings": [
-        "#\\s*renovate:\\s*datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG VERSION=\"(?<currentValue>.*)\"\\s"
-      ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+      "matchStrings": ["^ARG VERSION=\"(?<currentValue>.*)\"$"],
+      "datasourceTemplate": "repology",
+      "depNameTemplate": "alpine_3_16/mariadb",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["^.github/workflows/lint.yml$"],
+      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)$"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "rhysd/actionlint",
+      "versioningTemplate": "semver"
+    },
+    {
+      "fileMatch": ["^.github/workflows/test.yml$"],
+      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)$"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "pgrange/bash_unit",
+      "versioningTemplate": "semver"
     }
   ],
   "labels": ["dependencies"],
