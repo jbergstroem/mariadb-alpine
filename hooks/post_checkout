@@ -1,9 +1,0 @@
-#!/bin/bash
-
-set -ex
-
-#
-# fetches optional tags to make sure we can reuse it in post_push
-#
-
-git fetch --tags --quiet origin
