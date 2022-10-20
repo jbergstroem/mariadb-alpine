@@ -1,27 +1,29 @@
-name: test
-on: pull_request
+name: Test
+on:
+  - pull_request
+  - workflow_call
 
 jobs:
-  build:
-    name: container e2e tests
+  test:
+    name: E2E Tests
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3.1.0
-      - name: assign version for usage
+      - name: Assign version for usage
         id: assign
         run: echo IMAGE_VERSION="$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
-      - name: build the container
+      - name: Build container
         run: sh/build-image.sh
         env:
           VERSION: ${{ env.IMAGE_VERSION }}
-      - name: download cli
+      - name: Download mariadb cli
         run: docker pull jbergstroem/mariadb-client-alpine:latest
-      - name: install bash_unit
+      - name: Install bash_unit
         env:
           BU_VERSION: v2.0.1
           BU_BASEURL: https://github.com/pgrange/bash_unit/archive/refs/tags
         run: |
           wget -q -O- ${{ env.BU_BASEURL }}/${{ env.BU_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
           sudo mv bash_unit /usr/local/bin
-      - name: run suite
+      - name: Run suite
         run: bash_unit test/*.sh

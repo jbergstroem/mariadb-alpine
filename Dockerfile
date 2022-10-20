@@ -1,27 +1,27 @@
 FROM alpine:3.16
 
-# https://github.com/opencontainers/image-spec/blob/master/annotations.md
 ARG BUILD_DATE
-ARG VCS_REF
-# renovate: datasource=repology depName=alpine_3_16/mariadb versioning=loose
-ARG VERSION="10.6.10-r0"
+ARG BUILD_REF
+ARG BUILD_VERSION
+ARG APK_VERSION="10.6.10-r0"
 
+# https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL \
   org.opencontainers.image.authors="Johan Bergström <bugs@bergstroem.nu>" \
   org.opencontainers.image.created="$BUILD_DATE" \
   org.opencontainers.image.description="A tiny MariaDB container" \
   org.opencontainers.image.licenses="MIT" \
-  org.opencontainers.image.revision="$VCS_REF" \
+  org.opencontainers.image.revision="$BUILD_REF" \
   org.opencontainers.image.source="https://github.com/jbergstroem/mariadb-alpine" \
   org.opencontainers.image.title="jbergstroem/mariadb-alpine" \
   org.opencontainers.image.url="https://github.com/jbergstroem/mariadb-alpine" \
   org.opencontainers.image.vendor="Johan Bergström" \
-  org.opencontainers.image.version="$VERSION"
+  org.opencontainers.image.version="$BUILD_VERSION"
 
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
 RUN \
-  apk add --no-cache mariadb=${VERSION} && \
+  apk add --no-cache mariadb=${APK_VERSION} && \
   TO_KEEP=$(echo " \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadbd$ \

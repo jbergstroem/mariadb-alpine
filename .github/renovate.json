@@ -16,19 +16,19 @@
   "regexManagers": [
     {
       "fileMatch": ["^Dockerfile$"],
-      "matchStrings": ["^ARG VERSION=\"(?<currentValue>.*)\"$"],
+      "matchStrings": ["^ARG APK_VERSION=\"(?<currentValue>.*)\""],
       "datasourceTemplate": "repology",
       "depNameTemplate": "alpine_3_16/mariadb"
     },
     {
       "fileMatch": ["^.github/workflows/lint.yml$"],
-      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)$"],
+      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "rhysd/actionlint"
     },
     {
       "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)$"],
+      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "pgrange/bash_unit"
     },
