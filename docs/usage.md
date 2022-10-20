@@ -54,6 +54,30 @@ $ docker run -it --rm --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
+### Use it as part of a docker-compose orchestration
+
+```yaml
+version: "3.3"
+
+services:
+  db:
+    image: jbergstroem/mariadb-alpine:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_ROOT_PASSWORD: "password"
+      SKIP_INNODB: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - my-db:/var/lib/mysql
+
+volumes:
+  my-db:
+```
+
 All ways to configure the container can be found in [configuration][1].
 
 [1]: ./configuration.md
