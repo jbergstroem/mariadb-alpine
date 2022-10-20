@@ -1,14 +1,15 @@
 {
-  "timezone": "America/New_York",
   "baseBranches": ["main"],
-  "dependencyDashboard": true,
   "extends": [
-    "config:base",
-    "group:allNonMajor",
-    "helpers:disableTypesNodeMajor"
+    ":dependencyDashboard",
+    ":separateMajorReleases",
+    ":rebaseStalePrs",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone",
+    ":docker",
+    ":semanticCommits",
+    "group:allNonMajor"
   ],
-  "prConcurrentLimit": 0,
-  "branchConcurrentLimit": 0,
   "commitMessageAction": "",
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "{{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
@@ -41,6 +42,5 @@
   "labels": ["dependencies"],
   "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
   "prHeader": "",
-  "prFooter": "",
-  "semanticCommits": "enabled"
+  "prFooter": ""
 }
