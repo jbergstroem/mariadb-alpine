@@ -34,6 +34,7 @@ Licensed under [MIT][4].
 
 - Lightning fast startup. Everything is built with performance in mind.
 - Test suite: Each PR is tested to make sure that things stay working
+- Multi-arch: currently supports `amd64`, `arm/v6`, `arm/v7`, `arm64`, `386`, `s390x` and `ppc64le`
 - No bin-logging: Not relevant for most deployments
 - Conveniently skip InnoDB: Gain a few seconds on startup
 - Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
