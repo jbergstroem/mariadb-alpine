@@ -4,8 +4,7 @@
     ":dependencyDashboard",
     ":separateMajorReleases",
     ":rebaseStalePrs",
-    ":prHourlyLimitNone",
-    ":prConcurrentLimitNone",
+    ":disableRateLimiting",
     ":docker",
     ":semanticCommits",
     "group:allNonMajor"
@@ -17,25 +16,25 @@
   "regexManagers": [
     {
       "fileMatch": ["^Dockerfile$"],
-      "matchStrings": ["^ARG APK_VERSION=\"(?<currentValue>.*)\""],
+      "matchStrings": ["^ARG APK_VERSION=\"(?<currentValue>.*)\"\\s+"],
       "datasourceTemplate": "repology",
       "depNameTemplate": "alpine_3_16/mariadb"
     },
     {
       "fileMatch": ["^.github/workflows/lint.yml$"],
-      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)"],
+      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)\\s+"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "rhysd/actionlint"
     },
     {
       "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)"],
+      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)\\s+"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "pgrange/bash_unit"
     },
     {
       "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+SC_VERSION:\\s(?<currentValue>.*)$"],
+      "matchStrings": ["^\\s+SC_VERSION:\\s(?<currentValue>.*)\\s+"],
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "koalaman/shellcheck"
     }
