@@ -1,4 +1,5 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "baseBranches": ["main"],
   "extends": [
     ":dependencyDashboard",
@@ -16,30 +17,26 @@
   "regexManagers": [
     {
       "fileMatch": ["^Dockerfile$"],
-      "matchStrings": ["^ARG APK_VERSION=\"(?<currentValue>.*)\"\\s+"],
+      "matchStrings": ["ARG APK_VERSION=\"(?<currentValue>.*?)\"\\n"],
       "datasourceTemplate": "repology",
       "depNameTemplate": "alpine_3_16/mariadb"
     },
     {
-      "fileMatch": ["^.github/workflows/lint.yml$"],
-      "matchStrings": ["^\\s+AL_VERSION:\\s(?<currentValue>.*)\\s+"],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "rhysd/actionlint"
+      "fileMatch": ["^\\.github/workflows/[^/]+\\.yml$"],
+      "matchStrings": [
+        "version: \"(?<currentValue>.*?)\"\\s+run: curl -Ls \"https://github.com/(?<depName>.*?)/releases/download.*",
+        "https://github\\.com/(?<depName>.*?)/archive/refs/tags/(?<currentValue>.*?)\\.tar\\.gz"
+      ],
+      "datasourceTemplate": "github-releases"
     },
     {
-      "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+BU_VERSION:\\s(?<currentValue>.*)\\s+"],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "pgrange/bash_unit"
-    },
-    {
-      "fileMatch": ["^.github/workflows/test.yml$"],
-      "matchStrings": ["^\\s+SC_VERSION:\\s(?<currentValue>.*)\\s+"],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "koalaman/shellcheck"
+      "fileMatch": ["^\\.github/workflows/[^/]+\\.yml$"],
+      "matchStrings": ["node-version: \"(?<currentValue>.*?)\"\\n"],
+      "depNameTemplate": "actions/node-versions",
+      "datasourceTemplate": "github-releases"
     }
   ],
-  "labels": ["dependencies"],
+  "labels": ["type: dependencies"],
   "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{controls}}}{{{footer}}}",
   "prHeader": "",
   "prFooter": ""

@@ -19,11 +19,6 @@ jobs:
       - name: Download mariadb cli
         run: docker pull jbergstroem/mariadb-client-alpine:latest
       - name: Install bash_unit
-        env:
-          BU_VERSION: v2.0.1
-          BU_BASEURL: https://github.com/pgrange/bash_unit/archive/refs/tags
-        run: |
-          wget -q -O- ${{ env.BU_BASEURL }}/${{ env.BU_VERSION }}.tar.gz | tar xz --strip=1 -C . && \
-          sudo mv bash_unit /usr/local/bin
+        run: curl -Ls "https://github.com/pgrange/bash_unit/archive/refs/tags/v2.0.1.tar.gz" | tar -x -z --wildcards --strip-components=1 -C /usr/local/bin "*/bash_unit"
       - name: Run suite
         run: bash_unit test/*.sh
