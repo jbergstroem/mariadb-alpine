@@ -1,7 +1,7 @@
 #!/usr/bin/env bash_unit
 # shellcheck shell=bash
 
-# shellcheck source=_helper.sh
+# shellcheck source=test/_helper.bash
 . _helper.bash
 
 suite_name="config"
