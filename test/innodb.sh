@@ -1,6 +1,6 @@
 #!/usr/bin/env bash_unit
 
-# shellcheck source=_helper.sh
+# shellcheck source=test/_helper.bash
 . _helper.bash
 
 suite_name="innodb"

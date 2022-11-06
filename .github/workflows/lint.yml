@@ -24,7 +24,7 @@ jobs:
       - name: Verify shell scripts
         run: |
           echo "::add-matcher::.github/matcher-shellcheck.json"
-          shellcheck -f gcc -S warning sh/*.sh test/*.{sh,bash}
+          shellcheck -x -f gcc -S warning sh/*.sh test/*.{sh,bash}
   hadolint:
     runs-on: ubuntu-22.04
     name: Hadolint
