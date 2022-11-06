@@ -7,10 +7,13 @@ You can find installation instructions in [their repository][2]
 ```console
 $ sh/build-image.sh
 <snip>
-$ IMAGE_VERSION=a22c300 bash_unit test/*.sh
+$ IMAGE_VERSION=8c43ec9 bash_unit test/*.sh
 Running tests in test/basic.sh
   Running test_connect_and_version_output ... SUCCESS ✓
   Running test_verify_no_default_binlog ... SUCCESS ✓
+Running tests in test/compose.sh
+  Running test_root_password_secret ... SUCCESS ✓
+  Running test_user_password_secret_override ... SUCCESS ✓
 Running tests in test/config.sh
   Running test_custom_charset_collation ... SUCCESS ✓
   Running test_custom_database ... SUCCESS ✓

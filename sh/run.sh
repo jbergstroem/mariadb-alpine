@@ -25,6 +25,7 @@ MYSQLD_OPTS="${MYSQLD_OPTS} --debug-gdb"
 # No previous installation
 if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
   [ -n "${SKIP_INNODB}" ] && touch /var/lib/mysql/noinnodb
+  [ -f "/run/secrets/MYSQL_ROOT_PASSWORD" ] && MYSQL_ROOT_PASSWORD="$(cat /run/secrets/MYSQL_ROOT_PASSWORD)"
   [ -n "${MYSQL_ROOT_PASSWORD}" ] &&
     echo "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');" >>/tmp/init
 
@@ -43,6 +44,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
     echo "create database if not exists \`${MYSQL_DATABASE}\` character set '${MYSQL_CHARSET}' ${MYSQL_COLLATION}; " >>/tmp/init
   fi
   if [ -n "${MYSQL_USER}" ] && [ "${MYSQL_DATABASE}" ]; then
+    [ -f "/run/secrets/MYSQL_PASSWORD" ] && MYSQL_PASSWORD="$(cat /run/secrets/MYSQL_PASSWORD)"
     echo "grant all on \`${MYSQL_DATABASE}\`.* to '${MYSQL_USER}'@'%' identified by '${MYSQL_PASSWORD}'; " >>/tmp/init
   fi
   echo "flush privileges;" >>/tmp/init

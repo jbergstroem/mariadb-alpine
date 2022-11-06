@@ -61,4 +61,17 @@ The procedure is similar to how other images implements it; shell scripts are ex
 Shell scripts will have the `mariadb` cli available. Should you set a database, username or password,
 remember to pass these options to the `mariadb` client.
 
+## Using Docker Secrets
+
+[Docker secrets][2] is a way for you to manage sensitive information and avoid passing
+said info through environment variables. Secrets are only available when using Docker compose
+(with our without a Swarm context).
+
+By defining `MYSQL_PASSWORD` or `MYSQL_ROOT_PASSWORD` as a secret, the container will use
+(and prefer) these over any environment variables passed.
+
+You can find [an example in usage][3].
+
 [1]: https://git.alpinelinux.org/aports/tree/main/mariadb/APKBUILD#n327
+[2]: https://docs.docker.com/engine/swarm/secrets/#about-secrets
+[3]: ./usage.md

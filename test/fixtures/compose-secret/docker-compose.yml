@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  db:
+    image: jbergstroem/mariadb-alpine:${VERSION:-latest}
+    container_name: mariadb-test-compose
+    environment:
+      MYSQL_DATABASE: "db"
+      MYSQL_USER: "foo"
+      MYSQL_PASSWORD: "password"
+      SKIP_INNODB: "yes"
+    ports:
+      - "3306:3306"
+    secrets:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_PASSWORD
+    networks:
+      - mariadb-test-compose
+
+secrets:
+  MYSQL_ROOT_PASSWORD:
+    file: ./root.txt
+  MYSQL_PASSWORD:
+    file: ./user.txt
+
+networks:
+  mariadb-test-compose:

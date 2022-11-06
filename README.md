@@ -36,6 +36,7 @@ Licensed under [MIT][4].
 - Test suite: Each PR is tested to make sure that things stay working
 - Multi-arch: currently supports `amd64`, `arm/v6`, `arm/v7`, `arm64`, `386`, `s390x` and `ppc64le`
 - No bin-logging: Not relevant for most deployments
+- Supports Docker secrets
 - Conveniently skip InnoDB: Gain a few seconds on startup
 - Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
 - Simple and fast shutdowns: Both `CTRL+C` in interactive mode and `docker stop` does the job
