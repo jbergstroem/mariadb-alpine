@@ -12,7 +12,6 @@
   "enabledManagers": ["dockerfile", "github-actions", "regex"],
   "commitMessageAction": "",
   "commitMessageTopic": "{{depName}}",
-  "commitMessageExtra": "{{#if isMajor}}v{{{newMajor}}}{{else}}{{#if isSingleVersion}}v{{{newVersion}}}{{else}}{{{newValue}}}{{/if}}{{/if}}",
   "regexManagers": [
     {
       "fileMatch": ["^Dockerfile$"],
