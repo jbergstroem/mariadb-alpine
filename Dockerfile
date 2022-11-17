@@ -1,9 +1,9 @@
-FROM alpine:3.16
+FROM alpine:3.17
 
 ARG BUILD_DATE
 ARG BUILD_REF
 ARG BUILD_VERSION
-ARG APK_VERSION="10.6.10-r0"
+ARG APK_VERSION="10.6.11-r0"
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL \
