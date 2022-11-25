@@ -24,7 +24,7 @@
       "fileMatch": ["^Dockerfile$"],
       "matchStrings": ["ARG APK_VERSION=\"(?<currentValue>.*?)\"\\n"],
       "datasourceTemplate": "repology",
-      "depNameTemplate": "alpine_3_16/mariadb"
+      "depNameTemplate": "alpine_3_17/mariadb"
     },
     {
       "fileMatch": ["^\\.github/workflows/[^/]+\\.yml$"],
