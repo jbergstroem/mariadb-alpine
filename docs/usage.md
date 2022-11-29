@@ -127,7 +127,7 @@ $ docker run --network db --name db -d -e SKIP_INNODB=1 -p 3306:3306 jbergstroem
 733de227b9a7b54039e13be922e8c7f13e509665377e402db9d56fd2f86415b3
 $ docker run -it alpine
 / # apk add --no-cache -q mariadb mariadb-client tzdata
-/ # mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root -h db mysql
+/ # mysql_tzinfo_to_sql /usr/share/zoneinfo | mariadb -u root -h db mysql
 ```
 
 As you can imagine, this is easy to script or incorporate as part of a container orchestration.

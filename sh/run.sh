@@ -53,15 +53,6 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
   # pass scripts to it. Since we're already up an running we might as well
   # pass the init script and avoid it later.
   if [ "$(ls -A /docker-entrypoint-initdb.d 2>/dev/null)" ]; then
-    # Download the mysql client since we will need it to feed data to our server.
-    # This kind of sucks but seems unavoidable since using --init-file
-    # has size restrictions:
-    #   ERROR: 1105  Boostrap file error. Query size exceeded 20000 bytes near <snip>
-    # The other option is to embed the client, but since one of the goals is to
-    # Strive for the smallest possible size, this seems to be the only option.
-    echo "init: installing mysql client"
-    apk add -q --no-cache mariadb-client
-
     MYSQL_CMD="mariadb -h 127.0.0.1"
 
     # Start a mariadbd we will use to pass init stuff to. Can't use the same options
@@ -105,10 +96,6 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
     kill -s TERM "${PID}"
     wait "${PID}"
 
-    # Clean up
-    rm "${MARIADBD_OUTPUT}"
-    echo "init: removing mysql client"
-    apk del -q --no-cache mariadb-client
   else
     MYSQLD_OPTS="${MYSQLD_OPTS} --init-file=/tmp/init"
   fi

@@ -8,7 +8,7 @@ IMAGE_VERSION=${IMAGE_VERSION:-latest}
 TEST_PREFIX="mariadb-alpine-test"
 
 # shellcheck disable=SC2034
-CLIENT="docker run --rm jbergstroem/mariadb-client-alpine:latest"
+CLIENT="docker run --rm --entrypoint mariadb jbergstroem/mariadb-alpine:${IMAGE_VERSION}"
 
 if ((BASH_VERSINFO[0] < 4)); then
   echo "You need Bash 4 or newer to run this test suite"

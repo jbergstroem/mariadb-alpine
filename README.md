@@ -40,6 +40,7 @@ Licensed under [MIT][4].
 - Conveniently skip InnoDB: Gain a few seconds on startup
 - Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
 - Simple and fast shutdowns: Both `CTRL+C` in interactive mode and `docker stop` does the job
+- Bundles a mariadb client: `docker run -it --entrypoint mariadb jbergstoem/mariadb-alpine`
 
 ## Quickstart
 
