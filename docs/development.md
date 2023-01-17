@@ -4,8 +4,8 @@
 
 In order to assist with developing `mariadb-alpine`, the following software is strongly recommended:
 
-- a containerd runtime such as [docker for destkop][docker], [podman][podman] or [lima][lima-vm]
-- a docker-cli compatible client (@TODO more testing with [nerdctl][])
+- a [containerd][containerd] runtime such as [docker for desktop][docker] or [lima][lima-vm]
+- a docker-cli compatible client (@TODO more testing with [nerdctl][], [podman][podman])
 - [bash][bash] 4.0 or newer
 - [bash_unit][bash_unit] - a bash testing framework
 - [shellcheck][shellcheck] to validate shell script
@@ -25,6 +25,12 @@ secrets with enough privileges to push containers to [Docker Hub][docker-hub].
 
 Instead of tagging and building images locally, the release workflow is fully automated through [github actions][github-actions].
 
+There are sanity checks in place to help you from making mistakes:
+1. The workflow will only be run if there is no existing github or docker tag corresponding to
+   the mariadbd version in `Dockerfile.
+2. The workflow will fail if there are issues building or testing the container.
+3. Only by changing
+
 ### To create a release (browser):
 
 1. Visit the overview for [the Release workflow][release-workflow]
@@ -38,9 +44,10 @@ Instead of tagging and building images locally, the release workflow is fully au
 
 <!-- @TODO Create a release with gh-cli -->
 
+[containerd]: https://containerd.io
 [docker]: https://docker.com
-[podman]: https://podman.io
 [nerdctl]: https://github.com/containerd/nerdctl
+[podman]: https://podman.io
 [lima-vm]: https://github.com/lima-vm/lima
 [bash]: https://www.gnu.org/software/bash/
 [bash_unit]: https://github.com/pgrange/bash_unit
