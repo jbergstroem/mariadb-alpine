@@ -8,7 +8,7 @@ on:
         default: false
       latest:
         type: boolean
-        description: Update `:latest` on docker hub
+        description: Update `:latest` on Docker Hub
         default: false
 
 jobs:

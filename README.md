@@ -57,6 +57,7 @@ $ docker run -it --rm -p 3306:3306 \
 - [Configuration](docs/configuration.md)
 - [Tests](docs/tests.md)
 - [Benchmarks](docs/benchmarks.md)
+- [Developer documentation](docs/development.md)
 
 [1]: https://mariadb.org
 [2]: https://alpinelinux.org
