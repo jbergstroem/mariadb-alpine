@@ -6,6 +6,9 @@
 
 suite_name="mariadb-test-compose"
 
+# custom client for accessing network
+CLIENT="${CLIENT/--rm/--rm --network compose-secret_${suite_name}}"
+
 setup_suite() {
   cd fixtures/compose-secret || exit 1
   VERSION="${IMAGE_VERSION}" docker compose up -d --no-build --no-log-prefix 2>/dev/null
