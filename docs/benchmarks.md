@@ -5,11 +5,11 @@ At the moment, only disk space is tracked. Check out the tool to generate this d
 
 | image name                     | size    | digest (version)                                                                                                                                                           |
 | :----------------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| linuxserver/mariadb            | 83.6Mi  | [9e01d531](https://hub.docker.com/layers/linuxserver/mariadb/latest/images/sha256:9e01d531a25d272309f6eb80da1b13cce5f80c17cc5c834cebc16a926dc12b88?context=explore)        |
-| **jbergstroem/mariadb-alpine** | 12.3Mi  | [b01ecfa7](https://hub.docker.com/layers/jbergstroem/mariadb-alpine/latest/images/sha256:b01ecfa73d8ec2374541065c37dc429f7ab3a5fb208196e7691c698c6a9d9037?context=explore) |
-| clearlinux/mariadb             | 278.0Mi | [e7010077](https://hub.docker.com/layers/clearlinux/mariadb/latest/images/sha256:e7010077b93ec174b08d23bed943a746997f2a38263510361c7c94e9e0893462?context=explore)         |
-| mariadb                        | 118.4Mi | [59ef1139](https://hub.docker.com/layers/library/mariadb/latest/images/sha256:59ef1139afa1ec26f98e316a8dbef657daf9f64f84e9378b190d1d7557ad2feb?context=explore)            |
-| bitnami/mariadb                | 109.0Mi | [e10d22f3](https://hub.docker.com/layers/bitnami/mariadb/latest/images/sha256:e10d22f3f3348335a21da21bea92c6471be708c34e9ab244d1444740b06e2f5a?context=explore)            |
-| mysql                          | 150.0Mi | [147572c9](https://hub.docker.com/layers/library/mysql/latest/images/sha256:147572c972192417add6f1cf65ea33edfd44086e461a3381601b53e1662f5d15?context=explore)              |
+| linuxserver/mariadb            | 83.6Mi  | [60bd7088](https://hub.docker.com/layers/linuxserver/mariadb/latest/images/sha256:60bd7088278c0932cfece3f4826270a9eadacce9937833c92160f783a273b5fc?context=explore)        |
+| **jbergstroem/mariadb-alpine** | 14.2Mi  | [b7047653](https://hub.docker.com/layers/jbergstroem/mariadb-alpine/latest/images/sha256:b7047653c525d0d59f2bd6ee85ef61e0b04ae045e15cbc201c693c9df7020df6?context=explore) |
+| clearlinux/mariadb             | 296.8Mi | [18b7731b](https://hub.docker.com/layers/clearlinux/mariadb/latest/images/sha256:18b7731b27e8611dce0aee633039d6c3e770d0f32d2c652d3d446a0b61efd401?context=explore)         |
+| mariadb                        | 119.9Mi | [8c15c3de](https://hub.docker.com/layers/library/mariadb/latest/images/sha256:8c15c3def7ae1bb408c96d322a3cc0346dba9921964d8f9897312fe17e127b90?context=explore)            |
+| bitnami/mariadb                | 112.1Mi | [d28caf04](https://hub.docker.com/layers/bitnami/mariadb/latest/images/sha256:d28caf04ae49091c0ee360d2390ae2bee3a9f89897838e79477f5077b458a5ab?context=explore)            |
+| mysql                          | 153.2Mi | [3d7ae561](https://hub.docker.com/layers/library/mysql/latest/images/sha256:3d7ae561cf6095f6aca8eb7830e1d14734227b1fb4748092f2be2cfbccf7d614?context=explore)              |
 
 [1]: ../sh/generate-benchmark.sh
