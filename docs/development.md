@@ -40,6 +40,7 @@ Instead of tagging and building images locally, the release workflow is fully au
 
 [docker]: https://docker.com
 [podman]: https://podman.io
+[nerdctl]: https://github.com/containerd/nerdctl
 [lima-vm]: https://github.com/lima-vm/lima
 [bash]: https://www.gnu.org/software/bash/
 [bash_unit]: https://github.com/pgrange/bash_unit
