@@ -26,6 +26,7 @@ secrets with enough privileges to push containers to [Docker Hub][docker-hub].
 Instead of tagging and building images locally, the release workflow is fully automated through [github actions][github-actions].
 
 There are sanity checks in place to help you from making mistakes:
+
 1. The workflow will only be run if there is no existing github or docker tag corresponding to
    the mariadbd version in `Dockerfile.
 2. The workflow will fail if there are issues building or testing the container.
