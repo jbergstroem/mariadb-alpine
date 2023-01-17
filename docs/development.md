@@ -30,9 +30,9 @@ Instead of tagging and building images locally, the release workflow is fully au
 1. Visit the overview for [the Release workflow][release-workflow]
 2. Click the button "Run workflow".
    You should be greeted by three inputs:
-   - branch selector: stick with the `main` branch unless you know what you're doing.
-   - Replace existing tag; This will override any existing git tags as well as releases on docker hub. Useful if you broke a release. Can also be used with choosing branch/tag to build in order to rebuild older versions
-   - update `:latest` tag on dockerhub: only do this when cutting new (read: latest available) stable release
+   - Branch: stick with the `main` branch unless you know what you're doing.
+   - Replace existing tag: This will override any existing git tags as well as releases on docker hub. Useful if you broke a release. Can also be used with choosing branch/tag to build in order to rebuild older versions
+   - update `:latest` tag on Docker Hub: only do this when cutting new (read: latest available) stable release
 3. Hit "Run workflow" and wait a few minutes. Should tests or building containers fail, no tags or containers will be published to Github or Docker.
 4. Should you run into issues, file a new issue in the repository and assign @jbergstroem.
 
