@@ -62,7 +62,7 @@ jobs:
     name: Shfmt
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.3.0
       - name: Install shfmt
         env:
           version: "3.5.1"
