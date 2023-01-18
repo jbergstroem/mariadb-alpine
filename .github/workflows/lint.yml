@@ -58,3 +58,14 @@ jobs:
         run: npm install -g prettier
       - name: Run prettier
         run: prettier -c .
+  shfmt:
+    name: Shfmt
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.1.0
+      - name: Install shfmt
+        env:
+          version: "3.5.1"
+        run: curl -Ls -o shfmt "https://github.com/mvdan/sh/releases/download/v${{ env.version }}/shfmt_v${{ env.version }}_linux_amd64" && chmod +x shfmt && sudo mv shfmt /usr/local/bin
+      - name: Lint shell scripts
+        run: shfmt -i 2 -d sh/*.sh test/*.sh
