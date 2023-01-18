@@ -1,0 +1,15 @@
+name: "TODO to Issue"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  todo:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3.3.0
+      - name: "TODO to Issue"
+        uses: "alstr/todo-to-issue-action@v4.9.1"
+        with:
+          CLOSE_ISSUES: false

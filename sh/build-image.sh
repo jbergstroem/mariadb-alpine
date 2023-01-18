@@ -1,5 +1,6 @@
 #!/bin/bash
 # shellcheck shell=bash
+set -euo pipefail
 
 IMAGE=${IMAGE:-jbergstroem/mariadb-alpine}
 SHORT_SHA=$(git rev-parse --short HEAD)

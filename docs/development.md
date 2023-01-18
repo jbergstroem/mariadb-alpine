@@ -5,7 +5,7 @@
 In order to assist with developing `mariadb-alpine`, the following software is strongly recommended:
 
 - a [containerd][containerd] runtime such as [docker for desktop][docker] or [lima][lima-vm]
-- a docker-cli compatible client (@TODO more testing with [nerdctl][], [podman][podman])
+- a docker-cli compatible client (TODO more testing with [nerdctl][] and [podman][podman])
 - [bash][bash] 4.0 or newer
 - [bash_unit][bash_unit] - a bash testing framework
 - [shellcheck][shellcheck] to validate shell script
@@ -43,7 +43,7 @@ There are sanity checks in place to help you from making mistakes:
 3. Hit "Run workflow" and wait a few minutes. Should tests or building containers fail, no tags or containers will be published to Github or Docker.
 4. Should you run into issues, file a new issue in the repository and assign @jbergstroem.
 
-<!-- @TODO Create a release with gh-cli -->
+<!-- TODO Document how to a release with gh-cli -->
 
 [containerd]: https://containerd.io
 [docker]: https://docker.com

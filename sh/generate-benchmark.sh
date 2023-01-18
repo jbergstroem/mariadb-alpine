@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # shellcheck shell=bash
-
 set -euo pipefail
 
 # Fetches latest version and compressed size from dockerhub
-# Should go into some kind of release engineering at some point
+# TODO Benchmark should be run as part of release engineering/automation
+# TODO Sort benchmark by container size
+# TODO Fetch latest tag instead of digest for containers in benchmark
+# TODO Add size factor compared to smallest container in benchmark
 
 declare -A images=(
   ["mysql"]="library/mysql"
