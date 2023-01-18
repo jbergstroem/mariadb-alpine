@@ -29,7 +29,7 @@
     {
       "fileMatch": ["^\\.github/workflows/[^/]+\\.yml$"],
       "matchStrings": [
-        "version: \"(?<currentValue>.*?)\"\\s+run: curl -Ls \"https://github.com/(?<depName>.*?)/releases/download.*",
+        "version: \"(?<currentValue>.*?)\"\\s+run: curl -Ls( -o \\w+)? \"https://github.com/(?<depName>.*?)/releases/download.*",
         "https://github\\.com/(?<depName>.*?)/archive/refs/tags/(?<currentValue>.*?)\\.tar\\.gz"
       ],
       "datasourceTemplate": "github-releases",
