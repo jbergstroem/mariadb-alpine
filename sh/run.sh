@@ -15,14 +15,14 @@ if [ -z "$(ls -A /etc/my.cnf.d/* 2>/dev/null)" ]; then
       -e '/^innodb/d' /etc/my.cnf.d/my.cnf
 fi
 
-MYSQLD_OPTS="--user=mysql"
-MYSQLD_OPTS="${MYSQLD_OPTS} --skip-name-resolve"
-MYSQLD_OPTS="${MYSQLD_OPTS} --skip-host-cache"
-MYSQLD_OPTS="${MYSQLD_OPTS} --skip-slave-start"
+MARIADBD_OPTS="--user=mysql"
+MARIADBD_OPTS="${MARIADBD_OPTS} --skip-name-resolve"
+MARIADBD_OPTS="${MARIADBD_OPTS} --skip-host-cache"
+MARIADBD_OPTS="${MARIADBD_OPTS} --skip-slave-start"
 # Listen to signals, most importantly CTRL+C
-MYSQLD_OPTS="${MYSQLD_OPTS} --debug-gdb"
+MARIADBD_OPTS="${MARIADBD_OPTS} --debug-gdb"
 
-# No previous installation
+# No previous installation of mariadb founnd
 if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
   [ -n "${SKIP_INNODB}" ] && touch /var/lib/mysql/noinnodb
   [ -f "/run/secrets/MYSQL_ROOT_PASSWORD" ] && MYSQL_ROOT_PASSWORD="$(cat /run/secrets/MYSQL_ROOT_PASSWORD)"
@@ -49,29 +49,26 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
   fi
   echo "flush privileges;" >>/tmp/init
 
-  # Execute custom scripts provided by a user. This will spawn a mysqld and
+  # Execute custom scripts provided by a user. This will spawn mariadbd and
   # pass scripts to it. Since we're already up an running we might as well
   # pass the init script and avoid it later.
   if [ "$(ls -A /docker-entrypoint-initdb.d 2>/dev/null)" ]; then
-    MYSQL_CMD="mariadb -h 127.0.0.1"
-
-    # Start a mariadbd we will use to pass init stuff to. Can't use the same options
-    # as a standard instance; pass them manually.
-    MARIADBD_OUTPUT=/tmp/mysqldoutput
+    MARIADB_CMD="mariadb -h 127.0.0.1"
+    MARIADBD_OUTPUT=/tmp/mariadbd_output
     mariadbd --user=mysql --silent-startup >"${MARIADBD_OUTPUT}" 2>&1 &
     PID="$!"
 
-    # wait for mysqld to accept connections
+    # wait for mariadbd to accept connections
     until tail "${MARIADBD_OUTPUT}" | grep -q "Version:"; do
       sleep 0.2
     done
 
     # Run the init script
     echo "init: updating system tables"
-    eval "${MYSQL_CMD}" </tmp/init
+    eval "${MARIADB_CMD}" </tmp/init
 
     # Default scope is our newly created database
-    MYSQL_CMD="${MYSQL_CMD} ${MYSQL_DATABASE} "
+    MARIADB_CMD="${MARIADB_CMD} ${MYSQL_DATABASE} "
 
     for f in /docker-entrypoint-initdb.d/*; do
       case "${f}" in
@@ -82,11 +79,11 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
         ;;
       *.sql)
         echo "init: adding ${f}"
-        eval "${MYSQL_CMD}" <"${f}"
+        eval "${MARIADB_CMD}" <"${f}"
         ;;
       *.sql.gz)
         echo "init: adding ${f}"
-        gunzip -c "${f}" | eval "${MYSQL_CMD}"
+        gunzip -c "${f}" | eval "${MARIADB_CMD}"
         ;;
       *) echo "init: ignoring ${f}: not a recognized format" ;;
       esac
@@ -97,7 +94,7 @@ if [ -z "$(ls -A /var/lib/mysql/ 2>/dev/null)" ]; then
     wait "${PID}"
 
   else
-    MYSQLD_OPTS="${MYSQLD_OPTS} --init-file=/tmp/init"
+    MARIADBD_OPTS="${MARIADBD_OPTS} --init-file=/tmp/init"
   fi
 fi
 
@@ -105,4 +102,4 @@ fi
 # https://github.com/jbergstroem/mariadb-alpine/issues/54
 chown -R mysql:mysql /var/lib/mysql
 
-eval exec /usr/bin/mariadbd "${MYSQLD_OPTS}"
+eval exec /usr/bin/mariadbd "${MARIADBD_OPTS}"
