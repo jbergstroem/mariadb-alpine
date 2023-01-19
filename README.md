@@ -23,24 +23,24 @@
 
 # A tiny MariaDB container
 
-The goal of this project is to achieve a high quality, bite-sized, fast startup docker image for [MariaDB][1].
+The goal of this project is to provide a tiny, high quality and fast starting container for [MariaDB][1].
 It is built on the excellent, container-friendly Linux distribution [Alpine Linux][2].
 
-The container makes certain compromises to achieve arguably the smallest and fastest starting MariaDB. Should you run into problems, feel free to [open an issue][3].
+The project intentionally trims edges to achieve arguably the smallest and fastest starting MariaDB. Should you run into problems, feel free to [open an issue][3].
 
 Licensed under [MIT][4].
 
 ## Features
 
-- Lightning fast startup. Everything is built with performance in mind.
-- Test suite: Each PR is tested to make sure that things stay working
+- Lightning fast startup; everything is built with performance in mind.
 - Multi-arch: currently supports `amd64`, `arm/v6`, `arm/v7`, `arm64`, `386`, `s390x` and `ppc64le`
-- No bin-logging: Not relevant for most deployments
+- Test suite: Each PR is tested to make sure that things stay working
+- No bin-logging: Most deployments don't use this by default
 - Supports Docker secrets
 - Conveniently skip InnoDB: Gain a few seconds on startup
 - Reduce default settings for InnoDB: production deployments should have their on `my.cnf`
-- Simple and fast shutdowns: Both `CTRL+C` in interactive mode and `docker stop` does the job
-- Bundles a mariadb client: `docker run -it --entrypoint mariadb jbergstoem/mariadb-alpine`
+- `CTRL+C` shuts down a running container in interactive mode
+- Bundles a MariaDB client: `docker run -it --entrypoint mariadb jbergstoem/mariadb-alpine`
 
 ## Quickstart
 
