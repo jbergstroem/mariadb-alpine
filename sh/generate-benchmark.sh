@@ -5,7 +5,6 @@ set -euo pipefail
 # Fetches latest version and compressed size from dockerhub
 # TODO Benchmark should be run as part of release engineering/automation
 # TODO Fetch latest tag instead of digest for containers in benchmark
-# TODO Add size factor compared to smallest container in benchmark
 
 declare -A images=(
   ["mysql"]="library/mysql"
