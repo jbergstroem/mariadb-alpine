@@ -32,7 +32,7 @@ There are sanity checks in place to help you from making mistakes:
 2. The workflow will fail if there are issues building or testing the container.
 3. Only by changing
 
-### To create a release (browser):
+### Create a release in your browser
 
 1. Visit the overview for [the Release workflow][release-workflow]
 2. Click the button "Run workflow".
@@ -43,7 +43,15 @@ There are sanity checks in place to help you from making mistakes:
 3. Hit "Run workflow" and wait a few minutes. Should tests or building containers fail, no tags or containers will be published to Github or Docker.
 4. Should you run into issues, file a new issue in the repository and assign @jbergstroem.
 
-<!-- TODO Document how to a release with gh-cli -->
+### Create a release with `gh` cli
+
+Very similar to a browser workflow, but pass options with `-f`.
+
+1. Review available options: `gh workflow view Release --yaml`
+2. Start a workflow with said options (`-f` for attribute, `--ref` for branch) or with default settings: `gh workflow run Release`
+3. Follow status with `gh run watch`
+
+Note: `gh run` will tail any active job, which most likely only is the Release job. You can view current workflows/jobs with `gh run list` or `gh workflow view Release`.
 
 [containerd]: https://containerd.io
 [docker]: https://docker.com
