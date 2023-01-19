@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3.3.0
       - name: Run shell script
-        run: sh/build-image.sh
+        run: sh/generate-dockerhub-readme.sh
       - name: Update Docker Hub readme and description
         uses: peter-evans/dockerhub-description@v3.1.2
         with:
