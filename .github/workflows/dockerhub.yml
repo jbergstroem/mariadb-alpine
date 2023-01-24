@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - "README.md"
+      - "sh/generate-dockerhub-readme.sh"
 
 jobs:
   update-dockerhub:

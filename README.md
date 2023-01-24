@@ -32,7 +32,7 @@ Licensed under [MIT][4].
 
 ## Features
 
-- Lightning fast startup; everything is built with performance in mind.
+- Lightning fast startup: everything is built with performance in mind
 - Multi-arch: currently supports `amd64`, `arm/v6`, `arm/v7`, `arm64`, `386`, `s390x` and `ppc64le`
 - Test suite: Each PR is tested to make sure that things stay working
 - No bin-logging: Most deployments don't use this by default
