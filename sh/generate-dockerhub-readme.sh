@@ -9,5 +9,5 @@ sed \
   -e '/<\/\{0,1\}picture>/d' \
   -e '/<source/d' \
   -e '/docs\/development.md/d' \
-  -e "s|docs/|${URL}/docs/|g" \
+  -e "s|docs/|${URL}/blob/main/docs/|g" \
   README.md >dockerhub.md
