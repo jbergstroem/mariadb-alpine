@@ -15,7 +15,7 @@
   <a href="#features">Features</a> |
   <a href="docs/usage.md">Usage</a> |
   <a href="docs/configuration.md">Configuration</a> |
-  <a href="docs/testing.md">Testing</a> |
+  <a href="docs/tests.md">Testing</a> |
   <a href="docs/benchmarks.md">Benchmarks</a>
 </p>
 
