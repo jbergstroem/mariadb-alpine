@@ -17,6 +17,22 @@
     {
       "matchManagers": ["github-actions"],
       "commitMessageTopic": "{{depName}}"
+    },
+    {
+      "matchPackagePatterns": ["hadolint"],
+      "commitMessageTopic": "hadolint"
+    },
+    {
+      "matchPackagePatterns": ["actionlint"],
+      "commitMessageTopic": "actionlint"
+    },
+    {
+      "matchPackagePatterns": ["mvdan/sh"],
+      "commitMessageTopic": "shfmt"
+    },
+    {
+      "matchPackageNames": ["shellcheck"],
+      "commitMessageTopic": "shellcheck"
     }
   ],
   "regexManagers": [
