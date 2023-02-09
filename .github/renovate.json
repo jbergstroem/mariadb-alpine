@@ -33,6 +33,10 @@
     {
       "matchPackageNames": ["shellcheck"],
       "commitMessageTopic": "shellcheck"
+    },
+    {
+      "matchPackagePatterns": ["^alpine_\\d+_\\d+/mariadb"],
+      "commitMessageTopic": "mariadb"
     }
   ],
   "regexManagers": [
@@ -40,7 +44,8 @@
       "fileMatch": ["^Dockerfile$"],
       "matchStrings": ["ARG APK_VERSION=\"(?<currentValue>.*?)\"\\n"],
       "datasourceTemplate": "repology",
-      "depNameTemplate": "alpine_3_17/mariadb"
+      "depNameTemplate": "alpine_3_17/mariadb",
+      "versioningTemplate": "loose"
     },
     {
       "fileMatch": ["^\\.github/workflows/[^/]+\\.yml$"],
