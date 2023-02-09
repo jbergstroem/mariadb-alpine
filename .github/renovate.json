@@ -6,14 +6,20 @@
     ":rebaseStalePrs",
     ":disableRateLimiting",
     ":docker",
-    ":semanticCommits",
-    "group:allNonMajor"
+    ":semanticCommits"
   ],
   "enabledManagers": ["dockerfile", "github-actions", "regex"],
   "commitMessageAction": "",
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "{{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}",
   "packageRules": [
+    {
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch",
+      "matchPackagePatterns": ["*"],
+      "excludePackagePatterns": ["^alpine_\\d+_\\d+/mariadb"],
+      "matchUpdateTypes": ["minor", "patch"]
+    },
     {
       "matchManagers": ["github-actions"],
       "commitMessageTopic": "{{depName}}"
