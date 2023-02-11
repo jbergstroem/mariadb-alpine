@@ -17,8 +17,13 @@
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
       "matchPackagePatterns": ["*"],
-      "excludePackagePatterns": ["^alpine_\\d+_\\d+/mariadb"],
+      "excludePackagePatterns": ["^alpine"],
       "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "matchPackageNames": ["alpine"],
+      "commitMessageTopic": "alpine linux",
+      "commitMessageExtra": "{{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}"
     },
     {
       "matchManagers": ["github-actions"],
