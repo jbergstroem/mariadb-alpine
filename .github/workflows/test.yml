@@ -19,6 +19,6 @@ jobs:
       - name: Download mariadb cli
         run: docker pull jbergstroem/mariadb-client-alpine:latest
       - name: Install bash_unit
-        run: curl -Ls "https://github.com/pgrange/bash_unit/archive/refs/tags/v2.0.1.tar.gz" | tar -x -z --wildcards --strip-components=1 -C /usr/local/bin "*/bash_unit"
+        run: curl -Ls "https://github.com/pgrange/bash_unit/archive/refs/tags/v2.1.0.tar.gz" | tar -x -z --wildcards --strip-components=1 -C /usr/local/bin "*/bash_unit"
       - name: Run suite
         run: bash_unit test/*.sh
