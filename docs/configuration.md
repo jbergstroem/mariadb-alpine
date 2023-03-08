@@ -4,7 +4,7 @@ You can override default behavior by passing environment variables or providing 
 
 Pass any of below as you would other environment variable to a container (below example uses `MYSQL_DATABASE`):
 
-```console
+```shell
 $ docker run -it --rm --name=mariadb \
     -e MYSQL_DATABASE=mydatabase \
     jbergstroem/mariadb-alpine
@@ -26,7 +26,7 @@ You can add your custom `my.cnf` with various settings (be it for production or 
 You can also add other `.cnf` files in `/etc/my.cnf.d/`, which will be [included by MariaDB on start][1].
 Note: If you mount your own configs, defaults and custom logic like `SKIP_INNODB` will be ignored.
 
-```console
+```shell
 $ docker run -it --rm --name=mariadb \
     -v $(pwd)/config/my.cnf:/etc/my.cnf.d/my.cnf:ro \
     jbergstroem/mariadb-alpine
@@ -36,7 +36,7 @@ $ docker run -it --rm --name=mariadb \
 
 When a database is empty, the `mysql_install_db` script will be invoked. As part of this, you can pass custom input via the commonly used `/docker-entrypoint-initdb.d` convention. This will not be run when an existing database is found.
 
-```console
+```shell
 $ mkdir init && echo "create database mydatabase;" > init/mydatabase.sql
 $ echo "#\!/bin/sh\necho Hello from script" > init/custom.sh
 $ docker volume create db

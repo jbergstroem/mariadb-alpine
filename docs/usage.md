@@ -2,14 +2,14 @@
 
 ### "Default" startup
 
-```console
+```shell
 $ docker run -it --rm -p 3306:3306 --name=mariadb \
     jbergstroem/mariadb-alpine
 ```
 
 ### Disable InnoDB (faster startup)
 
-```console
+```shell
 $ docker run -it --rm --name=mariadb \
     -e SKIP_INNODB=yes \
     jbergstroem/mariadb-alpine
@@ -17,7 +17,7 @@ $ docker run -it --rm --name=mariadb \
 
 ### Create a database with a user/password to access it
 
-```console
+```shell
 $ docker run -it --rm --name=mariadb \
     -e MYSQL_USER=foo \
     -e MYSQL_DATABASE=bar \
@@ -27,7 +27,7 @@ $ docker run -it --rm --name=mariadb \
 
 ### Set a root password
 
-```console
+```shell
 $ docker run -it --rm --name=mariadb \
     -e MYSQL_ROOT_PASSWORD=secret \
     jbergstroem/mariadb-alpine
@@ -35,7 +35,7 @@ $ docker run -it --rm --name=mariadb \
 
 ### Use a volume to persist your storage across restarts
 
-```console
+```shell
 $ docker volume create db
 db
 $ docker run -it --rm --name=mariadb \
@@ -45,7 +45,7 @@ $ docker run -it --rm --name=mariadb \
 
 ### Use a volume and a different port (3307) to access the container
 
-```console
+```shell
 $ docker volume create db
 db
 $ docker run -it --rm --name=mariadb \
@@ -120,7 +120,7 @@ available in the database which isn't loaded by default.
 This snippet starts a mariadb container and loads data through another container.
 The import only needs to be run once since the data persists in the mysql database.
 
-```console
+```shell
 $ docker network create db
 33a220c8af110295accde1df7157de7e665e7852d25ac2e9d80a7ca12625619b
 $ docker run --network db --name db -d -e SKIP_INNODB=1 -p 3306:3306 jbergstroem/mariadb-alpine
