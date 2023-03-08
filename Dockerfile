@@ -54,7 +54,7 @@ RUN \
 # my_print_defaults should cover 95% of cases since it doesn't properly do recursion
 COPY sh/resolveip.sh /usr/bin/resolveip
 COPY sh/my_print_defaults.sh /usr/bin/my_print_defaults
-COPY sh/run.sh /run.sh
+COPY sh/run.sh sh/health.sh /
 # Used in run.sh as a default config
 COPY my.cnf /tmp/my.cnf
 
@@ -62,7 +62,7 @@ COPY my.cnf /tmp/my.cnf
 # Since we have no clients, we can't really connect to it and check.
 #
 # Below is in my opinion better than no health check.
-HEALTHCHECK --start-period=5s CMD pgrep mariadbd
+HEALTHCHECK --start-period=5s CMD /health.sh
 
 VOLUME ["/var/lib/mysql"]
 ENTRYPOINT ["/run.sh"]
