@@ -9,7 +9,7 @@ jobs:
     name: Create Todo
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v3.4.0
       - name: TODO to Issue
         uses: alstr/todo-to-issue-action@v4.10.1
         with:
