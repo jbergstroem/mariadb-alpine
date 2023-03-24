@@ -8,7 +8,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.4.0
+      - uses: actions/checkout@v3.5.0
       - name: Assign version for usage
         id: assign
         run: echo IMAGE_VERSION="$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
