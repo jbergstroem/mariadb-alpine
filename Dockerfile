@@ -4,7 +4,7 @@ ARG BUILD_DATE
 ARG BUILD_REF
 ARG BUILD_VERSION
 ARG APK_VERSION="10.6.12-r0"
-ARG INCLUDE_MYSQLDUMP=false
+ARG BUILD_SLIM=false
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL \
@@ -27,8 +27,8 @@ RUN \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadb$ \
     usr/bin/mariadbd$ \
-    $( [ "${INCLUDE_MYSQLDUMP}" = "true" ] && echo "usr/bin/mysqldump$" ) \
-    $( [ "${INCLUDE_MYSQLDUMP}" = "true" ] && echo "usr/bin/mariadb-dump$" ) \
+    $( [ "${BUILD_SLIM}" = "true" ] && echo "usr/bin/mysqldump$" ) \
+    $( [ "${BUILD_SLIM}" = "true" ] && echo "usr/bin/mariadb-dump$" ) \
     usr/bin/getconf$ \
     usr/bin/getent$ \
     usr/bin/mariadb-install-db$ \
