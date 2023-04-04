@@ -26,6 +26,7 @@ RUN \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadb$ \
     usr/bin/mariadbd$ \
+    usr/bin/mysqldump$ \
     usr/bin/getconf$ \
     usr/bin/getent$ \
     usr/bin/mariadb-install-db$ \
