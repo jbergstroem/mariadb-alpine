@@ -16,7 +16,7 @@ jobs:
       - name: Run shell script
         run: sh/generate-dockerhub-readme.sh
       - name: Update Docker Hub readme and description
-        uses: peter-evans/dockerhub-description@v3.4.0
+        uses: peter-evans/dockerhub-description@v3.4.1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
