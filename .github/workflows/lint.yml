@@ -7,7 +7,7 @@ jobs:
     name: Validate renovate config
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
       - name: validate
         uses: rinchsan/renovate-config-validator@v0.0.12
         with:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Shellcheck
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
       - name: Install Shellcheck
         env:
           version: "0.9.0"
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Hadolint
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
       - uses: jbergstroem/hadolint-gh-action@v1.11.0
         with:
           error_level: 2
@@ -37,7 +37,7 @@ jobs:
     name: Actionlint
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
       - name: Install Actionlint
         env:
           version: "1.6.24"
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Prettier
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
       - uses: actions/setup-node@v3.6.0
         with:
           node-version: "18.11.0"
@@ -62,7 +62,7 @@ jobs:
     name: Shfmt
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3.5.0
+      - uses: actions/checkout@v3.5.2
       - name: Install shfmt
         env:
           version: "3.6.0"
