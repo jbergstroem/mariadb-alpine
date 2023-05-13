@@ -1,9 +1,9 @@
-FROM alpine:3.17.3
+FROM alpine:3.18.0
 
 ARG BUILD_DATE
 ARG BUILD_REF
 ARG BUILD_VERSION
-ARG APK_VERSION="10.6.13-r0"
+ARG APK_VERSION="10.11.3-r0"
 
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
 LABEL \
@@ -38,7 +38,8 @@ RUN \
     usr/share/mariadb/mysql_sys_schema.sql$ \
     usr/share/mariadb/fill_help_tables.sql$" | \
     tr -d " \t\n\r" | sed -e 's/usr/|usr/g' -e 's/^.//') && \
-  INSTALLED=$(apk info -q -L mariadb-common mariadb mariadb-client linux-pam ca-certificates | grep "\S") && \
+  # As of Mariadb 10.11.x, the mariadb-client package now depends on perl. Lets just list all files and remove them.
+  INSTALLED=$(apk info -q -L mariadb-common mariadb mariadb-client linux-pam ca-certificates perl | grep "\S") && \
   for path in $(echo "${INSTALLED}" | grep -v -E "${TO_KEEP}"); do \
     eval rm -rf "${path}"; \
   done && \
