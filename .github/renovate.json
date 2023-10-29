@@ -59,7 +59,7 @@
       "fileMatch": ["^Dockerfile$"],
       "matchStrings": ["ARG APK_VERSION=\"(?<currentValue>.*?)\"\\n"],
       "datasourceTemplate": "repology",
-      "depNameTemplate": "alpine_3_17/mariadb",
+      "depNameTemplate": "alpine_3_18/mariadb",
       "versioningTemplate": "loose"
     },
     {
