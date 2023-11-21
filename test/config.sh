@@ -61,6 +61,15 @@ test_custom_charset_collation() {
   stop "${name}"
 }
 
+test_custom_timezone() {
+  local name="${suite_name}_timezone"
+  ip=$(create "${name}" false "-e SKIP_INNODB=1 -e MYSQL_DATABASE=bar -e TZ=CET")
+  # timezone is set properly
+  ret=$(${CLIENT} -h "${ip}" -N --database=bar -e "SELECT GLOBAL_VALUE FROM INFORMATION_SCHEMA.SYSTEM_VARIABLES WHERE VARIABLE_NAME LIKE 'system_time_zone';")
+  assert_equals "CET" "${ret}"
+  stop "${name}"
+}
+
 test_mount_custom_config() {
   local name="${suite_name}_mount_custom_config"
   ip=$(create "${name}" false "-e SKIP_INNODB=1 -v $(pwd)/fixtures/user-my.cnf:/etc/my.cnf.d/my.cnf")
