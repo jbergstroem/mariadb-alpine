@@ -21,7 +21,7 @@ LABEL \
 SHELL ["/bin/ash", "-euo", "pipefail", "-c"]
 
 RUN \
-  apk add --no-cache mariadb=${APK_VERSION} mariadb-client=${APK_VERSION} && \
+  apk add --no-cache "tzdata>=2023c-r1" mariadb=${APK_VERSION} mariadb-client=${APK_VERSION} && \
   TO_KEEP=$(echo " \
     etc/ssl/certs/ca-certificates.crt$ \
     usr/bin/mariadb$ \
