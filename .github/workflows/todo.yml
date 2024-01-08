@@ -11,6 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: TODO to Issue
-        uses: alstr/todo-to-issue-action@v4.11.1
+        uses: alstr/todo-to-issue-action@v4.12.1
         with:
           CLOSE_ISSUES: false
