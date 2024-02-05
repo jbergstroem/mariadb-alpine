@@ -30,7 +30,7 @@ jobs:
     name: Hadolint
     steps:
       - uses: actions/checkout@v4
-      - uses: jbergstroem/hadolint-gh-action@v1.12.1
+      - uses: jbergstroem/hadolint-gh-action@v1.12.2
         with:
           error_level: 2
   actionlint:
