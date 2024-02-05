@@ -8,10 +8,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: validate
-        uses: rinchsan/renovate-config-validator@v0.0.12
-        with:
-          pattern: ".github/renovate.json"
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install -g renovate
+      - name: Validate config
+        run: renovate-config-validator .github/renovate.json
+
   shellcheck:
     runs-on: ubuntu-22.04
     name: Shellcheck
@@ -25,14 +26,16 @@ jobs:
         run: |
           echo "::add-matcher::.github/matcher-shellcheck.json"
           shellcheck -x -f gcc -S warning sh/*.sh test/*.{sh,bash}
+
   hadolint:
     runs-on: ubuntu-22.04
     name: Hadolint
     steps:
       - uses: actions/checkout@v4
-      - uses: jbergstroem/hadolint-gh-action@v1.12.1
+      - uses: jbergstroem/hadolint-gh-action@v1
         with:
           error_level: 2
+
   actionlint:
     name: Actionlint
     runs-on: ubuntu-22.04
@@ -46,18 +49,15 @@ jobs:
         run: |
           echo "::add-matcher::.github/matcher-actionlint.json"
           actionlint -color
+
   prettier:
     runs-on: ubuntu-22.04
     name: Prettier
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4.0.1
-        with:
-          node-version: "18.11.0"
-      - name: Install prettier
-        run: npm install -g prettier
-      - name: Run prettier
-        run: prettier -c .
+      - uses: oven-sh/setup-bun@v1
+      - run: bunx prettier -c .
+
   shfmt:
     name: Shfmt
     runs-on: ubuntu-22.04
@@ -69,3 +69,11 @@ jobs:
         run: curl -Ls -o shfmt "https://github.com/mvdan/sh/releases/download/v${{ env.version }}/shfmt_v${{ env.version }}_linux_amd64" && chmod +x shfmt && sudo mv shfmt /usr/local/bin
       - name: Lint shell scripts
         run: shfmt -i 2 -d sh/*.sh test/*.sh
+
+  typos:
+    name: Typos
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for typos
+        uses: crate-ci/typos@v1.18.0

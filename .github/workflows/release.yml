@@ -39,6 +39,7 @@ jobs:
         run: |
           [[ $(git tag -l "${{ steps.extract.outputs.tag }}") || $(curl -L -s "${{ env.TAG_URL }}" | jq -r '.results[] | select(.name=="${{ steps.extract.outputs.tag }}")') ]] && \
           echo "Tag already exists. Quitting." && exit 1 || exit 0
+
   test:
     name: Run e2e tests
     needs:
