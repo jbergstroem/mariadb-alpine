@@ -1,5 +1,6 @@
 *
 !sh/run.sh
+!sh/health.sh
 !sh/clean.sh
 !sh/resolveip.sh
 !sh/my_print_defaults.sh
