@@ -63,10 +63,10 @@ test_custom_charset_collation() {
 
 test_custom_timezone() {
   local name="${suite_name}_timezone"
-  ip=$(create "${name}" false "-e SKIP_INNODB=1 -e MYSQL_DATABASE=bar -e TZ=CET")
+  ip=$(create "${name}" false "-e SKIP_INNODB=1 -e MYSQL_DATABASE=bar -e TZ=TRT")
   # timezone is set properly
   ret=$(${CLIENT} -h "${ip}" -N --database=bar -e "SELECT GLOBAL_VALUE FROM INFORMATION_SCHEMA.SYSTEM_VARIABLES WHERE VARIABLE_NAME LIKE 'system_time_zone';")
-  assert_equals "CET" "${ret}"
+  assert_equals "TRT" "${ret}"
   stop "${name}"
 }
 
