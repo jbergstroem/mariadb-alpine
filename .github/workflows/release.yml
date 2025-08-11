@@ -18,7 +18,7 @@ jobs:
     outputs:
       tag: ${{ steps.extract.outputs.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           # get all tags
           fetch-depth: 0
@@ -57,7 +57,7 @@ jobs:
       image: jbergstroem/mariadb-alpine
       ref_url: ${{ github.api_url }}/repos/${{ github.repository }}/git/refs
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3.3.0
         with:

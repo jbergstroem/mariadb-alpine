@@ -7,7 +7,7 @@ jobs:
     name: Validate renovate config
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v1
       - run: bun install -g renovate
       - name: Validate config
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Shellcheck
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Shellcheck
         env:
           version: "0.10.0"
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Hadolint
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: jbergstroem/hadolint-gh-action@v1
         with:
           error_level: 2
@@ -40,7 +40,7 @@ jobs:
     name: Actionlint
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Actionlint
         env:
           version: "1.7.1"
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-22.04
     name: Prettier
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: oven-sh/setup-bun@v1
       - run: bunx prettier -c .
 
@@ -62,7 +62,7 @@ jobs:
     name: Shfmt
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install shfmt
         env:
           version: "3.8.0"
@@ -74,6 +74,6 @@ jobs:
     name: Typos
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Check for typos
         uses: crate-ci/typos@v1.21.0
